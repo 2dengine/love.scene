@@ -1,7 +1,8 @@
 # Love2D Scene Graph
 Tiny (~10K) scene graph compatible with Love2D 11.3.
-The full documentation is available here:
-https://2dengine.com/?p=scene
+
+# Documentation
+The full documentation is available at: https://2dengine.com/?p=scene
 
 # Installation
 Copy the folder called "scene" to your game directory.
