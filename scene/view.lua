@@ -12,6 +12,23 @@ reg.View = view
 setmetatable(view, { __index = reg.Layer })
 
 local lg = love.graphics
+local lg_origin = lg.origin
+local lg_setBlendMode = lg.setBlendMode
+local lg_setCanvas = lg.setCanvas
+local lg_newCanvas = lg.newCanvas
+local lg_clear = lg.clear
+local lg_setScissor = lg.setScissor
+local lg_setColor = lg.setColor
+local lg_rectangle = lg.rectangle
+local lg_push = lg.push
+local lg_translate = lg.translate
+local lg_scale = lg.scale
+local lg_rotate = lg.rotate
+local lg_pop = lg.pop
+local lg_reset = lg.reset
+local lg_setShader = lg.setShader
+local lg_getDimensions = lg.getDimensions
+local lg_draw = lg.draw
 
 --- This is an internal function.
 -- Please use @{scene.newView} instead.
@@ -25,7 +42,7 @@ local lg = love.graphics
 function view.new(vx, vy, vw, vh, mt)
   if vx == nil then
     vx, vy = 0, 0
-    vw, vh = lg.getDimensions()
+    vw, vh = lg_getDimensions()
   end
   local t = reg.Layer.new(0, 0, mt or viewMT)
   t.vx, t.vy = vx, vy
@@ -57,7 +74,7 @@ function view:setBounds(vx, vy, vw, vh)
   self.vw, self.vh = vw, vh
   self.cx, self.cy = vw/2, vh/2 
   if self.canvas then
-    local ok, canvas = pcall(lg.newCanvas, vw, vh)
+    local ok, canvas = pcall(lg_newCanvas, vw, vh)
     self.canvas = ok and canvas
   end
 end
@@ -151,7 +168,7 @@ function view:setShader(shader)
   end
   self.shader = shader
   if shader and not self.canvas then
-    local ok, canvas = pcall(lg.newCanvas, self.vw, self.vh)
+    local ok, canvas = pcall(lg_newCanvas, self.vw, self.vh)
     self.canvas = ok and canvas
   end
 end
@@ -173,37 +190,38 @@ function view:draw()
   local canvas = self.canvas
   local shader = self.shader
 
-  lg.origin()
-  lg.setBlendMode("alpha", "alphamultiply")
+  lg_origin()
+  lg_setBlendMode("alpha", "alphamultiply")
   if canvas and shader then
-    lg.setCanvas(canvas)
-    lg.clear(self.background)
+    lg_setCanvas(canvas)
+    lg_clear(self.background)
   else
-    lg.setScissor(vx, vy, vw, vh)
-    lg.setColor(self.background)
-    lg.rectangle("fill", vx, vy, vw, vh)
+    lg_setScissor(vx, vy, vw, vh)
+    lg_setColor(self.background)
+    lg_rectangle("fill", vx, vy, vw, vh)
   end
-  lg.push("transform")
+  
+  lg_push("transform")
   if not canvas then
-    lg.translate(vx, vy)
+    lg_translate(vx, vy)
   end
-  lg.translate(self.cx, self.cy)
-  lg.scale(self.sx, self.sy)
-  lg.rotate(self.r)
-  lg.translate(-self.x, self.y)
+  lg_translate(self.cx, self.cy)
+  lg_scale(self.sx, self.sy)
+  lg_rotate(self.r)
+  lg_translate(-self.x, self.y)
   for _, v in ipairs(self.list) do
     v:draw()
   end
-  lg.pop()
+  lg_pop()
 
   if canvas and shader then
-    lg.setCanvas()
-    lg.reset()
-    lg.setShader(shader)
-    lg.draw(canvas, vx, vy)
-    lg.setShader()
+    lg_setCanvas()
+    lg_reset()
+    lg_setShader(shader)
+    lg_draw(canvas, vx, vy)
+    lg_setShader()
   else
-    lg.setScissor()
+    lg_setScissor()
   end
 end
 

@@ -15,6 +15,9 @@ reg.Layer = layer
 setmetatable(layer, { __index = reg.Node })
 
 local lg = love.graphics
+local lg_push = lg.push
+local lg_applyTransform = lg.applyTransform
+local lg_pop = lg.pop
 
 --- This is an internal function.
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
@@ -161,12 +164,12 @@ function layer:draw()
     trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
     self.changed = nil
   end
-  lg.push("transform")
-  lg.applyTransform(trans)
+  lg_push("transform")
+  lg_applyTransform(trans)
   for _, v in ipairs(self.list) do
     v:draw()
   end
-  lg.pop()
+  lg_pop()
 end
 
 return layer.new

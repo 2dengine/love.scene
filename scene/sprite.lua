@@ -8,6 +8,10 @@ local sprite = {}
 local spriteMT = { __index = sprite }
 
 local lg = love.graphics
+local lg_setColor = lg.setColor
+local lg_setBlendMode = lg.setBlendMode
+local lg_setShader = lg.setShader
+local lg_draw = lg.draw
 
 local reg = debug.getregistry()
 reg.Sprite = sprite
@@ -147,33 +151,33 @@ function sprite:draw()
   if not self.visible then
     return
   end
+  local img = self.img
+  if not img then
+    return
+  end
   local trans = self.transform
   if self.changed then
     trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
     trans:apply(self.graphic)
     self.changed = nil
   end
-  local img = self.img
-  if not img then
-    return
-  end
-  lg.setColor(self.color)
-  lg.setBlendMode(self.mode)
+  lg_setColor(self.color)
+  lg_setBlendMode(self.mode)
   local quad = self.quad
   local shade = self.shader
   if shade then
-    lg.setShader(shade)
+    lg_setShader(shade)
     if quad then
-      lg.draw(img, quad, trans)
+      lg_draw(img, quad, trans)
     else
-      lg.draw(img, trans)
+      lg_draw(img, trans)
     end
-    lg.setShader()
+    lg_setShader()
   else
     if quad then
-      lg.draw(img, quad, trans)
+      lg_draw(img, quad, trans)
     else
-      lg.draw(img, trans)
+      lg_draw(img, trans)
     end
   end
 end
