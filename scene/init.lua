@@ -4,9 +4,9 @@
 local scene = {}
 
 -- nodes
-local path = (...):match("(.-)[^%.]+$")
+local path = (...)
 
-scene.newNode = require(path.."node")
+scene.newNode = require(path..".node")
 
 --- Creates a new @{sprite} object.
 -- Alternatively, you can use @{layer:newSprite} or @{view:newSprite}.
@@ -16,7 +16,7 @@ scene.newNode = require(path.."node")
 -- @treturn sprite New sprite object
 -- @see layer:newSprite
 -- @see view:newSprite
-scene.newSprite = require(path.."sprite")
+scene.newSprite = require(path..".sprite")
 
 --- Creates a new @{layer} object.
 -- Alternatively, you can use @{layer:newLayer} or @{view:newLayer}.
@@ -26,7 +26,7 @@ scene.newSprite = require(path.."sprite")
 -- @treturn layer New layer object
 -- @see layer:newLayer
 -- @see view:newLayer
-scene.newLayer = require(path.."layer")
+scene.newLayer = require(path..".layer")
 
 --- Creates a new @{view} object.
 -- If no parameters are supplied, the view takes on the dimensions of the window.
@@ -36,6 +36,6 @@ scene.newLayer = require(path.."layer")
 -- @tparam[opt] number width Width in pixels
 -- @tparam[opt] number height Height in pixels
 -- @treturn view New view object
-scene.newView = require(path.."view")
+scene.newView = require(path..".view")
 
 return scene
