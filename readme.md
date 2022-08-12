@@ -8,7 +8,7 @@ The full documentation is available at: https://2dengine.com/?p=scene
 Copy the folder called "scene" to your game directory.
 The scene graph can be included like so:
 ```
-love.scene = require("scene.main")
+love.scene = require("scene")
 ```
 
 # Usage
