@@ -4,7 +4,7 @@ function love.load()
   -- setup the scene
   love.scene = require("scene.main")
   view = love.scene.newView()
-  view:setBackgroundRGB(255, 0, 0)
+  view:setBackground(1, 0, 0)
   img = love.graphics.newImage("block.png")
   for x = 1, mapw do
     for y = 1, maph do
