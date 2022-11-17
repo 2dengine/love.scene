@@ -10,6 +10,7 @@ local reg = debug.getregistry()
 reg.View = view
 
 setmetatable(view, { __index = reg.Layer })
+view.stype = "View"
 
 local lg = love.graphics
 local lg_origin = lg.origin

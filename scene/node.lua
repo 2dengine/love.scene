@@ -7,6 +7,8 @@ local nodeMT = { __index = node }
 local reg = debug.getregistry()
 reg.Node = node
 
+node.stype = "Node"
+
 --- This is an internal function.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
@@ -28,6 +30,12 @@ function node:destroy()
     p:removeChild(self)
   end
   self.transform = nil
+end
+
+--- Returns the node type as a string ("Sprite", "Layer" or "View").
+-- @treturn string Node type
+function node:type()
+  return self.stype
 end
 
 --- Returns the root @{layer} of the node.

@@ -13,6 +13,7 @@ local reg = debug.getregistry()
 reg.Layer = layer
 
 setmetatable(layer, { __index = reg.Node })
+layer.stype = "Layer"
 
 local lg = love.graphics
 local lg_push = lg.push

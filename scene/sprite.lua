@@ -17,6 +17,7 @@ local reg = debug.getregistry()
 reg.Sprite = sprite
 
 setmetatable(sprite, { __index = reg.Node })
+sprite.stype = "Sprite"
 
 --- This is an internal function.
 -- Please use @{scene.newSprite} or @{layer.newSprite} instead.
