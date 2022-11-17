@@ -38,7 +38,7 @@ function node:type()
   return self.stype
 end
 
---- Returns the root @{layer} of the node.
+--- Returns the top ancestor or the root @{layer} of the node.
 -- @treturn layer Root layer
 function node:getRoot()
   local p = self.parent
@@ -49,7 +49,7 @@ function node:getRoot()
 end
 
 --- Sets the parent @{layer} of the node.
--- All nodes have just a single parent.
+-- One node cannot have multiple parents.
 -- @tparam layer parent New parent layer
 function node:setParent(p2)
   local p1 = self.parent
