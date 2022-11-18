@@ -14,7 +14,7 @@ local reg = debug.getregistry()
 --- Creates a new @{sprite} object.
 -- Alternatively, you can use @{layer:newSprite} or @{view:newSprite}.
 -- @function scene.newSprite(x,y)
--- @tparam Node parent Parent node
+-- @tparam node parent Parent node
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
 -- @treturn sprite New sprite object
@@ -25,7 +25,7 @@ scene.newSprite = reg.Layer.newSprite
 --- Creates a new @{layer} object.
 -- Alternatively, you can use @{layer:newLayer} or @{view:newLayer}.
 -- @function scene.newLayer(x,y)
--- @tparam Node parent Parent node
+-- @tparam node parent Parent node
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
 -- @treturn layer New layer object
