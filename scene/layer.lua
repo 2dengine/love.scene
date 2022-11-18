@@ -1,9 +1,8 @@
 local tinsert = table.insert
 local tremove = table.remove
 
---- Layers are groups of nodes, containing either sprites or other nested layers.
--- Layers are helpful in ordering nodes along the Z-axis.
--- Layers are used to build things like parallax, huds and so on.
+--- Layers are basically groups of nodes, containing either sprites or other nested layers. Layers are helpful in ordering nodes along the Z-axis.
+-- Layers are used to build things like parallax, huds, minimaps and so on.
 -- @module layer
 -- @alias layer
 -- @inherit node
@@ -121,7 +120,7 @@ function layer:getChildDepth(c)
 end
 
 --- Sets the depth index of a child node.
--- This depth index may shift as nodes are added, removed or sorted.
+-- This depth index may shift as node are added, removed or sorted.
 -- @tparam node child Child node
 -- @tparam number index Depth index (could be negative)
 function layer:setChildDepth(c, i)
@@ -140,7 +139,7 @@ end
 
 --- Sorts the child nodes based on a comparison function.
 -- If no comparison function is specified, nodes are sorted based on their Y-coordinates.
--- Y-coordinate sorting is useful in isometric games.
+-- This is useful in isometric or overhead games.
 -- @tparam[opt] function func Comparison function
 function layer:sort(func)
   table.sort(self.list, func or self.compareDepth)

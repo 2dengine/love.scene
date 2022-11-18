@@ -32,13 +32,13 @@ function node:destroy()
   self.transform = nil
 end
 
---- Returns the node type as a string ("Sprite", "Layer" or "View").
--- @treturn string Node type
+--- Returns the node type as a string
+-- @treturn string Node type ("Sprite", "Layer" or "View").
 function node:type()
   return self.stype
 end
 
---- Returns the top ancestor or the root @{layer} of the node.
+--- Returns the root @{layer} of the node.
 -- @treturn layer Root layer
 function node:getRoot()
   local p = self.parent
@@ -49,7 +49,7 @@ function node:getRoot()
 end
 
 --- Sets the parent @{layer} of the node.
--- One node cannot have multiple parents.
+-- All nodes have just a single parent.
 -- @tparam layer parent New parent layer
 function node:setParent(p2)
   local p1 = self.parent
