@@ -14,24 +14,36 @@ local reg = debug.getregistry()
 --- Creates a new @{sprite} object.
 -- Alternatively, you can use @{layer:newSprite} or @{view:newSprite}.
 -- @function scene.newSprite(x,y)
--- @tparam node parent Parent node
+-- @tparam[opt] node parent Parent node
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
 -- @treturn sprite New sprite object
 -- @see layer:newSprite
 -- @see view:newSprite
-scene.newSprite = reg.Layer.newSprite
+scene.newSprite = function(p, x, y)
+  if type(p) == "table" then
+    return p:newSprite(x, y)
+  else
+    return reg.Sprite.new(p, x)
+  end
+end
 
 --- Creates a new @{layer} object.
 -- Alternatively, you can use @{layer:newLayer} or @{view:newLayer}.
 -- @function scene.newLayer(x,y)
--- @tparam node parent Parent node
+-- @tparam[opt] node parent Parent node
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
 -- @treturn layer New layer object
 -- @see layer:newLayer
 -- @see view:newLayer
-scene.newLayer = reg.Layer.newLayer
+scene.newLayer = function(p, x, y)
+  if type(p) == "table" then
+    return p:newLayer(x, y)
+  else
+    return reg.Layer.new(p, x)
+  end
+end
 
 --- Creates a new @{view} object.
 -- If no parameters are supplied, the view takes on the dimensions of the window.
