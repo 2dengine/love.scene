@@ -55,6 +55,7 @@ function layer:destroyChildren()
 end
 
 --- Creates a new sprite at the given position.
+-- Sets the parent of the new sprite to the current node.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 -- @treturn sprite New sprite object
@@ -65,11 +66,23 @@ function layer:newSprite(x, y)
 end
 
 --- Creates a new layer at the given position.
+-- Sets the parent of the new layer to the current node.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 -- @treturn layer New layer object
 function layer:newLayer(x, y)
   local c = reg.Layer.new(x, y)
+  self:insertChild(c)
+  return c
+end
+
+--- Creates a new camera at the given position.
+-- Sets the parent of the new camera to the current node.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
+-- @treturn layer New layer object
+function layer:newCamera(x, y)
+  local c = reg.Camera.new(x, y)
   self:insertChild(c)
   return c
 end

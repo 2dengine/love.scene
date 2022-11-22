@@ -45,11 +45,12 @@ function view.new(vx, vy, vw, vh, mt)
     vx, vy = 0, 0
     vw, vh = lg_getDimensions()
   end
-  local t = reg.Layer.new(0, 0, mt or viewMT)
+  local t = reg.Layer.new(vx, vy, mt or viewMT)
   t.vx, t.vy = vx, vy
   t.vw, t.vh = vw, vh
   t.cx, t.cy = vw/2, vh/2
   t.background = { 0, 0, 0, 1 }
+  t.camera = reg.Camera.new(0, 0)
   return t
 end
 
@@ -59,35 +60,18 @@ function view:destroy()
   reg.Layer.destroy(self)
 end
 
---- Sets the position and dimensions of the view inside the game window.
+--- Sets the position of the view inside the application window.
 -- @tparam number x X-position in pixels
 -- @tparam number y Y-position in pixels
--- @tparam number width Width in pixels
--- @tparam number height Height in pixels
--- @see view:getBounds
-function view:setBounds(vx, vy, vw, vh)
+function view:setPosition(vx, vy)
   self.vx, self.vy = vx, vy
-  vw = math.ceil(vw)
-  vh = math.ceil(vh)
-  if self.vw == vw and self.vh == vh then
-    return
-  end
-  self.vw, self.vh = vw, vh
-  self.cx, self.cy = vw/2, vh/2 
-  if self.canvas then
-    local ok, canvas = pcall(lg_newCanvas, vw, vh)
-    self.canvas = ok and canvas
-  end
 end
 
---- Gets the position and dimensions of the view inside the game window.
+--- Gets the position of the view inside the application window.
 -- @treturn number X-position in pixels
 -- @treturn number Y-position in pixels
--- @treturn number Width in pixels
--- @treturn number Height in pixels
--- @see view:setBounds
-function view:getBounds()
-  return self.vx, self.vy, self.vw, self.vh
+function view:getPosition()
+  return self.vx, self.vy
 end
 
 --- Gets the dimensions of the view inside the game window.
@@ -103,35 +87,17 @@ end
 -- @tparam number height Height in pixels
 -- @see view:getDimensions
 function view:setDimensions(vw, vh)
-  self:setBounds(self.vx, self.vy, vw, vh)
-end
-
---- Sets the visible range in scene coordinates.
--- The specified position will be drawn in the center of the view.
--- @tparam number x Scene X-coordinate
--- @tparam number y Scene Y-coordinate
--- @tparam[opt] number width Range width
--- @tparam[opt] number height Range height
--- @see view:getScene
-function view:setScene(x, y, w, h)
-  self.x = x
-  self.y = y
-  if w and h then
-    self.sx = self.vw/w
-    self.sy = self.vh/h
+  vw = math.ceil(vw)
+  vh = math.ceil(vh)
+  if self.vw == vw and self.vh == vh then
+    return
   end
-end
-
---- Gets the visible range in scene coordinates.
--- The returned position is drawn in the center of the view.
--- @treturn number Scene X-coordinate
--- @treturn number Scene Y-coordinate
--- @treturn[opt] number Range width
--- @treturn[opt] number Range height
--- @see view:setScene
-function view:getScene()
-  local w, h = self.vw/self.sx, self.vh/self.sy
-  return self.x, self.y, w, h
+  self.vw, self.vh = vw, vh
+  self.cx, self.cy = vw/2, vh/2 
+  if self.canvas then
+    local ok, canvas = pcall(lg_newCanvas, vw, vh)
+    self.canvas = ok and canvas
+  end
 end
 
 --- Sets the background color.
@@ -181,13 +147,30 @@ function view:getShader()
   return self.shader
 end
 
---- Draws the view and all of its visible child nodes.
-function view:draw()
+--- Gets the camera associated with the view.
+-- @treturn camera camera Camera object
+-- @see view:setCamera
+function view:getCamera()
+  return self.camera
+end
+
+--- Sets the camera for the view.
+-- @tparam[opt] camera camera Camera object
+-- @see view:getCamera
+function view:setCamera(camera)
+  self.camera = camera
+end
+
+--- By default, this function draws the view and all of its visible child nodes.
+-- If the optional camera parameter is provided,
+-- this function renders the viewing range of the camera inside the view.
+-- @tparam[opt] camera camera Camera object
+function view:draw(camera)
   if not self.visible then
     return
   end
 
-  local vx, vy, vw, vh = self:getBounds()
+  local vx, vy = self.vx, self.vy
   local canvas = self.canvas
   local shader = self.shader
 
@@ -197,6 +180,7 @@ function view:draw()
     lg_setCanvas(canvas)
     lg_clear(self.background)
   else
+    local vw, vh = self.vw, self.vh
     lg_setScissor(vx, vy, vw, vh)
     lg_setColor(self.background)
     lg_rectangle("fill", vx, vy, vw, vh)
@@ -210,9 +194,15 @@ function view:draw()
   lg_scale(self.sx, self.sy)
   lg_rotate(self.r)
   lg_translate(-self.x, self.y)
-  for _, v in ipairs(self.list) do
-    v:draw()
+
+  if camera then
+    camera:render(self)
+  else
+    for _, v in ipairs(self.list) do
+      v:draw()
+    end
   end
+
   lg_pop()
 
   if canvas and shader then
@@ -233,7 +223,7 @@ end
 -- @treturn number Scene X-coordinate
 -- @treturn number Scene Y-coordinate
 -- @see view:sceneToLocal
-function view:localToScene(x, y)
+function view:localToRoot(x, y)
   return x, y
 end
 
@@ -243,7 +233,7 @@ end
 -- @tparam number y Scene Y-coordinate
 -- @treturn number Local X-coordinate
 -- @treturn number Local Y-coordinate
--- @see view:localToScene
+-- @see view:localToRoot
 function view:sceneToLocal(x, y)
   return x, y
 end
@@ -255,7 +245,7 @@ end
 -- @treturn number X scene coordinate
 -- @treturn number Y scene coordinate
 -- @see view:sceneToWindow
-function view:windowToScene(x, y)
+function view:windowToRoot(x, y)
   -- origin (center of the viewport)
   x = x - self.cx
   y = y - self.cy
@@ -272,7 +262,7 @@ end
 -- @tparam number y Y scene coordinate
 -- @treturn number X window coordinate
 -- @treturn number Y window coordinate
--- @see view:windowToScene
+-- @see view:windowToRoot
 function view:sceneToWindow(x, y)
   -- transform
   x, y = self:parentToLocal(x, y)

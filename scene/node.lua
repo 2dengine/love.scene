@@ -178,8 +178,7 @@ function node:setVisible(on)
 end
 
 --- Converts a position from window to local coordinates.
--- This is useful because the mouse cursor is also in windows coordinates.
--- The top left corner of the game window is its origin.
+-- This function work only if the root node is a view object or returns nil otherwise.
 -- @tparam number x Window X-coordinate
 -- @tparam number y Window Y-coordinate
 -- @treturn number Local X-coordinate
@@ -187,15 +186,14 @@ end
 -- @see node:localToWindow
 function node:windowToLocal(x, y)
   local r = self:getRoot()
-  if r and r.windowToScene then
-    x, y = r:windowToScene(x, y)
+  if r and r.windowToRoot then
+    x, y = r:windowToRoot(x, y)
     return self:sceneToLocal(x, y)
   end
 end
 
 --- Converts a position from local to window coordinates.
--- This is useful because the mouse cursor is also in windows coordinates.
--- The top left corner of the game window is its origin.
+-- This function work only if the root node is a view object or returns nil otherwise.
 -- @tparam number x Local X-coordinate
 -- @tparam number y Local Y-coordinate
 -- @treturn number Window X-coordinate
@@ -204,7 +202,7 @@ end
 function node:localToWindow(x, y)
   local r = self:getRoot()
   if r and r.sceneToWindow then
-    x, y = self:localToScene(x, y)
+    x, y = self:localToRoot(x, y)
     return r:sceneToWindow(x, y)
   end
 end
@@ -215,7 +213,7 @@ end
 -- @tparam number y Scene Y-coordinate
 -- @treturn number Local X-coordinate
 -- @treturn number Local Y-coordinate
--- @see node:localToScene
+-- @see node:localToRoot
 function node:sceneToLocal(x, y)
   local p = self.parent
   if p then
@@ -231,11 +229,11 @@ end
 -- @treturn number Scene X-coordinate
 -- @treturn number Scene Y-coordinate
 -- @see node:sceneToLocal
-function node:localToScene(x, y)
+function node:localToRoot(x, y)
   x, y = self:localToParent(x, y)
   local p = self.parent
   if p then
-    x, y = p:localToScene(x, y)
+    x, y = p:localToRoot(x, y)
   end
   return x, y
 end

@@ -39,7 +39,6 @@ end
 function sprite:destroy()
   self.graphic = nil
   self.color = nil
-  self.mode = nil
   self.img = nil
   self.quad = nil
   reg.Node.destroy(self)

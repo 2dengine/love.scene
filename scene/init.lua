@@ -6,53 +6,42 @@ local scene = {}
 -- nodes
 local path = (...)
 require(path..".node")
-require(path..".sprite")
-require(path..".layer")
-require(path..".view")
-local reg = debug.getregistry()
 
 --- Creates a new @{sprite} object.
--- Alternatively, you can use @{layer:newSprite} or @{view:newSprite}.
+-- Alternatively, you can use @{layer:newSprite}.
 -- @function scene.newSprite(x,y)
--- @tparam[opt] node parent Parent node
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
 -- @treturn sprite New sprite object
 -- @see layer:newSprite
--- @see view:newSprite
-scene.newSprite = function(p, x, y)
-  if type(p) == "table" then
-    return p:newSprite(x, y)
-  else
-    return reg.Sprite.new(p, x)
-  end
-end
+scene.newSprite = require(path..".sprite")
 
 --- Creates a new @{layer} object.
--- Alternatively, you can use @{layer:newLayer} or @{view:newLayer}.
+-- Alternatively, you can use @{layer:newLayer}.
 -- @function scene.newLayer(x,y)
--- @tparam[opt] node parent Parent node
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
 -- @treturn layer New layer object
 -- @see layer:newLayer
--- @see view:newLayer
-scene.newLayer = function(p, x, y)
-  if type(p) == "table" then
-    return p:newLayer(x, y)
-  else
-    return reg.Layer.new(p, x)
-  end
-end
+scene.newLayer = require(path..".layer")
+
+--- Creates a new @{camera} object.
+-- Alternatively, you can use @{layer:newCamera}.
+-- @function scene.newCamera(x,y)
+-- @tparam number x X coordinate
+-- @tparam number y Y coordinatex
+-- @treturn camera New camera object
+-- @see layer:newCamera
+scene.newCamera = require(path..".camera")
 
 --- Creates a new @{view} object.
 -- If no parameters are supplied, the view takes on the dimensions of the window.
--- @function scene.newView(x,y,width,height)s
+-- @function scene.newView(x,y,width,height)
 -- @tparam[opt] number x X-position in pixels
 -- @tparam[opt] number y Y-position in pixels
 -- @tparam[opt] number width Width in pixels
 -- @tparam[opt] number height Height in pixels
 -- @treturn view New view object
-scene.newView = reg.View.new
+scene.newView = require(path..".view")
 
 return scene
