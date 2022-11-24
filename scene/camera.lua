@@ -34,6 +34,8 @@ function camera.construct(x, y, mt)
 end
 
 --- This is an internal function.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
 function camera:reset(x, y)
   self.rw = 0
   self.rh = 0
@@ -47,7 +49,7 @@ end
 -- camera's scale and the dimensions of the view object.
 -- @tparam number width Range width in scene units
 -- @tparam number height Range height in scene units
--- @see view:getRange
+-- @see camera:getRange
 function camera:setRange(w, h)
   self.rw = w
   self.rh = h
@@ -57,7 +59,7 @@ end
 -- Returns zero if no range is specified.
 -- @treturn number Range width in scene units
 -- @treturn number Range height in scene units
--- @see view:setRange
+-- @see camera:setRange
 function camera:getRange()
   return self.rw, self.rh
 end

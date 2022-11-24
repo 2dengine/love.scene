@@ -12,7 +12,7 @@ love.scene = require("scene")
 ```
 
 # Usage
-The scene graph is fairly minimal, relying on only three different objects.
+The scene graph is fairly minimal, relying on only four different objects.
 Scene nodes are created using two different shortcuts:
 ```
 local view = love.scene.newView()
@@ -79,4 +79,14 @@ local a = view:newLayer(0, 0)
 local b = view:newLayer(0, 0)
 -- depth
 b:setIndex(1)
+```
+
+## Camera
+Cameras can be transformed just like regular nodes and can also render what's around them onto a view object.
+```
+local view = love.scene.newView()
+local root = love.scene.newLayer(0, 0)
+local cam = root:newCamera(100, 0)
+cam:setRange(800, 400)
+view:draw(cam)
 ```

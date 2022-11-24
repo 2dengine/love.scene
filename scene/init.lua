@@ -14,6 +14,14 @@ local tremove = table.remove
 local pool = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
 local live = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
 
+--- This is an internal function
+-- @tparam node t Existing node
+-- @tparam arg ... Constructor arguments
+-- @treturn node New node object
+-- @see scene.newSprite
+-- @see scene.newCamera
+-- @see scene.newLayer
+-- @see scene.newView
 function scene.new(t, ...)
   local c = tremove(pool[t])
   if c then
@@ -26,6 +34,9 @@ function scene.new(t, ...)
   return c
 end
 
+--- This is an internal function
+-- @tparam node t Existing node
+-- @see node:destroy
 function scene.destroy(n)
   local t = n.stype
   live[t][n] = nil

@@ -24,7 +24,7 @@ function node.construct(x, y, mt)
 end
 
 --- This is an internal function.
--- Please use @{node.destroy} instead.
+-- @see node:destroy
 function node:deconstruct()
   self.transform = nil
 end
@@ -39,6 +39,8 @@ function node:destroy()
 end
 
 --- This is an internal function.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
 function node:reset(x, y)
   self.x, self.y = x, y
   self.r = 0

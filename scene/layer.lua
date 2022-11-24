@@ -35,7 +35,7 @@ function layer.construct(x, y, mt)
 end
 
 --- This is an internal function.
--- Please use @{node.destroy} instead.
+-- @see node:destroy
 function layer:deconstruct()
   self:destroyChildren()
   self.list = nil
@@ -56,6 +56,8 @@ function layer:destroyChildren()
 end
 
 --- This is an internal function.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
 function layer:reset(x, y)
   self:removeChildren()
   reg.Node.reset(self, x, y)

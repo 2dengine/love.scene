@@ -36,7 +36,7 @@ function sprite.construct(x, y, mt)
 end
 
 --- This is an internal function.
--- Please use @{node.destroy} instead.
+-- @see node:destroy
 function sprite:deconstruct()
   self.graphic = nil
   self.color = nil
@@ -46,6 +46,8 @@ function sprite:deconstruct()
 end
 
 --- Resets the node to its initial state.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
 function sprite:reset(x, y)
   local c = self.color
   c[1], c[2], c[3], c[4] = 1, 1, 1, 1

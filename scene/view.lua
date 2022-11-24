@@ -54,13 +54,17 @@ function view.construct(vx, vy, vw, vh, mt)
 end
 
 --- This is an internal function.
--- Please use @{node.destroy} instead.
+-- @see node:destroy
 function view:deconstruct()
   self.background = nil
   reg.Layer.deconstruct(self)
 end
 
 --- This is an internal function.
+-- @tparam number x X-position in pixels
+-- @tparam number y Y-position in pixels
+-- @tparam number width Width in pixels
+-- @tparam number height Height in pixels
 function view:reset(vx, vy, vw, vh)
   self.vx, self.vy = vx, vy
   self.vw, self.vh = vw, vh
