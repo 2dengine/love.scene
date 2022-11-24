@@ -79,7 +79,7 @@ Layers are used to build things like parallax, huds, minimaps and so on.
 local a = view:newLayer(0, 0)
 local b = view:newLayer(0, 0)
 -- depth
-b:setIndex(1)
+b:setDepth(1)
 ```
 
 ## Camera
