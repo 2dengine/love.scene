@@ -26,14 +26,27 @@ camera.stype = "Camera"
 -- @treturn camera New camera
 -- @see layer:newCamera
 -- @see scene.newCamera
-function camera.new(x, y, mt)
-  return reg.Node.new(x, y, mt or cameraMT)
+function camera.construct(x, y, mt)
+  local t = reg.Node.construct(x, y, mt or cameraMT)
+  t.rw = 0
+  t.rh = 0
+  return t
+end
+
+--- This is an internal function.
+function camera:reset(x, y)
+  self.rw = 0
+  self.rh = 0
+  reg.Node.reset(self, x, y)
 end
 
 --- Sets the viewing range of the camera in scene units.
--- If no range is specified the rendered area is determined by the dimensions of the view object.
--- @tparam[opt] number width Range width in scene units
--- @tparam[opt] number height Range height in scene units
+-- The camera node's scale is ignored upon setting a non-zero range.
+-- When the viewing range is set to zero,
+-- the rendered area is determined by the
+-- camera's scale and the dimensions of the view object.
+-- @tparam number width Range width in scene units
+-- @tparam number height Range height in scene units
 -- @see view:getRange
 function camera:setRange(w, h)
   self.rw = w
@@ -41,34 +54,44 @@ function camera:setRange(w, h)
 end
 
 --- Gets the viewing range of the camera in scene units.
--- Returns nil if no range is specified.
--- @treturn[opt] number Range width in scene units
--- @treturn[opt] number Range height in scene units
+-- Returns zero if no range is specified.
+-- @treturn number Range width in scene units
+-- @treturn number Range height in scene units
 -- @see view:setRange
 function camera:getRange()
-  return self.vw/self.sx, self.vh/self.sy
+  return self.rw, self.rh
 end
 
 --- This is an internal function.
 -- @tparam node view View object
 -- @see view:draw
 function camera:render(view)
-  local root = self.getRoot()
+  local root = self:getRoot()
   if not self.visible or not root then
     return
   end
   local trans = self.transform
   if self.changed then
-    trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
+    trans:setTransformation(0, 0, self.r, 1, 1, self.x, self.y)
     self.changed = nil
   end
-  lg_push("transform")
-  lg_applyTransform(trans)
+
   local vw, vh = view:getDimensions()
   local rw, rh = self.rw, self.rh
-  lg_scale(vw/rw, vh/rh)
-  root:draw()
+  local sx, sy = self.sx, self.sy
+  if rw > 0 and rh > 0 then
+    sx, sy = vw/rw, vh/rh
+  end
+  lg_push("transform")
+  lg_scale(sx, sy)
+  lg_applyTransform(trans)
+
+  reg.Layer.draw(root)
   lg_pop()
+end
+
+--- This is an internal function.
+function camera:draw()
 end
 
 return camera.new

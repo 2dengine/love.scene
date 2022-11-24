@@ -14,7 +14,7 @@ node.stype = "Node"
 -- @tparam number y Y-coordinate
 -- @tparam[opt] table mt Metatable of base object
 -- @treturn node New node
-function node.new(x, y, mt)
+function node.construct(x, y, mt)
   --assert(x and y)
   local t = { x = x, y = y, r = 0, sx = 1, sy = 1 }
   t.transform = love.math.newTransform(x, y)
@@ -23,13 +23,28 @@ function node.new(x, y, mt)
   return setmetatable(t, mt or nodeMT)
 end
 
+--- This is an internal function.
+-- Please use @{node.destroy} instead.
+function node:deconstruct()
+  self.transform = nil
+end
+
 --- Destroys the node removing it from its parent @{layer}.
 function node:destroy()
+  reg.Scene.destroy(self)
   local p = self.parent
   if p then
     p:removeChild(self)
   end
-  self.transform = nil
+end
+
+--- This is an internal function.
+function node:reset(x, y)
+  self.x, self.y = x, y
+  self.r = 0
+  self.sx, self.sy = 1, 1
+  self.visible = true
+  self.changed = true
 end
 
 --- Returns the node type as a string

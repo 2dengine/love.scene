@@ -28,17 +28,18 @@ local lg_pop = lg.pop
 -- @treturn layer New layer
 -- @see layer:newLayer
 -- @see scene.newLayer
-function layer.new(x, y, mt)
-  local t = reg.Node.new(x, y, mt or layerMT)
+function layer.construct(x, y, mt)
+  local t = reg.Node.construct(x, y, mt or layerMT)
   t.list = {}
   return t
 end
 
---- Destroys the layer and all of its child nodes.
-function layer:destroy()
+--- This is an internal function.
+-- Please use @{node.destroy} instead.
+function layer:deconstruct()
   self:destroyChildren()
   self.list = nil
-  reg.Node.destroy(self)
+  reg.Node.deconstruct(self)
 end
 
 --- Destroys all of the child nodes.
@@ -54,13 +55,28 @@ function layer:destroyChildren()
   end
 end
 
+--- This is an internal function.
+function layer:reset(x, y)
+  self:removeChildren()
+  reg.Node.reset(self, x, y)
+end
+
+--- Removes all child nodes without destroying them.
+function layer:removeChildren()
+  local list = self.list
+  for i = #list, 1, -1 do
+    list[i].parent = nil
+    list[i] = nil
+  end
+end
+
 --- Creates a new sprite at the given position.
 -- Sets the parent of the new sprite to the current node.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 -- @treturn sprite New sprite object
 function layer:newSprite(x, y)
-  local c = reg.Sprite.new(x, y)
+  local c = reg.Scene.new("Sprite", x, y)
   self:insertChild(c)
   return c
 end
@@ -71,7 +87,7 @@ end
 -- @tparam number y Y-coordinate
 -- @treturn layer New layer object
 function layer:newLayer(x, y)
-  local c = reg.Layer.new(x, y)
+  local c = reg.Scene.new("Layer", x, y)
   self:insertChild(c)
   return c
 end
@@ -82,7 +98,7 @@ end
 -- @tparam number y Y-coordinate
 -- @treturn layer New layer object
 function layer:newCamera(x, y)
-  local c = reg.Camera.new(x, y)
+  local c = reg.Scene.new("Camera", x, y)
   self:insertChild(c)
   return c
 end
@@ -156,15 +172,6 @@ end
 -- @tparam[opt] function func Comparison function
 function layer:sort(func)
   table.sort(self.list, func or self.compareDepth)
-end
-
---- Removes all child nodes without destroying them.
-function layer:clear()
-  local list = self.list
-  for i = #list, 1, -1 do
-    list[i].parent = nil
-    list[i] = nil
-  end
 end
 
 --- This is an internal function.

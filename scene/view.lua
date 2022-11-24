@@ -40,24 +40,34 @@ local lg_draw = lg.draw
 -- @tparam[opt] table mt Metatable of base object
 -- @treturn view New view object
 -- @see scene.newView
-function view.new(vx, vy, vw, vh, mt)
+function view.construct(vx, vy, vw, vh, mt)
   if vx == nil then
     vx, vy = 0, 0
     vw, vh = lg_getDimensions()
   end
-  local t = reg.Layer.new(vx, vy, mt or viewMT)
+  local t = reg.Layer.construct(0, 0, mt or viewMT)
   t.vx, t.vy = vx, vy
   t.vw, t.vh = vw, vh
   t.cx, t.cy = vw/2, vh/2
   t.background = { 0, 0, 0, 1 }
-  t.camera = reg.Camera.new(0, 0)
   return t
 end
 
---- Destroys the view and all of its children.
-function view:destroy()
+--- This is an internal function.
+-- Please use @{node.destroy} instead.
+function view:deconstruct()
   self.background = nil
-  reg.Layer.destroy(self)
+  reg.Layer.deconstruct(self)
+end
+
+--- This is an internal function.
+function view:reset(vx, vy, vw, vh)
+  self.vx, self.vy = vx, vy
+  self.vw, self.vh = vw, vh
+  self.cx, self.cy = vw/2, vh/2
+  local c = self.background
+  c[1], c[2], c[3], c[4] = 0, 0, 0, 1
+  reg.Layer.reset(self, 0, 0)
 end
 
 --- Sets the position of the view inside the application window.

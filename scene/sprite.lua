@@ -27,21 +27,33 @@ sprite.stype = "Sprite"
 -- @treturn sprite New sprite
 -- @see layer:newSprite
 -- @see scene.newSprite
-function sprite.new(x, y, mt)
-  local t = reg.Node.new(x, y, mt or spriteMT)
+function sprite.construct(x, y, mt)
+  local t = reg.Node.construct(x, y, mt or spriteMT)
   t.graphic = love.math.newTransform()
   t.color = { 1, 1, 1, 1 }
   t.mode = "alpha"
   return t
 end
 
---- Destroys the sprite and removes it from its parent node.
-function sprite:destroy()
+--- This is an internal function.
+-- Please use @{node.destroy} instead.
+function sprite:deconstruct()
   self.graphic = nil
   self.color = nil
   self.img = nil
   self.quad = nil
-  reg.Node.destroy(self)
+  reg.Node.deconstruct(self)
+end
+
+--- Resets the node to its initial state.
+function sprite:reset(x, y)
+  local c = self.color
+  c[1], c[2], c[3], c[4] = 1, 1, 1, 1
+  self.img = nil
+  self.quad = nil
+  self.shader = nil
+  self.mode = "alpha"
+  reg.Node.reset(self, x, y)
 end
 
 --- Sets a "drawable" graphic or a quad for the sprite.

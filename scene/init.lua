@@ -3,9 +3,47 @@
 -- @alias scene
 local scene = {}
 
+local reg = debug.getregistry()
+reg.Scene = scene
+
+scene.cache = 3000
+scene.count = 0
+
+local tinsert = table.insert
+local tremove = table.remove
+local pool = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
+local live = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
+
+function scene.new(t, ...)
+  local c = tremove(pool[t])
+  if c then
+    c:reset(...)
+  else
+    c = reg[t].construct(...)
+  end
+  live[t][c] = true
+  scene.count = scene.count + 1
+  return c
+end
+
+function scene.destroy(n)
+  local t = n.stype
+  live[t][n] = nil
+  scene.count = scene.count - 1
+  if scene.count <= scene.cache then
+    tinsert(pool[t], n)
+  else
+    n:deconstruct()
+  end
+end
+
 -- nodes
 local path = (...)
 require(path..".node")
+require(path..".sprite")
+require(path..".layer")
+require(path..".camera")
+require(path..".view")
 
 --- Creates a new @{sprite} object.
 -- Alternatively, you can use @{layer:newSprite}.
@@ -14,7 +52,9 @@ require(path..".node")
 -- @tparam number y Y coordinate
 -- @treturn sprite New sprite object
 -- @see layer:newSprite
-scene.newSprite = require(path..".sprite")
+function scene.newSprite(x, y)
+  return scene.new("Sprite", x, y)
+end
 
 --- Creates a new @{layer} object.
 -- Alternatively, you can use @{layer:newLayer}.
@@ -23,7 +63,9 @@ scene.newSprite = require(path..".sprite")
 -- @tparam number y Y coordinate
 -- @treturn layer New layer object
 -- @see layer:newLayer
-scene.newLayer = require(path..".layer")
+function scene.newLayer(x, y)
+  return scene.new("Layer", x, y)
+end
 
 --- Creates a new @{camera} object.
 -- Alternatively, you can use @{layer:newCamera}.
@@ -32,7 +74,9 @@ scene.newLayer = require(path..".layer")
 -- @tparam number y Y coordinatex
 -- @treturn camera New camera object
 -- @see layer:newCamera
-scene.newCamera = require(path..".camera")
+function scene.newCamera(x, y)
+  return scene.new("Camera", x, y)
+end
 
 --- Creates a new @{view} object.
 -- If no parameters are supplied, the view takes on the dimensions of the window.
@@ -42,6 +86,6 @@ scene.newCamera = require(path..".camera")
 -- @tparam[opt] number width Width in pixels
 -- @tparam[opt] number height Height in pixels
 -- @treturn view New view object
-scene.newView = require(path..".view")
+scene.newView = reg.View.construct
 
 return scene
