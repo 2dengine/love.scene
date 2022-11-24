@@ -35,10 +35,6 @@ View is a clipped rectangular area where the scene is rendered.
 Views can be transformed, drawn and easily shaded.
 ```
 local view = love.scene.newView()
--- viewport
-view:setBounds(200, 100, 100, 100)
--- panning
-view:setScene(100, 0, 800, 600)
 -- shading
 local shader = love.graphics.newShader([[ vec4 effect( vec4 c, Image t, vec2 tc, vec2 sc ){
   vec4 p = Texel(t, tc );
@@ -50,6 +46,10 @@ local shader = love.graphics.newShader([[ vec4 effect( vec4 c, Image t, vec2 tc,
   return p;
 } ]])
 view:setShader(shader)
+
+function love.draw()
+  view:draw()
+end
 ```
 
 ## Sprite
