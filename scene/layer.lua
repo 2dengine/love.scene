@@ -98,7 +98,7 @@ end
 -- Sets the parent of the new camera to the current node.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
--- @treturn layer New layer object
+-- @treturn camera New camera object
 function layer:newCamera(x, y)
   local c = reg.Scene.new("Camera", x, y)
   self:insertChild(c)

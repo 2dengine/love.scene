@@ -19,7 +19,8 @@ local view = love.scene.newView()
 -- object-oriented style
 local s1 = view:newSprite(0, 0)
 -- Love2D style
-local s2 = love.scene.newSprite(view, 0, 0)
+local s2 = love.scene.newSprite(0, 0)
+s2:setParent(view)
 ```
 Once the scene is setup, you can draw it like so:
 ```
