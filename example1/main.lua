@@ -1,21 +1,22 @@
 function love.load()
   -- setup the scene
-  love.scene = require("scene.main")
+  love.scene = require("scene")
   view = love.scene.newView()
-  img = love.graphics.newImage("mega.png")
+  local root = view:newLayer(0, 0)
+  local img = love.graphics.newImage("mega.png")
   local w, h = view:getDimensions()
   sprites = {}
   for i = 1, 2000 do
     local x = math.random(w)
     local y = math.random(h)
-    local s = view:newSprite(x, y)
+    local s = root:newSprite(x, y)
     s:setGraphic(img)
     s:setColor(math.random(), math.random(), math.random())
     s.dx = math.random(-200, 200)
     s.dy = math.random(-200, 200)
     sprites[i] = s
   end
-  view:setScene(w/2, -h/2)
+  root:setPosition(-w/2, -h/2)
 end
 
 function love.update(dt)
