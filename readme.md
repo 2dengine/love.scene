@@ -76,9 +76,10 @@ Layers are basically groups of nodes, containing either sprites or other nested 
 Layers are helpful in ordering nodes along the Z-axis.
 Layers are used to build things like parallax, huds, minimaps and so on.
 ```
-local a = view:newLayer(0, 0)
-local b = view:newLayer(0, 0)
--- depth
+local root = view:newLayer(0, 0)
+local a = root:newSprite(0, 0)
+local b = view:newSprite(0, 0)
+-- modify drawing order
 b:setDepth(1)
 ```
 
