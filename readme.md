@@ -78,7 +78,9 @@ Layers are used to build things like parallax, huds, minimaps and so on.
 ```
 local root = view:newLayer(0, 0)
 local a = root:newSprite(0, 0)
-local b = view:newSprite(0, 0)
+local b = root:newSprite(0, 0)
+a:setGraphic('under.png')
+b:setGraphic('over.png')
 -- modify drawing order
 b:setDepth(1)
 ```
