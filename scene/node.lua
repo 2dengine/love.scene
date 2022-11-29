@@ -1,3 +1,6 @@
+local _cos = math.cos
+local _sin = math.sin
+
 --- Abstract scene graph node.
 -- @module node
 -- @alias node
@@ -203,9 +206,9 @@ end
 -- @see node:localToWindow
 function node:windowToLocal(x, y)
   local r = self:getRoot()
-  if r and r.windowToRoot then
-    x, y = r:windowToRoot(x, y)
-    return self:sceneToLocal(x, y)
+  if r and r.windowToLocal then
+    x, y = r:windowToLocal(x, y)
+    return self:rootToLocal(x, y)
   end
 end
 
@@ -218,9 +221,9 @@ end
 -- @see node:windowToLocal
 function node:localToWindow(x, y)
   local r = self:getRoot()
-  if r and r.sceneToWindow then
+  if r and r.rootToWindow then
     x, y = self:localToRoot(x, y)
-    return r:sceneToWindow(x, y)
+    return r:rootToWindow(x, y)
   end
 end
 
@@ -231,10 +234,10 @@ end
 -- @treturn number Local X-coordinate
 -- @treturn number Local Y-coordinate
 -- @see node:localToRoot
-function node:sceneToLocal(x, y)
+function node:rootToLocal(x, y)
   local p = self.parent
   if p then
-    x, y = p:sceneToLocal(x, y)
+    x, y = p:rootToLocal(x, y)
   end
   return self:parentToLocal(x, y)
 end
@@ -245,7 +248,7 @@ end
 -- @tparam number y Local Y-coordinate
 -- @treturn number Scene X-coordinate
 -- @treturn number Scene Y-coordinate
--- @see node:sceneToLocal
+-- @see node:rootToLocal
 function node:localToRoot(x, y)
   x, y = self:localToParent(x, y)
   local p = self.parent
@@ -270,9 +273,10 @@ function node:parentToLocal(x, y)
   x = x*self.sx
   y = y*self.sy
   -- rotate
-  local r = -self.r
-  local c = math.cos(r)
-  local s = math.sin(r)
+  --local r = -self.r
+  local r = self.r
+  local c = _cos(r)
+  local s = _sin(r)
   local rx = c*x - s*y
   local ry = s*x + c*y
   x, y = rx, ry
@@ -288,9 +292,10 @@ end
 -- @see node:parentToLocal
 function node:localToParent(x, y)
   -- rotate
-  local r = self.r
-  local c = math.cos(r)
-  local s = math.sin(r)
+  --local r = self.r
+  local r = -self.r
+  local c = _cos(r)
+  local s = _sin(r)
   local rx = c*x - s*y
   local ry = s*x + c*y
   x, y = rx, ry

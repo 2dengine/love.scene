@@ -48,7 +48,6 @@ function view.construct(vx, vy, vw, vh, mt)
   local t = reg.Layer.construct(0, 0, mt or viewMT)
   t.vx, t.vy = vx, vy
   t.vw, t.vh = vw, vh
-  t.cx, t.cy = vw/2, vh/2
   t.background = { 0, 0, 0, 1 }
   return t
 end
@@ -68,7 +67,6 @@ end
 function view:reset(vx, vy, vw, vh)
   self.vx, self.vy = vx, vy
   self.vw, self.vh = vw, vh
-  self.cx, self.cy = vw/2, vh/2
   local c = self.background
   c[1], c[2], c[3], c[4] = 0, 0, 0, 1
   reg.Layer.reset(self, 0, 0)
@@ -107,7 +105,6 @@ function view:setDimensions(vw, vh)
     return
   end
   self.vw, self.vh = vw, vh
-  self.cx, self.cy = vw/2, vh/2 
   if self.canvas then
     local ok, canvas = pcall(lg_newCanvas, vw, vh)
     self.canvas = ok and canvas
@@ -188,13 +185,13 @@ function view:draw(camera)
   local canvas = self.canvas
   local shader = self.shader
 
+  local vw, vh = self.vw, self.vh
   lg_origin()
   lg_setBlendMode("alpha", "alphamultiply")
   if canvas and shader then
     lg_setCanvas(canvas)
     lg_clear(self.background)
   else
-    local vw, vh = self.vw, self.vh
     lg_setScissor(vx, vy, vw, vh)
     lg_setColor(self.background)
     lg_rectangle("fill", vx, vy, vw, vh)
@@ -204,7 +201,7 @@ function view:draw(camera)
   if not canvas then
     lg_translate(vx, vy)
   end
-  lg_translate(self.cx, self.cy)
+  lg_translate(vw/2, vh/2)
   lg_scale(self.sx, self.sy)
   lg_rotate(self.r)
   lg_translate(-self.x, self.y)
@@ -236,7 +233,7 @@ end
 -- @tparam number y Local Y-coordinate
 -- @treturn number Scene X-coordinate
 -- @treturn number Scene Y-coordinate
--- @see view:sceneToLocal
+-- @see view:rootToLocal
 function view:localToRoot(x, y)
   return x, y
 end
@@ -248,7 +245,7 @@ end
 -- @treturn number Local X-coordinate
 -- @treturn number Local Y-coordinate
 -- @see view:localToRoot
-function view:sceneToLocal(x, y)
+function view:rootToLocal(x, y)
   return x, y
 end
 
@@ -258,13 +255,13 @@ end
 -- @tparam number y Y window coordinate
 -- @treturn number X scene coordinate
 -- @treturn number Y scene coordinate
--- @see view:sceneToWindow
-function view:windowToRoot(x, y)
+-- @see view:localToWindow
+function view:windowToLocal(x, y)
   -- origin (center of the viewport)
-  x = x - self.cx
-  y = y - self.cy
+  x = x - self.vx - self.vw/2
+  y = y - self.vy - self.vh/2
   -- flip (y-axis increases up)
-  y = -y
+  --y = -y
   -- transform
   x, y = self:localToParent(x, y)
   return x, y
@@ -276,15 +273,15 @@ end
 -- @tparam number y Y scene coordinate
 -- @treturn number X window coordinate
 -- @treturn number Y window coordinate
--- @see view:windowToRoot
-function view:sceneToWindow(x, y)
+-- @see view:windowToLocal
+function view:localToWindow(x, y)
   -- transform
   x, y = self:parentToLocal(x, y)
   -- flip (y-axis increases down)
-  y = -y
+  --y = -y
   -- origin (top left of the window)
-  x = self.cx + x
-  y = self.cy + y
+  x = self.vx + self.vw/2 + x
+  y = self.vy + self.vh/2 + y
   return x, y
 end
 
