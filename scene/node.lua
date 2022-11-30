@@ -58,14 +58,18 @@ function node:type()
   return self.stype
 end
 
---- Returns the root @{layer} of the node.
+--- Returns the root @{layer} of the node or nil if the current node does not have a parent.
 -- @treturn layer Root layer
 function node:getRoot()
   local p = self.parent
-  if not p then
-    return self
+  while p do
+    local q = p.parent
+    if not q then
+      break
+    end
+    p = q
   end
-  return p:getRoot()
+  return p
 end
 
 --- Sets the parent @{layer} of the node.
@@ -206,7 +210,7 @@ end
 -- @see node:localToWindow
 function node:windowToLocal(x, y)
   local r = self:getRoot()
-  if r and r.windowToLocal then
+  if r and r.stype == "View" then
     x, y = r:windowToLocal(x, y)
     return self:rootToLocal(x, y)
   end
@@ -221,9 +225,9 @@ end
 -- @see node:windowToLocal
 function node:localToWindow(x, y)
   local r = self:getRoot()
-  if r and r.rootToWindow then
+  if r and r.stype == "View" then
     x, y = self:localToRoot(x, y)
-    return r:rootToWindow(x, y)
+    return r:localToWindow(x, y)
   end
 end
 
@@ -269,17 +273,16 @@ function node:parentToLocal(x, y)
   -- translate
   x = x - self.x
   y = y - self.y
-  -- scale
-  x = x*self.sx
-  y = y*self.sy
   -- rotate
-  --local r = -self.r
-  local r = self.r
+  local r = -self.r
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
   local ry = s*x + c*y
   x, y = rx, ry
+  -- scale
+  x = x/self.sx
+  y = y/self.sy
   return x, y
 end
 
@@ -291,17 +294,16 @@ end
 -- @treturn number Parent Y-coordinate
 -- @see node:parentToLocal
 function node:localToParent(x, y)
+  -- scale
+  x = x*self.sx
+  y = y*self.sy
   -- rotate
-  --local r = self.r
-  local r = -self.r
+  local r = self.r
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
   local ry = s*x + c*y
   x, y = rx, ry
-  -- scale
-  x = x/self.sx
-  y = y/self.sy
   -- translate
   x = x + self.x
   y = y + self.y

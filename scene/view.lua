@@ -31,6 +31,9 @@ local lg_setShader = lg.setShader
 local lg_getDimensions = lg.getDimensions
 local lg_draw = lg.draw
 
+local _cos = math.cos
+local _sin = math.sin
+
 --- This is an internal function.
 -- Please use @{scene.newView} instead.
 -- @tparam[opt] number x X-position in pixels
@@ -49,12 +52,14 @@ function view.construct(vx, vy, vw, vh, mt)
   t.vx, t.vy = vx, vy
   t.vw, t.vh = vw, vh
   t.background = { 0, 0, 0, 1 }
+  t.camera = reg.Scene.newCamera(0, 0)
   return t
 end
 
 --- This is an internal function.
 -- @see node:destroy
 function view:deconstruct()
+  self.camera = nil
   self.background = nil
   reg.Layer.deconstruct(self)
 end
@@ -69,6 +74,7 @@ function view:reset(vx, vy, vw, vh)
   self.vw, self.vh = vw, vh
   local c = self.background
   c[1], c[2], c[3], c[4] = 0, 0, 0, 1
+  self.camera = reg.Scene.newCamera(0, 0)
   reg.Layer.reset(self, 0, 0)
 end
 
@@ -158,33 +164,16 @@ function view:getShader()
   return self.shader
 end
 
---- Gets the camera associated with the view.
--- @treturn camera camera Camera object
--- @see view:setCamera
-function view:getCamera()
-  return self.camera
-end
-
---- Sets the camera for the view.
--- @tparam[opt] camera camera Camera object
--- @see view:getCamera
-function view:setCamera(camera)
-  self.camera = camera
-end
-
 --- By default, this function draws the view and all of its visible child nodes.
--- If the optional camera parameter is provided,
--- this function renders the viewing range of the camera inside the view.
--- @tparam[opt] camera camera Camera object
-function view:draw(camera)
+function view:draw()
   if not self.visible then
     return
   end
 
-  local vx, vy = self.vx, self.vy
   local canvas = self.canvas
   local shader = self.shader
 
+  local vx, vy = self.vx, self.vy
   local vw, vh = self.vw, self.vh
   lg_origin()
   lg_setBlendMode("alpha", "alphamultiply")
@@ -202,16 +191,15 @@ function view:draw(camera)
     lg_translate(vx, vy)
   end
   lg_translate(vw/2, vh/2)
-  lg_scale(self.sx, self.sy)
   lg_rotate(self.r)
+  lg_scale(self.sx, self.sy)
   lg_translate(-self.x, self.y)
 
-  if camera then
-    camera:render(self)
-  else
-    for _, v in ipairs(self.list) do
-      v:draw()
-    end
+  if self.camera then
+    self.camera:render(self)
+  end
+  for _, v in ipairs(self.list) do
+    v:draw()
   end
 
   lg_pop()
@@ -263,7 +251,8 @@ function view:windowToLocal(x, y)
   -- flip (y-axis increases up)
   --y = -y
   -- transform
-  x, y = self:localToParent(x, y)
+  --x, y = self:localToParent(x, y)
+  x, y = self:parentToLocal(x, y)
   return x, y
 end
 
@@ -276,13 +265,98 @@ end
 -- @see view:windowToLocal
 function view:localToWindow(x, y)
   -- transform
-  x, y = self:parentToLocal(x, y)
+  x, y = self:localToParent(x, y)
   -- flip (y-axis increases down)
   --y = -y
   -- origin (top left of the window)
   x = self.vx + self.vw/2 + x
   y = self.vy + self.vh/2 + y
   return x, y
+end
+
+--- Converts window coordinates to scene coordinates.
+-- This function works in conjunction with the currently associated camera.
+-- @tparam number x X window coordinate in pixels
+-- @tparam number y Y window coordinate in pixels
+-- @treturn number X scene coordinate
+-- @treturn number Y scene coordinate
+-- @see view:windowToLocal
+function view:windowToRoot(x, y)
+  x, y = self:windowToLocal(x, y)
+  local cam = self.camera
+  -- zoom/range
+  local vw, vh = self.vw, self.vh
+  local rw, rh = cam.rw, cam.rh
+  local sx, sy = cam.sx, cam.sy
+  if rw > 0 and rh > 0 then
+    sx, sy = vw/rw, vh/rh
+  end
+  x = x/sx
+  y = y/sy
+  -- rotate
+  local r = -cam.r
+  local c = _cos(r)
+  local s = _sin(r)
+  local rx = c*x - s*y
+  local ry = s*x + c*y
+  x, y = rx, ry
+  -- translate
+  x = x + cam.x
+  y = y + cam.y
+  -- hierarchy
+  if cam.parent then
+    x, y = cam.parent:localToRoot(x, y)
+  end
+  return x, y
+end
+
+--- Converts scene coordinates to window coordinates.
+-- This function works in conjunction with the currently associated camera.
+-- @tparam number x X scene coordinate
+-- @tparam number y Y scene coordinate
+-- @treturn number X window coordinate in pixels
+-- @treturn number Y window coordinate in pixels
+-- @see view:windowToLocal
+function view:rootToWindow(x, y)
+  local cam = self.camera
+  if cam.parent then
+    x, y = cam.parent:rootToLocal(x, y)
+  end
+  -- translate
+  x = x - cam.x
+  y = y - cam.y
+  -- rotate
+  local r = cam.r
+  local c = _cos(r)
+  local s = _sin(r)
+  local rx = c*x - s*y
+  local ry = s*x + c*y
+  x, y = rx, ry
+  -- zoom/range
+  local vw, vh = self.vw, self.vh
+  local rw, rh = cam.rw, cam.rh
+  local sx, sy = cam.sx, cam.sy
+  if rw > 0 and rh > 0 then
+    sx, sy = vw/rw, vh/rh
+  end
+  x = x*sx
+  y = y*sy
+  x, y = self:localToWindow(x, y)
+  return x, y
+end
+
+--- Gets the camera associated with the view.
+-- @treturn camera camera Camera object
+-- @see view:setCamera
+function view:getCamera()
+  return self.camera
+end
+
+--- Sets the camera for the view.
+-- @tparam camera camera Camera object
+-- @see view:getCamera
+function view:setCamera(camera)
+  self.camera = camera
 end
 
 return view.new
