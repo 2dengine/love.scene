@@ -92,5 +92,5 @@ local view = love.scene.newView()
 local root = love.scene.newLayer(0, 0)
 local cam = root:newCamera(100, 0)
 cam:setRange(800, 400)
-view:draw(cam)
+view:setCamera(cam)
 ```
