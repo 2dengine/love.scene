@@ -1,6 +1,3 @@
-local tinsert = table.insert
-local tremove = table.remove
-
 --- Layers are basically groups of nodes, containing either sprites or other nested layers. Layers are helpful in ordering nodes along the Z-axis.
 -- Layers are used to build things like parallax, huds, minimaps and so on.
 -- @module layer
@@ -15,10 +12,18 @@ reg.Layer = layer
 setmetatable(layer, { __index = reg.Node })
 layer.stype = "Layer"
 
+local tinsert = table.insert
+local tremove = table.remove
+local tsort = table.sort
 local lg = love.graphics
 local lg_push = lg.push
 local lg_applyTransform = lg.applyTransform
 local lg_pop = lg.pop
+local Transform_setTransformation = reg.Transform.setTransformation
+local Node_construct = reg.Node.construct
+local Node_deconstruct = reg.Node.deconstruct
+local Node_reset = reg.Node.reset
+local Scene_new = reg.Scene.new
 
 --- This is an internal function.
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
@@ -29,7 +34,7 @@ local lg_pop = lg.pop
 -- @see layer:newLayer
 -- @see scene.newLayer
 function layer.construct(x, y, mt)
-  local t = reg.Node.construct(x, y, mt or layerMT)
+  local t = Node_construct(x, y, mt or layerMT)
   t.list = {}
   return t
 end
@@ -39,7 +44,7 @@ end
 function layer:deconstruct()
   self:destroyChildren()
   self.list = nil
-  reg.Node.deconstruct(self)
+  Node_deconstruct(self)
 end
 
 --- Destroys all of the child nodes.
@@ -60,7 +65,7 @@ end
 -- @tparam number y Y-coordinate
 function layer:reset(x, y)
   self:removeChildren()
-  reg.Node.reset(self, x, y)
+  Node_reset(self, x, y)
 end
 
 --- Removes all child nodes without destroying them.
@@ -70,51 +75,6 @@ function layer:removeChildren()
     list[i].parent = nil
     list[i] = nil
   end
-end
-
---- Creates a new sprite at the given position.
--- Sets the parent of the new sprite to the current node.
--- @tparam number x X-coordinate
--- @tparam number y Y-coordinate
--- @treturn sprite New sprite object
-function layer:newSprite(x, y)
-  local c = reg.Scene.new("Sprite", x, y)
-  self:insertChild(c)
-  return c
-end
-
---- Creates a new layer at the given position.
--- Sets the parent of the new layer to the current node.
--- @tparam number x X-coordinate
--- @tparam number y Y-coordinate
--- @treturn layer New layer object
-function layer:newLayer(x, y)
-  local c = reg.Scene.new("Layer", x, y)
-  self:insertChild(c)
-  return c
-end
-
---- Creates a new camera at the given position.
--- Sets the parent of the new camera to the current node.
--- @tparam number x X-coordinate
--- @tparam number y Y-coordinate
--- @treturn camera New camera object
-function layer:newCamera(x, y)
-  local c = reg.Scene.new("Camera", x, y)
-  self:insertChild(c)
-  return c
-end
-
---- This is an internal function.
--- Adds a new child node to the layer.
--- @tparam node child Child node
-function layer:insertChild(c)
-  local p = c.parent
-  if p then
-    p:removeChild(c)
-  end
-  c.parent = self
-  tinsert(self.list, c)
 end
 
 --- This is an internal function.
@@ -129,6 +89,53 @@ function layer:removeChild(c)
       break
     end
   end
+end
+local Layer_removeChild = reg.Layer.removeChild
+
+--- This is an internal function.
+-- Adds a new child node to the layer.
+-- @tparam node child Child node
+function layer:insertChild(c)
+  local p = c.parent
+  if p then
+    Layer_removeChild(p, c)
+  end
+  c.parent = self
+  tinsert(self.list, c)
+end
+local Layer_insertChild = reg.Layer.insertChild
+
+--- Creates a new sprite at the given position.
+-- Sets the parent of the new sprite to the current node.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
+-- @treturn sprite New sprite object
+function layer:newSprite(x, y)
+  local c = Scene_new("Sprite", x, y)
+  Layer_insertChild(self, c)
+  return c
+end
+
+--- Creates a new layer at the given position.
+-- Sets the parent of the new layer to the current node.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
+-- @treturn layer New layer object
+function layer:newLayer(x, y)
+  local c = Scene_new("Layer", x, y)
+  Layer_insertChild(self, c)
+  return c
+end
+
+--- Creates a new camera at the given position.
+-- Sets the parent of the new camera to the current node.
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
+-- @treturn camera New camera object
+function layer:newCamera(x, y)
+  local c = Scene_new("Camera", x, y)
+  Layer_insertChild(self, c)
+  return c
 end
 
 --- Returns a child node based on depth index (could be negative).
@@ -149,13 +156,14 @@ function layer:getChildDepth(c)
     end
   end
 end
+local Layer_getChildDepth = reg.Layer.getChildDepth
 
 --- Sets the depth index of a child node.
 -- This depth index may shift as node are added, removed or sorted.
 -- @tparam node child Child node
 -- @tparam number index Depth index (could be negative)
 function layer:setChildDepth(c, i)
-  local j = self:getChildDepth(c)
+  local j = Layer_getChildDepth(self, c)
   if not j then
     return
   end
@@ -173,7 +181,7 @@ end
 -- This is useful in isometric or overhead games.
 -- @tparam[opt] function func Comparison function
 function layer:sort(func)
-  table.sort(self.list, func or self.compareDepth)
+  tsort(self.list, func or self.compareDepth)
 end
 
 --- This is an internal function.
@@ -184,7 +192,7 @@ function layer:draw()
   end
   local trans = self.transform
   if self.changed then
-    trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
+    Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
     self.changed = nil
   end
   lg_push("transform")

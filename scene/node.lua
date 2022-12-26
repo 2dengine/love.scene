@@ -10,6 +10,8 @@ local nodeMT = { __index = node }
 local reg = debug.getregistry()
 reg.Node = node
 
+local lm_newTransform = love.math.newTransform
+
 node.stype = "Node"
 
 --- This is an internal function.
@@ -20,7 +22,7 @@ node.stype = "Node"
 function node.construct(x, y, mt)
   --assert(x and y)
   local t = { x = x, y = y, r = 0, sx = 1, sy = 1 }
-  t.transform = love.math.newTransform(x, y)
+  t.transform = lm_newTransform(x, y)
   t.visible = true
   t.changed = true
   return setmetatable(t, mt or nodeMT)

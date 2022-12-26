@@ -7,14 +7,20 @@
 local sprite = {}
 local spriteMT = { __index = sprite }
 
+local reg = debug.getregistry()
+reg.Sprite = sprite
+
 local lg = love.graphics
 local lg_setColor = lg.setColor
 local lg_setBlendMode = lg.setBlendMode
 local lg_setShader = lg.setShader
 local lg_draw = lg.draw
-
-local reg = debug.getregistry()
-reg.Sprite = sprite
+local lm_newTransform = love.math.newTransform
+local Transform_setTransformation = reg.Transform.setTransformation
+local Transform_apply = reg.Transform.apply
+local Node_construct = reg.Node.construct
+local Node_deconstruct = reg.Node.deconstruct
+local Node_reset = reg.Node.reset
 
 setmetatable(sprite, { __index = reg.Node })
 sprite.stype = "Sprite"
@@ -28,8 +34,8 @@ sprite.stype = "Sprite"
 -- @see layer:newSprite
 -- @see scene.newSprite
 function sprite.construct(x, y, mt)
-  local t = reg.Node.construct(x, y, mt or spriteMT)
-  t.graphic = love.math.newTransform()
+  local t = Node_construct(x, y, mt or spriteMT)
+  t.graphic = lm_newTransform()
   t.color = { 1, 1, 1, 1 }
   t.mode = "alpha"
   return t
@@ -42,7 +48,7 @@ function sprite:deconstruct()
   self.color = nil
   self.img = nil
   self.quad = nil
-  reg.Node.deconstruct(self)
+  Node_deconstruct(self)
 end
 
 --- Resets the node to its initial state.
@@ -55,7 +61,7 @@ function sprite:reset(x, y)
   self.quad = nil
   self.shader = nil
   self.mode = "alpha"
-  reg.Node.reset(self, x, y)
+  Node_reset(self, x, y)
 end
 
 --- Sets a "drawable" graphic or a quad for the sprite.
@@ -73,15 +79,17 @@ end
 -- @tparam[opt=0] number kx X axis shearing
 -- @tparam[opt=0] number ky Y axis shearing 
 -- @see sprite:getGraphic 
-function sprite:setGraphic(img, quad, a,b,c,d,e,f,g,h,i)
+function sprite:setGraphic(img, a,b,c,d,e,f,g,h,i,j)
   self.img = img
   local graph = self.graphic
-  if type(quad) == "userdata" then
-    self.quad = quad
-    graph:setTransformation(a,b,c,d,e,f,g,h,i)
+  if type(a) == "userdata" then
+    self.quad = a
+    --graph:setTransformation(b,c,d,e,f,g,h,i,j)
+    Transform_setTransformation(graph, b,c,d,e,f,g,h,i,j)
   else
     self.quad = nil
-    graph:setTransformation(quad, a,b,c,d,e,f,g,h)
+    --graph:setTransformation(a,b,c,d,e,f,g,h,i)
+    Transform_setTransformation(graph, a,b,c,d,e,f,g,h,i)
   end
   self.changed = true
 end
@@ -125,7 +133,7 @@ end
 -- @see sprite:getColor
 function sprite:setColor(r, g, b)
   if type(r) == "table" then
-    r, g, b = unpack(r)
+    r, g, b = r[1], r[2], r[3]
   end
   local c = self.color
   c[1], c[2], c[3] = r, g, b
@@ -171,8 +179,10 @@ function sprite:draw()
   end
   local trans = self.transform
   if self.changed then
-    trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
-    trans:apply(self.graphic)
+    --trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
+    --trans:apply(self.graphic)
+    Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
+    Transform_apply(trans, self.graphic)
     self.changed = nil
   end
   lg_setColor(self.color)
