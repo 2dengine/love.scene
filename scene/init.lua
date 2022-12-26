@@ -11,7 +11,7 @@ reg.Scene = scene
 local _insert = table.insert
 local _remove = table.remove
 local pool = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
-local live = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
+local live = {}
 
 --- This is an internal function
 -- @tparam node t Existing node
@@ -27,8 +27,9 @@ function scene.new(t, ...)
     c:reset(...)
   else
     c = reg[t].construct(...)
+    c.managed = true
   end
-  live[t][c] = true
+  live[c] = true
   scene.count = scene.count + 1
   return c
 end
@@ -38,12 +39,13 @@ local _scene_new = scene.new
 -- @tparam node t Existing node
 -- @see node:destroy
 function scene.destroy(n)
-  local t = n.stype
-  live[t][n] = nil
-  scene.count = scene.count - 1
-  if scene.count <= scene.cache then
-    _insert(pool[t], n)
-  else
+  if live[n] then
+    live[n] = nil
+    scene.count = scene.count - 1
+    if scene.count <= scene.cache and n.managed then
+      _insert(pool[n.stype], n)
+      return
+    end
     n:deconstruct()
   end
 end
