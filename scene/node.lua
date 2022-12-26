@@ -1,6 +1,3 @@
-local _cos = math.cos
-local _sin = math.sin
-
 --- Abstract scene graph node.
 -- @module node
 -- @alias node
@@ -10,7 +7,10 @@ local nodeMT = { __index = node }
 local reg = debug.getregistry()
 reg.Node = node
 
-local lm_newTransform = love.math.newTransform
+local _cos = math.cos
+local _sin = math.sin
+local _love_math_newTransform = love.math.newTransform
+local _Scene_destroy = reg.Scene.destroy
 
 node.stype = "Node"
 
@@ -22,7 +22,7 @@ node.stype = "Node"
 function node.construct(x, y, mt)
   --assert(x and y)
   local t = { x = x, y = y, r = 0, sx = 1, sy = 1 }
-  t.transform = lm_newTransform(x, y)
+  t.transform = _love_math_newTransform(x, y)
   t.visible = true
   t.changed = true
   return setmetatable(t, mt or nodeMT)
@@ -36,7 +36,7 @@ end
 
 --- Destroys the node removing it from its parent @{layer}.
 function node:destroy()
-  reg.Scene.destroy(self)
+  _Scene_destroy(self)
   local p = self.parent
   if p then
     p:removeChild(self)

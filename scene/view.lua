@@ -13,23 +13,23 @@ setmetatable(view, { __index = reg.Layer })
 view.stype = "View"
 
 local lg = love.graphics
-local lg_origin = lg.origin
-local lg_setBlendMode = lg.setBlendMode
-local lg_setCanvas = lg.setCanvas
-local lg_newCanvas = lg.newCanvas
-local lg_clear = lg.clear
-local lg_setScissor = lg.setScissor
-local lg_setColor = lg.setColor
-local lg_rectangle = lg.rectangle
-local lg_push = lg.push
-local lg_translate = lg.translate
-local lg_scale = lg.scale
-local lg_rotate = lg.rotate
-local lg_pop = lg.pop
-local lg_reset = lg.reset
-local lg_setShader = lg.setShader
-local lg_getDimensions = lg.getDimensions
-local lg_draw = lg.draw
+local _lg_origin = lg.origin
+local _lg_setBlendMode = lg.setBlendMode
+local _lg_setCanvas = lg.setCanvas
+local _lg_newCanvas = lg.newCanvas
+local _lg_clear = lg.clear
+local _lg_setScissor = lg.setScissor
+local _lg_setColor = lg.setColor
+local _lg_rectangle = lg.rectangle
+local _lg_push = lg.push
+local _lg_translate = lg.translate
+local _lg_scale = lg.scale
+local _lg_rotate = lg.rotate
+local _lg_pop = lg.pop
+local _lg_reset = lg.reset
+local _lg_setShader = lg.setShader
+local _lg_getDimensions = lg.getDimensions
+local _lg_draw = lg.draw
 
 local _cos = math.cos
 local _sin = math.sin
@@ -46,7 +46,7 @@ local _sin = math.sin
 function view.construct(vx, vy, vw, vh, mt)
   if vx == nil then
     vx, vy = 0, 0
-    vw, vh = lg_getDimensions()
+    vw, vh = _lg_getDimensions()
   end
   local t = reg.Layer.construct(0, 0, mt or viewMT)
   t.vx, t.vy = vx, vy
@@ -112,7 +112,7 @@ function view:setDimensions(vw, vh)
   end
   self.vw, self.vh = vw, vh
   if self.canvas then
-    local ok, canvas = pcall(lg_newCanvas, vw, vh)
+    local ok, canvas = pcall(_lg_newCanvas, vw, vh)
     self.canvas = ok and canvas
   end
 end
@@ -152,7 +152,7 @@ function view:setShader(shader)
   end
   self.shader = shader
   if shader and not self.canvas then
-    local ok, canvas = pcall(lg_newCanvas, self.vw, self.vh)
+    local ok, canvas = pcall(_lg_newCanvas, self.vw, self.vh)
     self.canvas = ok and canvas
   end
 end
@@ -175,25 +175,25 @@ function view:draw()
 
   local vx, vy = self.vx, self.vy
   local vw, vh = self.vw, self.vh
-  lg_origin()
-  lg_setBlendMode("alpha", "alphamultiply")
+  _lg_origin()
+  _lg_setBlendMode("alpha", "alphamultiply")
   if canvas and shader then
-    lg_setCanvas(canvas)
-    lg_clear(self.background)
+    _lg_setCanvas(canvas)
+    _lg_clear(self.background)
   else
-    lg_setScissor(vx, vy, vw, vh)
-    lg_setColor(self.background)
-    lg_rectangle("fill", vx, vy, vw, vh)
+    _lg_setScissor(vx, vy, vw, vh)
+    _lg_setColor(self.background)
+    _lg_rectangle("fill", vx, vy, vw, vh)
   end
   
-  lg_push("transform")
+  _lg_push("transform")
   if not canvas then
-    lg_translate(vx, vy)
+    _lg_translate(vx, vy)
   end
-  lg_translate(vw/2, vh/2)
-  lg_rotate(self.r)
-  lg_scale(self.sx, self.sy)
-  lg_translate(-self.x, self.y)
+  _lg_translate(vw/2, vh/2)
+  _lg_rotate(self.r)
+  _lg_scale(self.sx, self.sy)
+  _lg_translate(-self.x, self.y)
 
   if self.camera then
     self.camera:render(self)
@@ -202,16 +202,16 @@ function view:draw()
     v:draw()
   end
 
-  lg_pop()
+  _lg_pop()
 
   if canvas and shader then
-    lg_setCanvas()
-    lg_reset()
-    lg_setShader(shader)
-    lg_draw(canvas, vx, vy)
-    lg_setShader()
+    _lg_setCanvas()
+    _lg_reset()
+    _lg_setShader(shader)
+    _lg_draw(canvas, vx, vy)
+    _lg_setShader()
   else
-    lg_setScissor()
+    _lg_setScissor()
   end
 end
 

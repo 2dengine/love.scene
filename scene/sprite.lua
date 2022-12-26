@@ -10,17 +10,16 @@ local spriteMT = { __index = sprite }
 local reg = debug.getregistry()
 reg.Sprite = sprite
 
-local lg = love.graphics
-local lg_setColor = lg.setColor
-local lg_setBlendMode = lg.setBlendMode
-local lg_setShader = lg.setShader
-local lg_draw = lg.draw
-local lm_newTransform = love.math.newTransform
-local Transform_setTransformation = reg.Transform.setTransformation
-local Transform_apply = reg.Transform.apply
-local Node_construct = reg.Node.construct
-local Node_deconstruct = reg.Node.deconstruct
-local Node_reset = reg.Node.reset
+local _lg_setColor = love.graphics.setColor
+local _lg_setBlendMode = love.graphics.setBlendMode
+local _lg_setShader = love.graphics.setShader
+local _lg_draw = love.graphics.draw
+local _love_math_newTransform = love.math.newTransform
+local _Transform_setTransformation = reg.Transform.setTransformation
+local _Transform_apply = reg.Transform.apply
+local _Node_construct = reg.Node.construct
+local _Node_deconstruct = reg.Node.deconstruct
+local _Node_reset = reg.Node.reset
 
 setmetatable(sprite, { __index = reg.Node })
 sprite.stype = "Sprite"
@@ -34,8 +33,8 @@ sprite.stype = "Sprite"
 -- @see layer:newSprite
 -- @see scene.newSprite
 function sprite.construct(x, y, mt)
-  local t = Node_construct(x, y, mt or spriteMT)
-  t.graphic = lm_newTransform()
+  local t = _Node_construct(x, y, mt or spriteMT)
+  t.graphic = _love_math_newTransform()
   t.color = { 1, 1, 1, 1 }
   t.mode = "alpha"
   return t
@@ -48,7 +47,7 @@ function sprite:deconstruct()
   self.color = nil
   self.img = nil
   self.quad = nil
-  Node_deconstruct(self)
+  _Node_deconstruct(self)
 end
 
 --- Resets the node to its initial state.
@@ -61,7 +60,7 @@ function sprite:reset(x, y)
   self.quad = nil
   self.shader = nil
   self.mode = "alpha"
-  Node_reset(self, x, y)
+  _Node_reset(self, x, y)
 end
 
 --- Sets a "drawable" graphic or a quad for the sprite.
@@ -85,11 +84,11 @@ function sprite:setGraphic(img, a,b,c,d,e,f,g,h,i,j)
   if type(a) == "userdata" then
     self.quad = a
     --graph:setTransformation(b,c,d,e,f,g,h,i,j)
-    Transform_setTransformation(graph, b,c,d,e,f,g,h,i,j)
+    _Transform_setTransformation(graph, b,c,d,e,f,g,h,i,j)
   else
     self.quad = nil
     --graph:setTransformation(a,b,c,d,e,f,g,h,i)
-    Transform_setTransformation(graph, a,b,c,d,e,f,g,h,i)
+    _Transform_setTransformation(graph, a,b,c,d,e,f,g,h,i)
   end
   self.changed = true
 end
@@ -181,27 +180,27 @@ function sprite:draw()
   if self.changed then
     --trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
     --trans:apply(self.graphic)
-    Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
-    Transform_apply(trans, self.graphic)
+    _Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
+    _Transform_apply(trans, self.graphic)
     self.changed = nil
   end
-  lg_setColor(self.color)
-  lg_setBlendMode(self.mode)
+  _lg_setColor(self.color)
+  _lg_setBlendMode(self.mode)
   local quad = self.quad
   local shade = self.shader
   if shade then
-    lg_setShader(shade)
+    _lg_setShader(shade)
     if quad then
-      lg_draw(img, quad, trans)
+      _lg_draw(img, quad, trans)
     else
-      lg_draw(img, trans)
+      _lg_draw(img, trans)
     end
-    lg_setShader()
+    _lg_setShader()
   else
     if quad then
-      lg_draw(img, quad, trans)
+      _lg_draw(img, quad, trans)
     else
-      lg_draw(img, trans)
+      _lg_draw(img, trans)
     end
   end
 end

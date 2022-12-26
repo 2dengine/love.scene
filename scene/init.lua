@@ -2,15 +2,14 @@
 -- @module scene
 -- @alias scene
 local scene = {}
+scene.cache = 3000
+scene.count = 0
 
 local reg = debug.getregistry()
 reg.Scene = scene
 
-scene.cache = 3000
-scene.count = 0
-
-local tinsert = table.insert
-local tremove = table.remove
+local _insert = table.insert
+local _remove = table.remove
 local pool = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
 local live = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
 
@@ -23,7 +22,7 @@ local live = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
 -- @see scene.newLayer
 -- @see scene.newView
 function scene.new(t, ...)
-  local c = tremove(pool[t])
+  local c = _remove(pool[t])
   if c then
     c:reset(...)
   else
@@ -33,6 +32,7 @@ function scene.new(t, ...)
   scene.count = scene.count + 1
   return c
 end
+local _scene_new = scene.new
 
 --- This is an internal function
 -- @tparam node t Existing node
@@ -42,7 +42,7 @@ function scene.destroy(n)
   live[t][n] = nil
   scene.count = scene.count - 1
   if scene.count <= scene.cache then
-    tinsert(pool[t], n)
+    _insert(pool[t], n)
   else
     n:deconstruct()
   end
@@ -64,7 +64,7 @@ require(path..".view")
 -- @treturn sprite New sprite object
 -- @see layer:newSprite
 function scene.newSprite(x, y)
-  return scene.new("Sprite", x, y)
+  return _scene_new("Sprite", x, y)
 end
 
 --- Creates a new @{layer} object.
@@ -75,7 +75,7 @@ end
 -- @treturn layer New layer object
 -- @see layer:newLayer
 function scene.newLayer(x, y)
-  return scene.new("Layer", x, y)
+  return _scene_new("Layer", x, y)
 end
 
 --- Creates a new @{camera} object.
@@ -86,7 +86,7 @@ end
 -- @treturn camera New camera object
 -- @see layer:newCamera
 function scene.newCamera(x, y)
-  return scene.new("Camera", x, y)
+  return _scene_new("Camera", x, y)
 end
 
 --- Creates a new @{view} object.

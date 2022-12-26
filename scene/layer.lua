@@ -12,18 +12,17 @@ reg.Layer = layer
 setmetatable(layer, { __index = reg.Node })
 layer.stype = "Layer"
 
-local tinsert = table.insert
-local tremove = table.remove
-local tsort = table.sort
-local lg = love.graphics
-local lg_push = lg.push
-local lg_applyTransform = lg.applyTransform
-local lg_pop = lg.pop
-local Transform_setTransformation = reg.Transform.setTransformation
-local Node_construct = reg.Node.construct
-local Node_deconstruct = reg.Node.deconstruct
-local Node_reset = reg.Node.reset
-local Scene_new = reg.Scene.new
+local _insert = table.insert
+local _remove = table.remove
+local _sort = table.sort
+local _lg_push = love.graphics.push
+local _lg_applyTransform = love.graphics.applyTransform
+local _lg_pop = love.graphics.pop
+local _Transform_setTransformation = reg.Transform.setTransformation
+local _Node_construct = reg.Node.construct
+local _Node_deconstruct = reg.Node.deconstruct
+local _Node_reset = reg.Node.reset
+local _Scene_new = reg.Scene.new
 
 --- This is an internal function.
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
@@ -34,7 +33,7 @@ local Scene_new = reg.Scene.new
 -- @see layer:newLayer
 -- @see scene.newLayer
 function layer.construct(x, y, mt)
-  local t = Node_construct(x, y, mt or layerMT)
+  local t = _Node_construct(x, y, mt or layerMT)
   t.list = {}
   return t
 end
@@ -44,7 +43,7 @@ end
 function layer:deconstruct()
   self:destroyChildren()
   self.list = nil
-  Node_deconstruct(self)
+  _Node_deconstruct(self)
 end
 
 --- Destroys all of the child nodes.
@@ -65,7 +64,7 @@ end
 -- @tparam number y Y-coordinate
 function layer:reset(x, y)
   self:removeChildren()
-  Node_reset(self, x, y)
+  _Node_reset(self, x, y)
 end
 
 --- Removes all child nodes without destroying them.
@@ -85,12 +84,12 @@ function layer:removeChild(c)
   for i = 1, #list do
     if c == list[i] then
       c.parent = nil
-      tremove(list, i)
+      _remove(list, i)
       break
     end
   end
 end
-local Layer_removeChild = reg.Layer.removeChild
+local _Layer_removeChild = reg.Layer.removeChild
 
 --- This is an internal function.
 -- Adds a new child node to the layer.
@@ -98,12 +97,12 @@ local Layer_removeChild = reg.Layer.removeChild
 function layer:insertChild(c)
   local p = c.parent
   if p then
-    Layer_removeChild(p, c)
+    _Layer_removeChild(p, c)
   end
   c.parent = self
-  tinsert(self.list, c)
+  _insert(self.list, c)
 end
-local Layer_insertChild = reg.Layer.insertChild
+local _Layer_insertChild = reg.Layer.insertChild
 
 --- Creates a new sprite at the given position.
 -- Sets the parent of the new sprite to the current node.
@@ -111,8 +110,8 @@ local Layer_insertChild = reg.Layer.insertChild
 -- @tparam number y Y-coordinate
 -- @treturn sprite New sprite object
 function layer:newSprite(x, y)
-  local c = Scene_new("Sprite", x, y)
-  Layer_insertChild(self, c)
+  local c = _Scene_new("Sprite", x, y)
+  _Layer_insertChild(self, c)
   return c
 end
 
@@ -122,8 +121,8 @@ end
 -- @tparam number y Y-coordinate
 -- @treturn layer New layer object
 function layer:newLayer(x, y)
-  local c = Scene_new("Layer", x, y)
-  Layer_insertChild(self, c)
+  local c = _Scene_new("Layer", x, y)
+  _Layer_insertChild(self, c)
   return c
 end
 
@@ -133,8 +132,8 @@ end
 -- @tparam number y Y-coordinate
 -- @treturn camera New camera object
 function layer:newCamera(x, y)
-  local c = Scene_new("Camera", x, y)
-  Layer_insertChild(self, c)
+  local c = _Scene_new("Camera", x, y)
+  _Layer_insertChild(self, c)
   return c
 end
 
@@ -156,14 +155,14 @@ function layer:getChildDepth(c)
     end
   end
 end
-local Layer_getChildDepth = reg.Layer.getChildDepth
+local _Layer_getChildDepth = reg.Layer.getChildDepth
 
 --- Sets the depth index of a child node.
 -- This depth index may shift as node are added, removed or sorted.
 -- @tparam node child Child node
 -- @tparam number index Depth index (could be negative)
 function layer:setChildDepth(c, i)
-  local j = Layer_getChildDepth(self, c)
+  local j = _Layer_getChildDepth(self, c)
   if not j then
     return
   end
@@ -172,8 +171,8 @@ function layer:setChildDepth(c, i)
   if i == j then
     return
   end
-  tremove(list, j)
-  tinsert(list, i, c)
+  _remove(list, j)
+  _insert(list, i, c)
 end
 
 --- Sorts the child nodes based on a comparison function.
@@ -181,7 +180,7 @@ end
 -- This is useful in isometric or overhead games.
 -- @tparam[opt] function func Comparison function
 function layer:sort(func)
-  tsort(self.list, func or self.compareDepth)
+  _sort(self.list, func or self.compareDepth)
 end
 
 --- This is an internal function.
@@ -192,15 +191,15 @@ function layer:draw()
   end
   local trans = self.transform
   if self.changed then
-    Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
+    _Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
     self.changed = nil
   end
-  lg_push("transform")
-  lg_applyTransform(trans)
+  _lg_push("transform")
+  _lg_applyTransform(trans)
   for _, v in ipairs(self.list) do
     v:draw()
   end
-  lg_pop()
+  _lg_pop()
 end
 
 return layer.new

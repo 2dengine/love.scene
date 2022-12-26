@@ -6,14 +6,18 @@
 local camera = {}
 local cameraMT = { __index = camera }
 
-local lg = love.graphics
-local lg_push = lg.push
-local lg_applyTransform = lg.applyTransform
-local lg_scale = lg.scale
-local lg_pop = lg.pop
-
 local reg = debug.getregistry()
 reg.Camera = camera
+
+local lg = love.graphics
+local _lg_push = lg.push
+local _lg_applyTransform = lg.applyTransform
+local _lg_scale = lg.scale
+local _lg_pop = lg.pop
+local _Node_construct = reg.Node.construct
+local _Node_reset = reg.Node.reset
+local _Layer_draw = reg.Layer.draw
+local _Transform_setTransformation = reg.Transform.setTransformation
 
 setmetatable(camera, { __index = reg.Node })
 camera.stype = "Camera"
@@ -27,7 +31,7 @@ camera.stype = "Camera"
 -- @see layer:newCamera
 -- @see scene.newCamera
 function camera.construct(x, y, mt)
-  local t = reg.Node.construct(x, y, mt or cameraMT)
+  local t = _Node_construct(x, y, mt or cameraMT)
   t.rw = 0
   t.rh = 0
   return t
@@ -39,7 +43,7 @@ end
 function camera:reset(x, y)
   self.rw = 0
   self.rh = 0
-  reg.Node.reset(self, x, y)
+  _Node_reset(self, x, y)
 end
 
 --- Sets the viewing range of the camera in scene units.
@@ -74,7 +78,7 @@ function camera:render(view)
   end
   local trans = self.transform
   if self.changed then
-    trans:setTransformation(0, 0, self.r, 1, 1, self.x, self.y)
+    _Transform_setTransformation(trans, 0, 0, self.r, 1, 1, self.x, self.y)
     self.changed = nil
   end
 
@@ -84,12 +88,12 @@ function camera:render(view)
   if rw > 0 and rh > 0 then
     sx, sy = vw/rw, vh/rh
   end
-  lg_push("transform")
-  lg_scale(sx, sy)
-  lg_applyTransform(trans)
+  _lg_push("transform")
+  _lg_scale(sx, sy)
+  _lg_applyTransform(trans)
 
-  reg.Layer.draw(root)
-  lg_pop()
+  _Layer_draw(root)
+  _lg_pop()
 end
 
 --- This is an internal function.
