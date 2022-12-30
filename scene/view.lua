@@ -32,7 +32,6 @@ local _lg_reset = lg.reset
 local _lg_setShader = lg.setShader
 local _lg_getDimensions = lg.getDimensions
 local _lg_draw = lg.draw
---local _mx, _my, _mr
 
 --- This is an internal function.
 -- Please use @{scene.newView} instead.
@@ -260,15 +259,6 @@ function view:getOrigin()
   return self.ox, self.oy
 end
 
----  Gets the origin of the view object in window coordinates.
--- @treturn number X-position in pixels
--- @treturn number Y-position in pixels
-function view:getWindowOrigin()
-  local rx = self.vw*self.ox
-  local ry = self.vh*self.oy
-  return self.vx + rx, self.vy + ry
-end
-
 --- Converts a position from window to scene coordinates.
 -- The origin of the scene is the center of the root @{layer}.
 -- @tparam number x X-position in pixels
@@ -278,13 +268,12 @@ end
 -- @see view:localToWindow
 function view:windowToLocal(x, y)
   -- origin
-  local ox, oy = self:getWindowOrigin()
+  local ox = self.vx + self.vw*self.ox
+  local oy = self.vy + self.vh*self.oy
   x = x - ox
   y = y - oy
   -- flip (y-axis increases up)
   --y = -y
-  --x = x*_mx
-  --y = y*_my
   -- transform
   --x, y = self:localToParent(x, y)
   x, y = self:parentToLocal(x, y)
@@ -303,10 +292,9 @@ function view:localToWindow(x, y)
   x, y = self:localToParent(x, y)
   -- flip (y-axis increases down)
   --y = -y
-  --x = x*_mx
-  --y = y*_my
   -- origin
-  local ox, oy = self:getWindowOrigin()
+  local ox = self.vx + self.vw*self.ox
+  local oy = self.vy + self.vh*self.oy
   x = x + ox
   y = y + oy
   return x, y
@@ -332,7 +320,7 @@ function view:windowToRoot(x, y)
   x = x/sx
   y = y/sy
   -- rotate
-  local r = -cam.r--*_mr
+  local r = -cam.r
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
@@ -364,7 +352,7 @@ function view:rootToWindow(x, y)
   x = x - cam.x
   y = y - cam.y
   -- rotate
-  local r = cam.r--*_mr
+  local r = cam.r
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
@@ -396,13 +384,5 @@ end
 function view:setCamera(camera)
   self.camera = camera
 end
-
---[[
---- This is an internal function.
--- @see scene.setMatrix
-function view.updateMatrix(x, y, r)
-  _mx, _my, _mr = x, y, r
-end
-]]
 
 return view.new

@@ -23,7 +23,6 @@ local _Node_construct = reg.Node.construct
 local _Node_deconstruct = reg.Node.deconstruct
 local _Node_reset = reg.Node.reset
 local _Scene_new = reg.Scene.new
---local _mx, _my, _mr
 
 --- This is an internal function.
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
@@ -192,7 +191,6 @@ function layer:draw()
   end
   local trans = self.transform
   if self.changed then
-    --_Transform_setTransformation(trans, self.x*_mx, self.y*_my, self.r*_mr, self.sx, self.sy)
     _Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
     self.changed = nil
   end
@@ -203,13 +201,5 @@ function layer:draw()
   end
   _lg_pop()
 end
-
---[[
---- This is an internal function.
--- @see scene.setMatrix
-function layer.updateMatrix(x, y, r)
-  _mx, _my, _mr = x, y, r
-end
-]]
 
 return layer.new

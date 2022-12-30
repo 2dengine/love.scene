@@ -101,21 +101,4 @@ end
 -- @treturn view New view object
 scene.newView = reg.View.construct
 
---[[
---- Sets the transformation matrix which determines the way that nodes are positioned and rotated.
--- This function will not affect how setGraphic works.
--- @tparam number x X-orientation
--- @tparam number y Y-orientation
--- @tparam number r Rotation
-function scene.setMatrix(x, y, r)
-  reg.Node.updateMatrix(x, y, r)
-  reg.Sprite.updateMatrix(x, y, r)
-  reg.Layer.updateMatrix(x, y, r)
-  reg.View.updateMatrix(x, y, r)
-  reg.Camera.updateMatrix(x, y, r)
-end
-
-scene.setMatrix(1, 1, 1)
-]]
-
 return scene

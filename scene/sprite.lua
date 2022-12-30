@@ -20,7 +20,6 @@ local _Node_deconstruct = reg.Node.deconstruct
 local _Node_reset = reg.Node.reset
 local _Transform_setTransformation = reg.Transform.setTransformation
 local _Transform_apply = reg.Transform.apply
---local _mx, _my, _mr
 
 setmetatable(sprite, { __index = reg.Node })
 sprite.stype = "Sprite"
@@ -84,11 +83,9 @@ function sprite:setGraphic(img, a,b,c,d,e,f,g,h,i,j)
   local graph = self.graphic
   if type(a) == "userdata" then
     self.quad = a
-    --graph:setTransformation(b,c,d,e,f,g,h,i,j)
     _Transform_setTransformation(graph, b,c,d,e,f,g,h,i,j)
   else
     self.quad = nil
-    --graph:setTransformation(a,b,c,d,e,f,g,h,i)
     _Transform_setTransformation(graph, a,b,c,d,e,f,g,h,i)
   end
   self.changed = true
@@ -179,9 +176,6 @@ function sprite:draw()
   end
   local trans = self.transform
   if self.changed then
-    --trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
-    --trans:apply(self.graphic)
-    --_Transform_setTransformation(trans, self.x*_mx, self.y*_my, self.r*_mr, self.sx, self.sy)
     _Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
     _Transform_apply(trans, self.graphic)
     self.changed = nil
@@ -206,13 +200,5 @@ function sprite:draw()
     end
   end
 end
-
---[[
---- This is an internal function.
--- @see scene.setMatrix
-function sprite.updateMatrix(x, y, r)
-  _mx, _my, _mr = x, y, r
-end
-]]
 
 return sprite.new

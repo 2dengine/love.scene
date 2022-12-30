@@ -11,7 +11,6 @@ local _cos = math.cos
 local _sin = math.sin
 local _Scene_destroy = reg.Scene.destroy
 local _love_math_newTransform = love.math.newTransform
---local _mx, _my, _mr
 
 node.stype = "Node"
 
@@ -279,7 +278,7 @@ function node:parentToLocal(x, y)
   x = x - self.x
   y = y - self.y
   -- rotate
-  local r = -self.r--*_mr
+  local r = -self.r
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
@@ -303,7 +302,7 @@ function node:localToParent(x, y)
   x = x*self.sx
   y = y*self.sy
   -- rotate
-  local r = self.r--*_mr
+  local r = self.r
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
@@ -314,13 +313,5 @@ function node:localToParent(x, y)
   y = y + self.y
   return x, y
 end
-
---[[
---- This is an internal function.
--- @see scene.setMatrix
-function node.updateMatrix(x, y, r)
-  _mx, _my, _mr = x, y, r
-end
-]]
 
 return node.new
