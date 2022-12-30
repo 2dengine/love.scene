@@ -23,6 +23,7 @@ local _Node_construct = reg.Node.construct
 local _Node_deconstruct = reg.Node.deconstruct
 local _Node_reset = reg.Node.reset
 local _Scene_new = reg.Scene.new
+--local _mx, _my, _mr
 
 --- This is an internal function.
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
@@ -89,7 +90,7 @@ function layer:removeChild(c)
     end
   end
 end
-local _Layer_removeChild = reg.Layer.removeChild
+local _Layer_removeChild = layer.removeChild
 
 --- This is an internal function.
 -- Adds a new child node to the layer.
@@ -102,7 +103,7 @@ function layer:insertChild(c)
   c.parent = self
   _insert(self.list, c)
 end
-local _Layer_insertChild = reg.Layer.insertChild
+local _Layer_insertChild = layer.insertChild
 
 --- Creates a new sprite at the given position.
 -- Sets the parent of the new sprite to the current node.
@@ -155,7 +156,7 @@ function layer:getChildDepth(c)
     end
   end
 end
-local _Layer_getChildDepth = reg.Layer.getChildDepth
+local _Layer_getChildDepth = layer.getChildDepth
 
 --- Sets the depth index of a child node.
 -- This depth index may shift as node are added, removed or sorted.
@@ -191,6 +192,7 @@ function layer:draw()
   end
   local trans = self.transform
   if self.changed then
+    --_Transform_setTransformation(trans, self.x*_mx, self.y*_my, self.r*_mr, self.sx, self.sy)
     _Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
     self.changed = nil
   end
@@ -201,5 +203,13 @@ function layer:draw()
   end
   _lg_pop()
 end
+
+--[[
+--- This is an internal function.
+-- @see scene.setMatrix
+function layer.updateMatrix(x, y, r)
+  _mx, _my, _mr = x, y, r
+end
+]]
 
 return layer.new

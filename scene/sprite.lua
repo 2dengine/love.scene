@@ -15,11 +15,12 @@ local _lg_setBlendMode = love.graphics.setBlendMode
 local _lg_setShader = love.graphics.setShader
 local _lg_draw = love.graphics.draw
 local _love_math_newTransform = love.math.newTransform
-local _Transform_setTransformation = reg.Transform.setTransformation
-local _Transform_apply = reg.Transform.apply
 local _Node_construct = reg.Node.construct
 local _Node_deconstruct = reg.Node.deconstruct
 local _Node_reset = reg.Node.reset
+local _Transform_setTransformation = reg.Transform.setTransformation
+local _Transform_apply = reg.Transform.apply
+--local _mx, _my, _mr
 
 setmetatable(sprite, { __index = reg.Node })
 sprite.stype = "Sprite"
@@ -180,6 +181,7 @@ function sprite:draw()
   if self.changed then
     --trans:setTransformation(self.x, self.y, self.r, self.sx, self.sy)
     --trans:apply(self.graphic)
+    --_Transform_setTransformation(trans, self.x*_mx, self.y*_my, self.r*_mr, self.sx, self.sy)
     _Transform_setTransformation(trans, self.x, self.y, self.r, self.sx, self.sy)
     _Transform_apply(trans, self.graphic)
     self.changed = nil
@@ -204,5 +206,13 @@ function sprite:draw()
     end
   end
 end
+
+--[[
+--- This is an internal function.
+-- @see scene.setMatrix
+function sprite.updateMatrix(x, y, r)
+  _mx, _my, _mr = x, y, r
+end
+]]
 
 return sprite.new

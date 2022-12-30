@@ -18,6 +18,7 @@ local _Node_construct = reg.Node.construct
 local _Node_reset = reg.Node.reset
 local _Layer_draw = reg.Layer.draw
 local _Transform_setTransformation = reg.Transform.setTransformation
+--local _mx, _my, _mr
 
 setmetatable(camera, { __index = reg.Node })
 camera.stype = "Camera"
@@ -78,6 +79,7 @@ function camera:render(view)
   end
   local trans = self.transform
   if self.changed then
+    --_Transform_setTransformation(trans, 0, 0, self.r*_mr, 1, 1, self.x*_mx, self.y*_my)
     _Transform_setTransformation(trans, 0, 0, self.r, 1, 1, self.x, self.y)
     self.changed = nil
   end
@@ -99,5 +101,13 @@ end
 --- This is an internal function.
 function camera:draw()
 end
+
+--[[
+--- This is an internal function.
+-- @see scene.setMatrix
+function camera.updateMatrix(x, y, r)
+  _mx, _my, _mr = x, y, r
+end
+]]
 
 return camera.new

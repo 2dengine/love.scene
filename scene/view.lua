@@ -12,6 +12,8 @@ reg.View = view
 setmetatable(view, { __index = reg.Layer })
 view.stype = "View"
 
+local _cos = math.cos
+local _sin = math.sin
 local lg = love.graphics
 local _lg_origin = lg.origin
 local _lg_setBlendMode = lg.setBlendMode
@@ -30,9 +32,7 @@ local _lg_reset = lg.reset
 local _lg_setShader = lg.setShader
 local _lg_getDimensions = lg.getDimensions
 local _lg_draw = lg.draw
-
-local _cos = math.cos
-local _sin = math.sin
+--local _mx, _my, _mr
 
 --- This is an internal function.
 -- Please use @{scene.newView} instead.
@@ -51,6 +51,7 @@ function view.construct(vx, vy, vw, vh, mt)
   local t = reg.Layer.construct(0, 0, mt or viewMT)
   t.vx, t.vy = vx, vy
   t.vw, t.vh = vw, vh
+  t.ox, t.oy = 0.5, 0.5
   t.background = { 0, 0, 0, 1 }
   t.camera = reg.Scene.newCamera(0, 0)
   return t
@@ -72,6 +73,7 @@ end
 function view:reset(vx, vy, vw, vh)
   self.vx, self.vy = vx, vy
   self.vw, self.vh = vw, vh
+  self.ox, self.oy = 0.5, 0.5
   local c = self.background
   c[1], c[2], c[3], c[4] = 0, 0, 0, 1
   self.camera = reg.Scene.newCamera(0, 0)
@@ -190,7 +192,7 @@ function view:draw()
   if not canvas then
     _lg_translate(vx, vy)
   end
-  _lg_translate(vw/2, vh/2)
+  _lg_translate(self.ox*vw, self.oy*vh)
   _lg_rotate(self.r)
   _lg_scale(self.sx, self.sy)
   _lg_translate(-self.x, self.y)
@@ -237,19 +239,52 @@ function view:rootToLocal(x, y)
   return x, y
 end
 
+--- Sets the origin of the view object based ratio values,
+-- where 0, 0 is the top-left corner and 1, 1 is the bottom right.
+-- The default origin of the view is the center or 0.5, 0.5.
+-- @tparam number ox X-ratio from 0 to 1
+-- @tparam number oy Y-ratio from 0 to 1
+-- @see view:getOrigin
+function view:setOrigin(ox, oy)
+  self.ox = ox
+  self.oy = oy
+end
+
+--- Gets the origin of the view object as ratio values,
+-- where 0, 0 is the top-left corner and 1, 1 is the bottom right.
+-- The default origin of the view is the center or 0.5, 0.5.
+-- @treturn number X-ratio from 0 to 1
+-- @treturn number Y-ratio from 0 to 1
+-- @see view:setOrigin
+function view:getOrigin()
+  return self.ox, self.oy
+end
+
+---  Gets the origin of the view object in window coordinates.
+-- @treturn number X-position in pixels
+-- @treturn number Y-position in pixels
+function view:getWindowOrigin()
+  local rx = self.vw*self.ox
+  local ry = self.vh*self.oy
+  return self.vx + rx, self.vy + ry
+end
+
 --- Converts a position from window to scene coordinates.
 -- The origin of the scene is the center of the root @{layer}.
--- @tparam number x X window coordinate
--- @tparam number y Y window coordinate
+-- @tparam number x X-position in pixels
+-- @tparam number y Y-position in pixels
 -- @treturn number X scene coordinate
 -- @treturn number Y scene coordinate
 -- @see view:localToWindow
 function view:windowToLocal(x, y)
-  -- origin (center of the viewport)
-  x = x - self.vx - self.vw/2
-  y = y - self.vy - self.vh/2
+  -- origin
+  local ox, oy = self:getWindowOrigin()
+  x = x - ox
+  y = y - oy
   -- flip (y-axis increases up)
   --y = -y
+  --x = x*_mx
+  --y = y*_my
   -- transform
   --x, y = self:localToParent(x, y)
   x, y = self:parentToLocal(x, y)
@@ -260,24 +295,27 @@ end
 -- The origin of the scene is the center of the root @{layer}.
 -- @tparam number x X scene coordinate
 -- @tparam number y Y scene coordinate
--- @treturn number X window coordinate
--- @treturn number Y window coordinate
+-- @treturn number X-position in pixels
+-- @treturn number Y-position in pixels
 -- @see view:windowToLocal
 function view:localToWindow(x, y)
   -- transform
   x, y = self:localToParent(x, y)
   -- flip (y-axis increases down)
   --y = -y
-  -- origin (top left of the window)
-  x = self.vx + self.vw/2 + x
-  y = self.vy + self.vh/2 + y
+  --x = x*_mx
+  --y = y*_my
+  -- origin
+  local ox, oy = self:getWindowOrigin()
+  x = x + ox
+  y = y + oy
   return x, y
 end
 
 --- Converts window coordinates to scene coordinates.
 -- This function works in conjunction with the currently associated camera.
--- @tparam number x X window coordinate in pixels
--- @tparam number y Y window coordinate in pixels
+-- @tparam number x X-position in pixels
+-- @tparam number y Y-position in pixels
 -- @treturn number X scene coordinate
 -- @treturn number Y scene coordinate
 -- @see view:windowToLocal
@@ -294,7 +332,7 @@ function view:windowToRoot(x, y)
   x = x/sx
   y = y/sy
   -- rotate
-  local r = -cam.r
+  local r = -cam.r--*_mr
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
@@ -314,8 +352,8 @@ end
 -- This function works in conjunction with the currently associated camera.
 -- @tparam number x X scene coordinate
 -- @tparam number y Y scene coordinate
--- @treturn number X window coordinate in pixels
--- @treturn number Y window coordinate in pixels
+-- @treturn number X-position in pixels
+-- @treturn number Y-position in pixels
 -- @see view:windowToLocal
 function view:rootToWindow(x, y)
   local cam = self.camera
@@ -326,7 +364,7 @@ function view:rootToWindow(x, y)
   x = x - cam.x
   y = y - cam.y
   -- rotate
-  local r = cam.r
+  local r = cam.r--*_mr
   local c = _cos(r)
   local s = _sin(r)
   local rx = c*x - s*y
@@ -358,5 +396,13 @@ end
 function view:setCamera(camera)
   self.camera = camera
 end
+
+--[[
+--- This is an internal function.
+-- @see scene.setMatrix
+function view.updateMatrix(x, y, r)
+  _mx, _my, _mr = x, y, r
+end
+]]
 
 return view.new
