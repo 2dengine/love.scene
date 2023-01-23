@@ -85,6 +85,12 @@ function node:setParent(p2)
   p2:insertChild(self)
 end
 
+--- Gets the current parent @{layer} of the node.
+-- @return Current parent layer
+function node:getParent()
+  return self.parent
+end
+
 --- Gets the depth index relative to other nodes in the parent @{layer}.
 -- @treturn number Depth index
 -- @see node:setDepth
