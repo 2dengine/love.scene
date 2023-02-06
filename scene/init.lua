@@ -2,7 +2,7 @@
 -- @module scene
 -- @alias scene
 local scene = {}
-scene.cache = 3000
+scene.cache = 5000
 scene.count = 0
 
 local reg = debug.getregistry()
@@ -34,6 +34,15 @@ function scene.new(t, ...)
   return c
 end
 local _scene_new = scene.new
+
+--- This is an internal function
+-- @tparam node src Source node
+-- @tparam node dest Destination node
+function scene.copy(src, dest)
+  for k, v in pairs(src) do
+    dest[k] = v
+  end
+end
 
 --- This is an internal function
 -- @tparam node t Existing node

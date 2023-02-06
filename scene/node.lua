@@ -2,7 +2,7 @@
 -- @module node
 -- @alias node
 local node = {}
-local nodeMT = { __index = node }
+--local nodeMT = { __index = node }
 
 local reg = debug.getregistry()
 reg.Node = node
@@ -10,25 +10,28 @@ reg.Node = node
 local _cos = math.cos
 local _sin = math.sin
 local _Scene_destroy = reg.Scene.destroy
+local _Scene_copy = reg.Scene.copy
 local _love_math_newTransform = love.math.newTransform
 
 node.stype = "Node"
 
---- This is an internal function.
+--- This is an internal function
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 -- @tparam[opt] table mt Metatable of base object
 -- @treturn node New node
-function node.construct(x, y, mt)
+function node.construct(x, y)
   --assert(x and y)
   local t = { x = x, y = y, r = 0, sx = 1, sy = 1 }
+  _Scene_copy(node, t)
   t.transform = _love_math_newTransform(x, y)
   t.visible = true
   t.changed = true
-  return setmetatable(t, mt or nodeMT)
+  --return setmetatable(t, mt or nodeMT)
+  return t
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @see node:destroy
 function node:deconstruct()
   self.transform = nil
@@ -43,7 +46,7 @@ function node:destroy()
   end
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 function node:reset(x, y)

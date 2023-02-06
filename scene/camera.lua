@@ -4,7 +4,7 @@
 -- @alias camera
 -- @inherit node
 local camera = {}
-local cameraMT = { __index = camera }
+--local cameraMT = { __index = camera }
 
 local reg = debug.getregistry()
 reg.Camera = camera
@@ -18,11 +18,12 @@ local _Node_construct = reg.Node.construct
 local _Node_reset = reg.Node.reset
 local _Layer_draw = reg.Layer.draw
 local _Transform_setTransformation = reg.Transform.setTransformation
+local _Scene_copy = reg.Scene.copy
 
-setmetatable(camera, { __index = reg.Node })
+--setmetatable(camera, { __index = reg.Node })
 camera.stype = "Camera"
 
---- This is an internal function.
+--- This is an internal function
 -- Please use @{scene.newCamera} or @{layer.newCamera} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
@@ -30,14 +31,15 @@ camera.stype = "Camera"
 -- @treturn camera New camera
 -- @see layer:newCamera
 -- @see scene.newCamera
-function camera.construct(x, y, mt)
-  local t = _Node_construct(x, y, mt or cameraMT)
+function camera.construct(x, y)
+  local t = _Node_construct(x, y)
   t.rw = 0
   t.rh = 0
+  _Scene_copy(camera, t)
   return t
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 function camera:reset(x, y)
@@ -68,7 +70,7 @@ function camera:getRange()
   return self.rw, self.rh
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @tparam node view View object
 -- @see view:draw
 function camera:render(view)
@@ -96,7 +98,7 @@ function camera:render(view)
   _lg_pop()
 end
 
---- This is an internal function.
+--- This is an internal function
 function camera:draw()
 end
 

@@ -5,7 +5,7 @@
 -- @alias sprite
 -- @inherit node
 local sprite = {}
-local spriteMT = { __index = sprite }
+--local spriteMT = { __index = sprite }
 
 local reg = debug.getregistry()
 reg.Sprite = sprite
@@ -20,11 +20,12 @@ local _Node_deconstruct = reg.Node.deconstruct
 local _Node_reset = reg.Node.reset
 local _Transform_setTransformation = reg.Transform.setTransformation
 local _Transform_apply = reg.Transform.apply
+local _Scene_copy = reg.Scene.copy
 
-setmetatable(sprite, { __index = reg.Node })
+--setmetatable(sprite, { __index = reg.Node })
 sprite.stype = "Sprite"
 
---- This is an internal function.
+--- This is an internal function
 -- Please use @{scene.newSprite} or @{layer.newSprite} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
@@ -32,15 +33,16 @@ sprite.stype = "Sprite"
 -- @treturn sprite New sprite
 -- @see layer:newSprite
 -- @see scene.newSprite
-function sprite.construct(x, y, mt)
-  local t = _Node_construct(x, y, mt or spriteMT)
+function sprite.construct(x, y)
+  local t = _Node_construct(x, y)
+  _Scene_copy(sprite, t)
   t.graphic = _love_math_newTransform()
   t.color = { 1, 1, 1, 1 }
   t.mode = "alpha"
   return t
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @see node:destroy
 function sprite:deconstruct()
   self.graphic = nil
@@ -164,7 +166,7 @@ function sprite:getShader()
   return self.shader
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @see view:draw
 function sprite:draw()
   if not self.visible then

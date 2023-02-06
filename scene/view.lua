@@ -4,12 +4,12 @@
 -- @alias view
 -- @inherit layer
 local view = {}
-local viewMT = { __index = view }
+--local viewMT = { __index = view }
 
 local reg = debug.getregistry()
 reg.View = view
 
-setmetatable(view, { __index = reg.Layer })
+--setmetatable(view, { __index = reg.Layer })
 view.stype = "View"
 
 local _cos = math.cos
@@ -32,8 +32,9 @@ local _lg_reset = lg.reset
 local _lg_setShader = lg.setShader
 local _lg_getDimensions = lg.getDimensions
 local _lg_draw = lg.draw
+local _Scene_copy = reg.Scene.copy
 
---- This is an internal function.
+--- This is an internal function
 -- Please use @{scene.newView} instead.
 -- @tparam[opt] number x X-position in pixels
 -- @tparam[opt] number y Y-position in pixels
@@ -42,12 +43,13 @@ local _lg_draw = lg.draw
 -- @tparam[opt] table mt Metatable of base object
 -- @treturn view New view object
 -- @see scene.newView
-function view.construct(vx, vy, vw, vh, mt)
+function view.construct(vx, vy, vw, vh)
   if vx == nil then
     vx, vy = 0, 0
     vw, vh = _lg_getDimensions()
   end
-  local t = reg.Layer.construct(0, 0, mt or viewMT)
+  local t = reg.Layer.construct(0, 0)
+  _Scene_copy(view, t)
   t.vx, t.vy = vx, vy
   t.vw, t.vh = vw, vh
   t.ox, t.oy = 0.5, 0.5
@@ -56,7 +58,7 @@ function view.construct(vx, vy, vw, vh, mt)
   return t
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @see node:destroy
 function view:deconstruct()
   self.camera = nil
@@ -64,7 +66,7 @@ function view:deconstruct()
   reg.Layer.deconstruct(self)
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @tparam number x X-position in pixels
 -- @tparam number y Y-position in pixels
 -- @tparam number width Width in pixels

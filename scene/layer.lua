@@ -4,12 +4,12 @@
 -- @alias layer
 -- @inherit node
 local layer = {}
-local layerMT = { __index = layer }
+--local layerMT = { __index = layer }
 
 local reg = debug.getregistry()
 reg.Layer = layer
 
-setmetatable(layer, { __index = reg.Node })
+--setmetatable(layer, { __index = reg.Node })
 layer.stype = "Layer"
 
 local _insert = table.insert
@@ -23,8 +23,9 @@ local _Node_construct = reg.Node.construct
 local _Node_deconstruct = reg.Node.deconstruct
 local _Node_reset = reg.Node.reset
 local _Scene_new = reg.Scene.new
+local _Scene_copy = reg.Scene.copy
 
---- This is an internal function.
+--- This is an internal function
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
@@ -32,13 +33,14 @@ local _Scene_new = reg.Scene.new
 -- @treturn layer New layer
 -- @see layer:newLayer
 -- @see scene.newLayer
-function layer.construct(x, y, mt)
-  local t = _Node_construct(x, y, mt or layerMT)
+function layer.construct(x, y)
+  local t = _Node_construct(x, y)
+  _Scene_copy(layer, t)
   t.list = {}
   return t
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @see node:destroy
 function layer:deconstruct()
   self:destroyChildren()
@@ -59,14 +61,6 @@ function layer:destroyChildren()
   end
 end
 
---- This is an internal function.
--- @tparam number x X-coordinate
--- @tparam number y Y-coordinate
-function layer:reset(x, y)
-  self:removeChildren()
-  _Node_reset(self, x, y)
-end
-
 --- Removes all child nodes without destroying them.
 function layer:removeChildren()
   local list = self.list
@@ -75,8 +69,17 @@ function layer:removeChildren()
     list[i] = nil
   end
 end
+local _layer_remove_Children = layer.removeChildren
 
---- This is an internal function.
+--- This is an internal function
+-- @tparam number x X-coordinate
+-- @tparam number y Y-coordinate
+function layer:reset(x, y)
+  _layer_remove_Children(self)
+  _Node_reset(self, x, y)
+end
+
+--- This is an internal function
 -- Removes an existing child node from the layer.
 -- @tparam node child Child node
 function layer:removeChild(c)
@@ -91,7 +94,7 @@ function layer:removeChild(c)
 end
 local _Layer_removeChild = layer.removeChild
 
---- This is an internal function.
+--- This is an internal function
 -- Adds a new child node to the layer.
 -- @tparam node child Child node
 function layer:insertChild(c)
@@ -183,7 +186,7 @@ function layer:sort(func)
   _sort(self.list, func or self.compareDepth)
 end
 
---- This is an internal function.
+--- This is an internal function
 -- @see view:draw
 function layer:draw()
   if not self.visible then
