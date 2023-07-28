@@ -5,8 +5,6 @@
 -- @alias sprite
 -- @inherit node
 local sprite = {}
---local spriteMT = { __index = sprite }
-
 local reg = debug.getregistry()
 reg.Sprite = sprite
 
@@ -22,14 +20,12 @@ local _Transform_setTransformation = reg.Transform.setTransformation
 local _Transform_apply = reg.Transform.apply
 local _Scene_copy = reg.Scene.copy
 
---setmetatable(sprite, { __index = reg.Node })
 sprite.stype = "Sprite"
 
 --- This is an internal function
 -- Please use @{scene.newSprite} or @{layer.newSprite} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
--- @tparam[opt] table mt Metatable of base object
 -- @treturn sprite New sprite
 -- @see layer:newSprite
 -- @see scene.newSprite

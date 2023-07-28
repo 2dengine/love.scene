@@ -1,6 +1,6 @@
 function love.load()
   -- setup the scene
-  love.scene = require("scene")
+  love.scene = require("scene.init")
   view = love.scene.newView()
   local root = view:newLayer(0, 0)
   local img = love.graphics.newImage("mega.png")

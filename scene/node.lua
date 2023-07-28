@@ -18,7 +18,6 @@ node.stype = "Node"
 --- This is an internal function
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
--- @tparam[opt] table mt Metatable of base object
 -- @treturn node New node
 function node.construct(x, y)
   --assert(x and y)

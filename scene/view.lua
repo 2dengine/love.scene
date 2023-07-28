@@ -4,12 +4,10 @@
 -- @alias view
 -- @inherit layer
 local view = {}
---local viewMT = { __index = view }
 
 local reg = debug.getregistry()
 reg.View = view
 
---setmetatable(view, { __index = reg.Layer })
 view.stype = "View"
 
 local _cos = math.cos
@@ -40,7 +38,6 @@ local _Scene_copy = reg.Scene.copy
 -- @tparam[opt] number y Y-position in pixels
 -- @tparam[opt] number width Width in pixels
 -- @tparam[opt] number height Height in pixels
--- @tparam[opt] table mt Metatable of base object
 -- @treturn view New view object
 -- @see scene.newView
 function view.construct(vx, vy, vw, vh)

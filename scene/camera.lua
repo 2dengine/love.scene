@@ -4,7 +4,6 @@
 -- @alias camera
 -- @inherit node
 local camera = {}
---local cameraMT = { __index = camera }
 
 local reg = debug.getregistry()
 reg.Camera = camera
@@ -20,14 +19,12 @@ local _Layer_draw = reg.Layer.draw
 local _Transform_setTransformation = reg.Transform.setTransformation
 local _Scene_copy = reg.Scene.copy
 
---setmetatable(camera, { __index = reg.Node })
 camera.stype = "Camera"
 
 --- This is an internal function
 -- Please use @{scene.newCamera} or @{layer.newCamera} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
--- @tparam[opt] table mt Metatable of base object
 -- @treturn camera New camera
 -- @see layer:newCamera
 -- @see scene.newCamera

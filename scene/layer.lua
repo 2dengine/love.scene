@@ -9,7 +9,6 @@ local layer = {}
 local reg = debug.getregistry()
 reg.Layer = layer
 
---setmetatable(layer, { __index = reg.Node })
 layer.stype = "Layer"
 
 local _insert = table.insert
@@ -29,7 +28,6 @@ local _Scene_copy = reg.Scene.copy
 -- Please use @{scene.newLayer} or @{layer.newLayer} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
--- @tparam[opt] table mt Metatable of base object
 -- @treturn layer New layer
 -- @see layer:newLayer
 -- @see scene.newLayer

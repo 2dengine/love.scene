@@ -2,7 +2,7 @@ local mapw, maph = 64, 64
 
 function love.load()
   -- setup the scene
-  love.scene = require("scene")
+  love.scene = require("scene.init")
   view = love.scene.newView()
   view:setBackground(1, 0, 0)
   root = view:newLayer(0, 0)

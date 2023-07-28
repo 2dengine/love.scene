@@ -61,6 +61,7 @@ end
 
 -- nodes
 local path = (...)
+path = path:gsub('%.init$', '')
 require(path..".node")
 require(path..".sprite")
 require(path..".layer")
