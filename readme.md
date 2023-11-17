@@ -1,5 +1,6 @@
 # Love2D Scene Graph
-Small scene graph compatible with Love2D 11.3 and 11.4.
+This is a small scene graph library written for the LÖVE framework using pure Lua.
+The scene graph is compatible with LÖVE2D 11.3 and 11.4.
 
 # Documentation
 The complete documentation is available at:
