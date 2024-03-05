@@ -1,5 +1,5 @@
 --- View is a clipped rectangular area where the scene is rendered.
--- Views can be transformed, drawn and easily shaded.
+-- Views can be transformed, drawn and shaded.
 -- @module view
 -- @alias view
 -- @inherit layer
@@ -12,24 +12,29 @@ view.stype = "View"
 
 local _cos = math.cos
 local _sin = math.sin
+local _lg_origin, _lg_setBlendMode, _lg_setCanvas, _lg_newCanvas, _lg_clear,
+  _lg_setScissor, _lg_setColor, _lg_rectangle, _lg_push, _lg_translate,
+  _lg_scale, _lg_rotate, _lg_pop, _lg_reset, _lg_setShader, _lg_getDimensions, _lg_draw
 local lg = love.graphics
-local _lg_origin = lg.origin
-local _lg_setBlendMode = lg.setBlendMode
-local _lg_setCanvas = lg.setCanvas
-local _lg_newCanvas = lg.newCanvas
-local _lg_clear = lg.clear
-local _lg_setScissor = lg.setScissor
-local _lg_setColor = lg.setColor
-local _lg_rectangle = lg.rectangle
-local _lg_push = lg.push
-local _lg_translate = lg.translate
-local _lg_scale = lg.scale
-local _lg_rotate = lg.rotate
-local _lg_pop = lg.pop
-local _lg_reset = lg.reset
-local _lg_setShader = lg.setShader
-local _lg_getDimensions = lg.getDimensions
-local _lg_draw = lg.draw
+if lg then
+  _lg_origin = lg.origin
+  _lg_setBlendMode = lg.setBlendMode
+  _lg_setCanvas = lg.setCanvas
+  _lg_newCanvas = lg.newCanvas
+  _lg_clear = lg.clear
+  _lg_setScissor = lg.setScissor
+  _lg_setColor = lg.setColor
+  _lg_rectangle = lg.rectangle
+  _lg_push = lg.push
+  _lg_translate = lg.translate
+  _lg_scale = lg.scale
+  _lg_rotate = lg.rotate
+  _lg_pop = lg.pop
+  _lg_reset = lg.reset
+  _lg_setShader = lg.setShader
+  _lg_getDimensions = lg.getDimensions
+  _lg_draw = lg.draw
+end
 local _Scene_copy = reg.Scene.copy
 
 --- This is an internal function
@@ -250,7 +255,7 @@ end
 
 --- Gets the origin of the view object as ratio values,
 -- where 0, 0 is the top-left corner and 1, 1 is the bottom right.
--- The default origin of the view is the center or 0.5, 0.5.
+-- The origin of the view is the center or 0.5, 0.5.
 -- @treturn number X-ratio from 0 to 1
 -- @treturn number Y-ratio from 0 to 1
 -- @see view:setOrigin

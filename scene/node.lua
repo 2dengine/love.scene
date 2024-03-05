@@ -77,7 +77,7 @@ function node:getRoot()
 end
 
 --- Sets the parent @{layer} of the node.
--- All nodes have just a single parent.
+-- All nodes can have just one parent.
 -- @tparam layer parent New parent layer
 function node:setParent(p2)
   local p1 = self.parent
@@ -88,7 +88,7 @@ function node:setParent(p2)
 end
 
 --- Gets the current parent @{layer} of the node.
--- @return Current parent layer
+-- @treturn layer Current parent layer
 function node:getParent()
   return self.parent
 end
@@ -104,7 +104,7 @@ end
 --- Sets the depth index relative to other nodes in the parent @{layer}.
 -- Setting the depth to 1 will draw the node first, before all others.
 -- Setting the depth to 0 will draw the node last, after all others.
--- This depth index may shift as node are added, removed or sorted.
+-- This depth index may shift as nodes are added, removed or sorted.
 -- @tparam number index Depth index (could be negative)
 -- @see node:getDepth
 -- @see layer:sort
@@ -113,7 +113,8 @@ function node:setDepth(i)
   return p and p:setChildDepth(self, i)
 end
 
---- Compares the depth of two nodes, based on their Y-coordinates.
+--- This is an internal function.
+-- Compares the depth of two nodes, based on their Y-coordinates.
 -- @tparam node other Other other
 -- @treturn boolean True if this node is in front of the other
 function node:compareDepth(other)
@@ -214,7 +215,7 @@ function node:setVisible(on)
 end
 
 --- Converts a position from window to local coordinates.
--- This function work only if the root node is a view object or returns nil otherwise.
+-- This function works only if the root node is a view object or returns nil otherwise.
 -- @tparam number x Window X-coordinate
 -- @tparam number y Window Y-coordinate
 -- @treturn number Local X-coordinate
@@ -229,7 +230,7 @@ function node:windowToLocal(x, y)
 end
 
 --- Converts a position from local to window coordinates.
--- This function work only if the root node is a view object or returns nil otherwise.
+-- This function works only if the root node is a view object or returns nil otherwise.
 -- @tparam number x Local X-coordinate
 -- @tparam number y Local Y-coordinate
 -- @treturn number Window X-coordinate

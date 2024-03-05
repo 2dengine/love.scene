@@ -8,10 +8,14 @@ local sprite = {}
 local reg = debug.getregistry()
 reg.Sprite = sprite
 
-local _lg_setColor = love.graphics.setColor
-local _lg_setBlendMode = love.graphics.setBlendMode
-local _lg_setShader = love.graphics.setShader
-local _lg_draw = love.graphics.draw
+local _lg_setColor, _lg_setBlendMode, _lg_setShader, _lg_draw
+local lg = love.graphics
+if lg then
+  _lg_setColor = lg.setColor
+  _lg_setBlendMode = lg.setBlendMode
+  _lg_setShader = lg.setShader
+  _lg_draw = lg.draw
+end
 local _love_math_newTransform = love.math.newTransform
 local _Node_construct = reg.Node.construct
 local _Node_deconstruct = reg.Node.deconstruct

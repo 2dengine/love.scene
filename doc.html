@@ -1,0 +1,1213 @@
+<html>
+<head>
+<style>
+body { background-color:#fff; padding: 0; margin: 0; }
+table { border:1px solid #ccc; width:100%; padding:1em; background-color:#eee; }
+th { border-bottom:1px dashed #ccc; text-align:left; padding-top:0.5em; }
+td { vertical-align: top; }
+tr td:first-of-type { width:4em; white-space:nowrap; }
+.arg { color:#c00; }
+.type { color:#00f; }
+.meta, th { color:#aaa; }
+.page { clear: both; }
+.page, .menu, .cont { box-sizing:border-box; display:block; margin: 0; }
+.menu, .cont { overflow-x:hidden; overflow-y:auto; height: 100%; max-height: 100%; padding: 1em; }
+.menu { float:left; width:25%; background-color:#eee; border-right:1px solid #ccc; }
+.cont { float:right; width:75%; }
+.see { font-size: 0.9em; padding: 0.5em; }
+h1,h2,h3 { padding: 1em 0 0 0; margin: 0; }
+ul { padding: 0.5 1em; margin: 0; }
+hr { border-top: 1px solid #ccc; }
+</style>
+</head>
+<body>
+<div class='page'>
+<div class='cont'>
+<h1>love.scene</h1>
+Minimal scene graph designed for Love2D.<br>Developed and maintained by <a href="https://2dengine.com">2dengine.com</a>
+<br>Last updated on January 04, 2024<br><br>
+<h2 id='scene'>scene</h2>
+This is the main module of the scene graph library.<br>
+<table>
+<tr><td><a href='#scene.copy'>scene.copy</a>(<span class='arg'>src</span>, <span class='arg'>dest</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#scene.destroy'>scene.destroy</a>(<span class='arg'>t</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#scene.new'>scene.new</a>(<span class='arg'>t</span>, <span class='arg'>...</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#scene.newCamera'>scene.newCamera</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new <a href='#camera'>camera</a> object.  Alternatively, you can use <a href='#layer:newCamera'>layer:newCamera</a>.</td></tr>
+<tr><td><a href='#scene.newLayer'>scene.newLayer</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new <a href='#layer'>layer</a> object.  Alternatively, you can use <a href='#layer:newLayer'>layer:newLayer</a>.</td></tr>
+<tr><td><a href='#scene.newSprite'>scene.newSprite</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new <a href='#sprite'>sprite</a> object.  Alternatively, you can use <a href='#layer:newSprite'>layer:newSprite</a>.</td></tr>
+<tr><td><a href='#scene.newView'>scene.newView</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>width</span>, <span class='arg'>height</span>)</td><td>Creates a new <a href='#view'>view</a> object.  If no parameters are supplied, the view takes on the dimensions of the window.</td></tr>
+</table>
+<h3 id='scene.copy'>scene.copy(<span class='arg'>src</span>, <span class='arg'>dest</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>src</b><br>
+Source node</td></tr>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>dest</b><br>
+Destination node</td></tr>
+</table>
+<h3 id='scene.destroy'>scene.destroy(<span class='arg'>t</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>t</b><br>
+Existing node</td></tr>
+</table>
+<div class='see'>See: <a href='#node:destroy'>node:destroy</a></div>
+<h3 id='scene.new'>scene.new(<span class='arg'>t</span>, <span class='arg'>...</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>t</b><br>
+Existing node</td></tr>
+<tr><td><a class='type'>arguments</a></td><td><b class='arg'>...</b><br>
+Constructor arguments</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#node' class='type'>node</a></td>
+<td>New node object</td></tr>
+</table>
+<div class='see'>See: <a href='#scene.newSprite'>scene.newSprite</a>, <a href='#scene.newCamera'>scene.newCamera</a>, <a href='#scene.newLayer'>scene.newLayer</a>, <a href='#scene.newView'>scene.newView</a></div>
+<h3 id='scene.newCamera'>scene.newCamera(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Creates a new <a href='#camera'>camera</a> object.  Alternatively, you can use <a href='#layer:newCamera'>layer:newCamera</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y coordinatex</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#camera' class='type'>camera</a></td>
+<td>New camera object</td></tr>
+</table>
+<div class='see'>See: <a href='#layer:newCamera'>layer:newCamera</a></div>
+<h3 id='scene.newLayer'>scene.newLayer(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Creates a new <a href='#layer'>layer</a> object.  Alternatively, you can use <a href='#layer:newLayer'>layer:newLayer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#layer' class='type'>layer</a></td>
+<td>New layer object</td></tr>
+</table>
+<div class='see'>See: <a href='#layer:newLayer'>layer:newLayer</a></div>
+<h3 id='scene.newSprite'>scene.newSprite(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Creates a new <a href='#sprite'>sprite</a> object.  Alternatively, you can use <a href='#layer:newSprite'>layer:newSprite</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#sprite' class='type'>sprite</a></td>
+<td>New sprite object</td></tr>
+</table>
+<div class='see'>See: <a href='#layer:newSprite'>layer:newSprite</a></div>
+<h3 id='scene.newView'>scene.newView(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>width</span>, <span class='arg'>height</span>)</h3>
+Creates a new <a href='#view'>view</a> object.  If no parameters are supplied, the view takes on the dimensions of the window.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b> (optional)<br>
+X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b> (optional)<br>
+Y-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>width</b> (optional)<br>
+Width in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>height</b> (optional)<br>
+Height in pixels</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#view' class='type'>view</a></td>
+<td>New view object</td></tr>
+</table>
+<br><br><br><h2 id='node'>node</h2>
+Abstract scene graph node.<br>
+<table>
+<tr><td><a href='#node.construct'>node.construct</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#node:compareDepth'>node:compareDepth</a>(<span class='arg'>other</span>)</td><td>This is an internal function.  Compares the depth of two nodes, based on their Y-coordinates.</td></tr>
+<tr><td><a href='#node:deconstruct'>node:deconstruct</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#node:destroy'>node:destroy</a>()</td><td>Destroys the node removing it from its parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getDepth'>node:getDepth</a>()</td><td>Gets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getParent'>node:getParent</a>()</td><td>Gets the current parent <a href='#layer'>layer</a> of the node.</td></tr>
+<tr><td><a href='#node:getPosition'>node:getPosition</a>()</td><td>Gets the position of the node.</td></tr>
+<tr><td><a href='#node:getRoot'>node:getRoot</a>()</td><td>Returns the root <a href='#layer'>layer</a> of the node or nil if the current node does not have a parent.</td></tr>
+<tr><td><a href='#node:getRotation'>node:getRotation</a>()</td><td>Gets the rotation of the node.</td></tr>
+<tr><td><a href='#node:getScale'>node:getScale</a>()</td><td>Gets the scale of the node.</td></tr>
+<tr><td><a href='#node:getTransform'>node:getTransform</a>()</td><td>Gets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:getVisible'>node:getVisible</a>()</td><td>Gets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:localToParent'>node:localToParent</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to parent coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:localToRoot'>node:localToRoot</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:localToWindow'>node:localToWindow</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to window coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><td><a href='#node:parentToLocal'>node:parentToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from parent to local coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:reset'>node:reset</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#node:rootToLocal'>node:rootToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:setDepth'>node:setDepth</a>(<span class='arg'>index</span>)</td><td>Sets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.  Setting the depth to 1 will draw the node first, before all others.  Setting the depth to 0 will draw the node last, after all others.  This depth index may shift as nodes are added, removed or sorted.</td></tr>
+<tr><td><a href='#node:setParent'>node:setParent</a>(<span class='arg'>parent</span>)</td><td>Sets the parent <a href='#layer'>layer</a> of the node.  All nodes can have just one parent.</td></tr>
+<tr><td><a href='#node:setPosition'>node:setPosition</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Sets the position of the node.</td></tr>
+<tr><td><a href='#node:setRotation'>node:setRotation</a>(<span class='arg'>angle</span>)</td><td>Sets the rotation of the node.</td></tr>
+<tr><td><a href='#node:setScale'>node:setScale</a>(<span class='arg'>sx</span>, <span class='arg'>sy</span>)</td><td>Sets the scale of the node.</td></tr>
+<tr><td><a href='#node:setTransform'>node:setTransform</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>)</td><td>Sets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:setVisible'>node:setVisible</a>(<span class='arg'>True</span>)</td><td>Sets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:type'>node:type</a>()</td><td>Returns the node type as a string</td></tr>
+<tr><td><a href='#node:windowToLocal'>node:windowToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from window to local coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+</table>
+<h3 id='node.construct'>node.construct(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#node' class='type'>node</a></td>
+<td>New node</td></tr>
+</table>
+<h3 id='node:compareDepth'>node:compareDepth(<span class='arg'>other</span>)</h3>
+This is an internal function.  Compares the depth of two nodes, based on their Y-coordinates.
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>other</b><br>
+Other other</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>boolean</a></td>
+<td>True if this node is in front of the other</td></tr>
+</table>
+<h3 id='node:deconstruct'>node:deconstruct()</h3>
+This is an internal function
+<div class='see'>See: <a href='#node:destroy'>node:destroy</a></div>
+<h3 id='node:destroy'>node:destroy()</h3>
+Destroys the node removing it from its parent <a href='#layer'>layer</a>.
+<h3 id='node:getDepth'>node:getDepth()</h3>
+Gets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Depth index</td></tr>
+</table>
+<div class='see'>See: <a href='#node:setDepth'>node:setDepth</a></div>
+<h3 id='node:getParent'>node:getParent()</h3>
+Gets the current parent <a href='#layer'>layer</a> of the node.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#layer' class='type'>layer</a></td>
+<td>Current parent layer</td></tr>
+</table>
+<h3 id='node:getPosition'>node:getPosition()</h3>
+Gets the position of the node.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:setPosition'>node:setPosition</a></div>
+<h3 id='node:getRoot'>node:getRoot()</h3>
+Returns the root <a href='#layer'>layer</a> of the node or nil if the current node does not have a parent.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#layer' class='type'>layer</a></td>
+<td>Root layer</td></tr>
+</table>
+<h3 id='node:getRotation'>node:getRotation()</h3>
+Gets the rotation of the node.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Angle in radians</td></tr>
+</table>
+<div class='see'>See: <a href='#node:setRotation'>node:setRotation</a></div>
+<h3 id='node:getScale'>node:getScale()</h3>
+Gets the scale of the node.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-axis scale</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-axis scale</td></tr>
+</table>
+<div class='see'>See: <a href='#node:setScale'>node:setScale</a></div>
+<h3 id='node:getTransform'>node:getTransform()</h3>
+Gets the position and rotation of the node.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Angle in radians</td></tr>
+</table>
+<div class='see'>See: <a href='#node:setTransform'>node:setTransform</a></div>
+<h3 id='node:getVisible'>node:getVisible()</h3>
+Gets the visibility of the node.  Non-visible nodes are not drawn at all.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>boolean</a></td>
+<td>True if visible</td></tr>
+</table>
+<div class='see'>See: <a href='#node:setVisible'>node:setVisible</a></div>
+<h3 id='node:localToParent'>node:localToParent(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from local to parent coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Local Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Parent X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Parent Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:parentToLocal'>node:parentToLocal</a></div>
+<h3 id='node:localToRoot'>node:localToRoot(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Local Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Scene X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Scene Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:rootToLocal'>node:rootToLocal</a></div>
+<h3 id='node:localToWindow'>node:localToWindow(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from local to window coordinates.  This function works only if the root node is a view object or returns nil otherwise.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Local Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Window X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Window Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:windowToLocal'>node:windowToLocal</a></div>
+<h3 id='node:parentToLocal'>node:parentToLocal(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from parent to local coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Parent X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Parent Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:localToParent'>node:localToParent</a></div>
+<h3 id='node:reset'>node:reset(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+</table>
+<h3 id='node:rootToLocal'>node:rootToLocal(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Scene X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Scene Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:localToRoot'>node:localToRoot</a></div>
+<h3 id='node:setDepth'>node:setDepth(<span class='arg'>index</span>)</h3>
+Sets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.  Setting the depth to 1 will draw the node first, before all others.  Setting the depth to 0 will draw the node last, after all others.  This depth index may shift as nodes are added, removed or sorted.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>index</b><br>
+Depth index (could be negative)</td></tr>
+</table>
+<div class='see'>See: <a href='#node:getDepth'>node:getDepth</a>, <a href='#layer:sort'>layer:sort</a></div>
+<h3 id='node:setParent'>node:setParent(<span class='arg'>parent</span>)</h3>
+Sets the parent <a href='#layer'>layer</a> of the node.  All nodes can have just one parent.
+<table>
+<tr><td><a href='#layer' class='type'>layer</a></td><td><b class='arg'>parent</b><br>
+New parent layer</td></tr>
+</table>
+<h3 id='node:setPosition'>node:setPosition(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Sets the position of the node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:getPosition'>node:getPosition</a></div>
+<h3 id='node:setRotation'>node:setRotation(<span class='arg'>angle</span>)</h3>
+Sets the rotation of the node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>angle</b><br>
+Angle in radians</td></tr>
+</table>
+<div class='see'>See: <a href='#node:getRotation'>node:getRotation</a></div>
+<h3 id='node:setScale'>node:setScale(<span class='arg'>sx</span>, <span class='arg'>sy</span>)</h3>
+Sets the scale of the node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>sx</b><br>
+X-axis scale</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>sy</b><br>
+Y-axis scale</td></tr>
+</table>
+<div class='see'>See: <a href='#node:getScale'>node:getScale</a></div>
+<h3 id='node:setTransform'>node:setTransform(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>)</h3>
+Sets the position and rotation of the node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>angle</b><br>
+Angle in radians</td></tr>
+</table>
+<div class='see'>See: <a href='#node:getTransform'>node:getTransform</a></div>
+<h3 id='node:setVisible'>node:setVisible(<span class='arg'>True</span>)</h3>
+Sets the visibility of the node.  Non-visible nodes are not drawn at all.
+<table>
+<tr><td><a class='type'>boolean</a></td><td><b class='arg'>True</b><br>
+if visible</td></tr>
+</table>
+<div class='see'>See: <a href='#node:getVisible'>node:getVisible</a></div>
+<h3 id='node:type'>node:type()</h3>
+Returns the node type as a string
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>string</a></td>
+<td>Node type ("Sprite", "Layer" or "View").</td></tr>
+</table>
+<h3 id='node:windowToLocal'>node:windowToLocal(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from window to local coordinates.  This function works only if the root node is a view object or returns nil otherwise.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Window X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Window Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#node:localToWindow'>node:localToWindow</a></div>
+<br><br><br><h2 id='sprite'>sprite</h2>
+Sprites are nodes in the scene which can be translated, scaled or rotated.
+ Each sprite is assigned a "drawable" graphic, usually an image, quad or text.
+ Sprites can also be assigned a specific color, alpha value and blending mode.<br>
+<table>
+<tr><th colspan=2>node</th></tr>
+<tr><td><a href='#node:compareDepth'>node:compareDepth</a>(<span class='arg'>other</span>)</td><td>This is an internal function.  Compares the depth of two nodes, based on their Y-coordinates.</td></tr>
+<tr><td><a href='#node:destroy'>node:destroy</a>()</td><td>Destroys the node removing it from its parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getDepth'>node:getDepth</a>()</td><td>Gets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getParent'>node:getParent</a>()</td><td>Gets the current parent <a href='#layer'>layer</a> of the node.</td></tr>
+<tr><td><a href='#node:getPosition'>node:getPosition</a>()</td><td>Gets the position of the node.</td></tr>
+<tr><td><a href='#node:getRoot'>node:getRoot</a>()</td><td>Returns the root <a href='#layer'>layer</a> of the node or nil if the current node does not have a parent.</td></tr>
+<tr><td><a href='#node:getRotation'>node:getRotation</a>()</td><td>Gets the rotation of the node.</td></tr>
+<tr><td><a href='#node:getScale'>node:getScale</a>()</td><td>Gets the scale of the node.</td></tr>
+<tr><td><a href='#node:getTransform'>node:getTransform</a>()</td><td>Gets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:getVisible'>node:getVisible</a>()</td><td>Gets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:localToParent'>node:localToParent</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to parent coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:localToRoot'>node:localToRoot</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:localToWindow'>node:localToWindow</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to window coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><td><a href='#node:parentToLocal'>node:parentToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from parent to local coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:rootToLocal'>node:rootToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:setDepth'>node:setDepth</a>(<span class='arg'>index</span>)</td><td>Sets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.  Setting the depth to 1 will draw the node first, before all others.  Setting the depth to 0 will draw the node last, after all others.  This depth index may shift as nodes are added, removed or sorted.</td></tr>
+<tr><td><a href='#node:setParent'>node:setParent</a>(<span class='arg'>parent</span>)</td><td>Sets the parent <a href='#layer'>layer</a> of the node.  All nodes can have just one parent.</td></tr>
+<tr><td><a href='#node:setPosition'>node:setPosition</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Sets the position of the node.</td></tr>
+<tr><td><a href='#node:setRotation'>node:setRotation</a>(<span class='arg'>angle</span>)</td><td>Sets the rotation of the node.</td></tr>
+<tr><td><a href='#node:setScale'>node:setScale</a>(<span class='arg'>sx</span>, <span class='arg'>sy</span>)</td><td>Sets the scale of the node.</td></tr>
+<tr><td><a href='#node:setTransform'>node:setTransform</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>)</td><td>Sets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:setVisible'>node:setVisible</a>(<span class='arg'>True</span>)</td><td>Sets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:type'>node:type</a>()</td><td>Returns the node type as a string</td></tr>
+<tr><td><a href='#node:windowToLocal'>node:windowToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from window to local coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><th colspan=2>sprite</th></tr>
+<tr><td><a href='#sprite.construct'>sprite.construct</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function  Please use <a href='#scene.newSprite'>scene.newSprite</a> or <a href='#layer.newSprite'>layer.newSprite</a> instead.</td></tr>
+<tr><td><a href='#sprite:deconstruct'>sprite:deconstruct</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#sprite:draw'>sprite:draw</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#sprite:getAlpha'>sprite:getAlpha</a>()</td><td>Gets the alpha value.</td></tr>
+<tr><td><a href='#sprite:getColor'>sprite:getColor</a>()</td><td>Gets the color.</td></tr>
+<tr><td><a href='#sprite:getGraphic'>sprite:getGraphic</a>()</td><td>Gets the "drawable" graphic and quad of the sprite.</td></tr>
+<tr><td><a href='#sprite:getMode'>sprite:getMode</a>()</td><td>Gets the blending mode.</td></tr>
+<tr><td><a href='#sprite:getShader'>sprite:getShader</a>()</td><td>Gets the shader used when drawing the sprite.</td></tr>
+<tr><td><a href='#sprite:reset'>sprite:reset</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Resets the node to its initial state.</td></tr>
+<tr><td><a href='#sprite:setAlpha'>sprite:setAlpha</a>(<span class='arg'>alpha</span>)</td><td>Sets the alpha value.</td></tr>
+<tr><td><a href='#sprite:setColor'>sprite:setColor</a>(<span class='arg'>red</span>, <span class='arg'>green</span>, <span class='arg'>blue</span>)</td><td>Sets the color.</td></tr>
+<tr><td><a href='#sprite:setGraphic'>sprite:setGraphic</a>(<span class='arg'>drawable</span>, <span class='arg'>quad</span>, <span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>, <span class='arg'>sx</span>, <span class='arg'>sy</span>, <span class='arg'>ox</span>, <span class='arg'>oy</span>, <span class='arg'>kx</span>, <span class='arg'>ky</span>)</td><td>Sets a "drawable" graphic or a quad for the sprite.  This could be an image, text, mesh, canvas, etc.  The "drawable" graphic can be transformed relative to the sprite's origin.</td></tr>
+<tr><td><a href='#sprite:setMode'>sprite:setMode</a>(<span class='arg'>mode</span>)</td><td>Sets the blending mode.</td></tr>
+<tr><td><a href='#sprite:setShader'>sprite:setShader</a>(<span class='arg'>shader</span>)</td><td>Sets the shader used when drawing the sprite.</td></tr>
+</table>
+<h3 id='sprite.construct'>sprite.construct(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function  Please use <a href='#scene.newSprite'>scene.newSprite</a> or <a href='#layer.newSprite'>layer.newSprite</a> instead.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#sprite' class='type'>sprite</a></td>
+<td>New sprite</td></tr>
+</table>
+<div class='see'>See: <a href='#layer:newSprite'>layer:newSprite</a>, <a href='#scene.newSprite'>scene.newSprite</a></div>
+<h3 id='sprite:deconstruct'>sprite:deconstruct()</h3>
+This is an internal function
+<div class='see'>See: <a href='#node:destroy'>node:destroy</a></div>
+<h3 id='sprite:draw'>sprite:draw()</h3>
+This is an internal function
+<div class='see'>See: <a href='#view:draw'>view:draw</a></div>
+<h3 id='sprite:getAlpha'>sprite:getAlpha()</h3>
+Gets the alpha value.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Alpha value (0-1)</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:setAlpha'>sprite:setAlpha</a></div>
+<h3 id='sprite:getColor'>sprite:getColor()</h3>
+Gets the color.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Red value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Green value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Blue value (0-1)</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:setColor'>sprite:setColor</a></div>
+<h3 id='sprite:getGraphic'>sprite:getGraphic()</h3>
+Gets the "drawable" graphic and quad of the sprite.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>userdata</a></td>
+<td>Drawable graphic</td></tr>
+<tr><td><a class='type'>userdata</a></td>
+<td>Quad or nil</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:setGraphic'>sprite:setGraphic</a></div>
+<h3 id='sprite:getMode'>sprite:getMode()</h3>
+Gets the blending mode.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>string</a></td>
+<td>mode Blend mode</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:setMode'>sprite:setMode</a></div>
+<h3 id='sprite:getShader'>sprite:getShader()</h3>
+Gets the shader used when drawing the sprite.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>userdata</a></td>
+<td>Shader object</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:getShader'>sprite:getShader</a></div>
+<h3 id='sprite:reset'>sprite:reset(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Resets the node to its initial state.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+</table>
+<h3 id='sprite:setAlpha'>sprite:setAlpha(<span class='arg'>alpha</span>)</h3>
+Sets the alpha value.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>alpha</b><br>
+Alpha value (0-1)</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:getAlpha'>sprite:getAlpha</a></div>
+<h3 id='sprite:setColor'>sprite:setColor(<span class='arg'>red</span>, <span class='arg'>green</span>, <span class='arg'>blue</span>)</h3>
+Sets the color.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>red</b><br>
+Red value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>green</b><br>
+Green value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>blue</b><br>
+Blue value (0-1)</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:getColor'>sprite:getColor</a></div>
+<h3 id='sprite:setGraphic'>sprite:setGraphic(<span class='arg'>drawable</span>, <span class='arg'>quad</span>, <span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>, <span class='arg'>sx</span>, <span class='arg'>sy</span>, <span class='arg'>ox</span>, <span class='arg'>oy</span>, <span class='arg'>kx</span>, <span class='arg'>ky</span>)</h3>
+Sets a "drawable" graphic or a quad for the sprite.  This could be an image, text, mesh, canvas, etc.  The "drawable" graphic can be transformed relative to the sprite's origin.
+<table>
+<tr><td><a class='type'>userdata</a></td><td><b class='arg'>drawable</b><br>
+Drawable graphic</td></tr>
+<tr><td><a class='type'>userdata</a></td><td><b class='arg'>quad</b> (optional)<br>
+Optional quad</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b> (0)<br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b> (0)<br>
+y coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>angle</b> (0)<br>
+Angle</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>sx</b> (1)<br>
+X axis scale</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>sy</b> (1)<br>
+Y axis scale</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>ox</b> (0)<br>
+X axis offset</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>oy</b> (0)<br>
+Y axis offset</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>kx</b> (0)<br>
+X axis shearing</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>ky</b> (0)<br>
+Y axis shearing </td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:getGraphic'>sprite:getGraphic</a></div>
+<h3 id='sprite:setMode'>sprite:setMode(<span class='arg'>mode</span>)</h3>
+Sets the blending mode.
+<table>
+<tr><td><a class='type'>string</a></td><td><b class='arg'>mode</b><br>
+Blend mode: "alpha", "add", "subtract" or "multiply"</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:getMode'>sprite:getMode</a></div>
+<h3 id='sprite:setShader'>sprite:setShader(<span class='arg'>shader</span>)</h3>
+Sets the shader used when drawing the sprite.
+<table>
+<tr><td><a class='type'>userdata</a></td><td><b class='arg'>shader</b><br>
+Shader object</td></tr>
+</table>
+<div class='see'>See: <a href='#sprite:getShader'>sprite:getShader</a></div>
+<br><br><br><h2 id='layer'>layer</h2>
+Layers are basically groups of nodes, containing either sprites or other nested layers. Layers are helpful in ordering nodes along the Z-axis.
+ Layers are used to build things like parallax, huds, minimaps and so on.<br>
+<table>
+<tr><th colspan=2>node</th></tr>
+<tr><td><a href='#node:compareDepth'>node:compareDepth</a>(<span class='arg'>other</span>)</td><td>This is an internal function.  Compares the depth of two nodes, based on their Y-coordinates.</td></tr>
+<tr><td><a href='#node:destroy'>node:destroy</a>()</td><td>Destroys the node removing it from its parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getDepth'>node:getDepth</a>()</td><td>Gets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getParent'>node:getParent</a>()</td><td>Gets the current parent <a href='#layer'>layer</a> of the node.</td></tr>
+<tr><td><a href='#node:getPosition'>node:getPosition</a>()</td><td>Gets the position of the node.</td></tr>
+<tr><td><a href='#node:getRoot'>node:getRoot</a>()</td><td>Returns the root <a href='#layer'>layer</a> of the node or nil if the current node does not have a parent.</td></tr>
+<tr><td><a href='#node:getRotation'>node:getRotation</a>()</td><td>Gets the rotation of the node.</td></tr>
+<tr><td><a href='#node:getScale'>node:getScale</a>()</td><td>Gets the scale of the node.</td></tr>
+<tr><td><a href='#node:getTransform'>node:getTransform</a>()</td><td>Gets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:getVisible'>node:getVisible</a>()</td><td>Gets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:localToParent'>node:localToParent</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to parent coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:localToRoot'>node:localToRoot</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:localToWindow'>node:localToWindow</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to window coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><td><a href='#node:parentToLocal'>node:parentToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from parent to local coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:rootToLocal'>node:rootToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:setDepth'>node:setDepth</a>(<span class='arg'>index</span>)</td><td>Sets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.  Setting the depth to 1 will draw the node first, before all others.  Setting the depth to 0 will draw the node last, after all others.  This depth index may shift as nodes are added, removed or sorted.</td></tr>
+<tr><td><a href='#node:setParent'>node:setParent</a>(<span class='arg'>parent</span>)</td><td>Sets the parent <a href='#layer'>layer</a> of the node.  All nodes can have just one parent.</td></tr>
+<tr><td><a href='#node:setPosition'>node:setPosition</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Sets the position of the node.</td></tr>
+<tr><td><a href='#node:setRotation'>node:setRotation</a>(<span class='arg'>angle</span>)</td><td>Sets the rotation of the node.</td></tr>
+<tr><td><a href='#node:setScale'>node:setScale</a>(<span class='arg'>sx</span>, <span class='arg'>sy</span>)</td><td>Sets the scale of the node.</td></tr>
+<tr><td><a href='#node:setTransform'>node:setTransform</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>)</td><td>Sets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:setVisible'>node:setVisible</a>(<span class='arg'>True</span>)</td><td>Sets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:type'>node:type</a>()</td><td>Returns the node type as a string</td></tr>
+<tr><td><a href='#node:windowToLocal'>node:windowToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from window to local coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><th colspan=2>layer</th></tr>
+<tr><td><a href='#layer.construct'>layer.construct</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function  Please use <a href='#scene.newLayer'>scene.newLayer</a> or <a href='#layer.newLayer'>layer.newLayer</a> instead.</td></tr>
+<tr><td><a href='#layer:deconstruct'>layer:deconstruct</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#layer:destroyChildren'>layer:destroyChildren</a>()</td><td>Destroys all of the child nodes.</td></tr>
+<tr><td><a href='#layer:draw'>layer:draw</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#layer:getChild'>layer:getChild</a>(<span class='arg'>index</span>)</td><td>Returns a child node based on depth index (could be negative).</td></tr>
+<tr><td><a href='#layer:getChildDepth'>layer:getChildDepth</a>(<span class='arg'>child</span>)</td><td>Gets the depth index of a child node.</td></tr>
+<tr><td><a href='#layer:insertChild'>layer:insertChild</a>(<span class='arg'>child</span>)</td><td>This is an internal function  Adds a new child node to the layer.</td></tr>
+<tr><td><a href='#layer:newCamera'>layer:newCamera</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new camera at the given position.  Sets the parent of the new camera to the current node.</td></tr>
+<tr><td><a href='#layer:newLayer'>layer:newLayer</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new layer at the given position.  Sets the parent of the new layer to the current node.</td></tr>
+<tr><td><a href='#layer:newSprite'>layer:newSprite</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new sprite at the given position.  Sets the parent of the new sprite to the current node.</td></tr>
+<tr><td><a href='#layer:removeChild'>layer:removeChild</a>(<span class='arg'>child</span>)</td><td>This is an internal function  Removes an existing child node from the layer.</td></tr>
+<tr><td><a href='#layer:removeChildren'>layer:removeChildren</a>()</td><td>Removes all child nodes without destroying them.</td></tr>
+<tr><td><a href='#layer:reset'>layer:reset</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#layer:setChildDepth'>layer:setChildDepth</a>(<span class='arg'>child</span>, <span class='arg'>index</span>)</td><td>Sets the depth index of a child node.  This depth index may shift as node are added, removed or sorted.</td></tr>
+<tr><td><a href='#layer:sort'>layer:sort</a>(<span class='arg'>func</span>)</td><td>Sorts the child nodes based on a comparison function.  If no comparison function is specified, nodes are sorted based on their Y-coordinates.  This is useful in isometric or overhead games.</td></tr>
+</table>
+<h3 id='layer.construct'>layer.construct(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function  Please use <a href='#scene.newLayer'>scene.newLayer</a> or <a href='#layer.newLayer'>layer.newLayer</a> instead.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#layer' class='type'>layer</a></td>
+<td>New layer</td></tr>
+</table>
+<div class='see'>See: <a href='#layer:newLayer'>layer:newLayer</a>, <a href='#scene.newLayer'>scene.newLayer</a></div>
+<h3 id='layer:deconstruct'>layer:deconstruct()</h3>
+This is an internal function
+<div class='see'>See: <a href='#node:destroy'>node:destroy</a></div>
+<h3 id='layer:destroyChildren'>layer:destroyChildren()</h3>
+Destroys all of the child nodes.
+<h3 id='layer:draw'>layer:draw()</h3>
+This is an internal function
+<div class='see'>See: <a href='#view:draw'>view:draw</a></div>
+<h3 id='layer:getChild'>layer:getChild(<span class='arg'>index</span>)</h3>
+Returns a child node based on depth index (could be negative).
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>index</b><br>
+Depth index</td></tr>
+</table>
+<h3 id='layer:getChildDepth'>layer:getChildDepth(<span class='arg'>child</span>)</h3>
+Gets the depth index of a child node.
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>child</b><br>
+Child node</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Depth index</td></tr>
+</table>
+<h3 id='layer:insertChild'>layer:insertChild(<span class='arg'>child</span>)</h3>
+This is an internal function  Adds a new child node to the layer.
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>child</b><br>
+Child node</td></tr>
+</table>
+<h3 id='layer:newCamera'>layer:newCamera(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Creates a new camera at the given position.  Sets the parent of the new camera to the current node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#camera' class='type'>camera</a></td>
+<td>New camera object</td></tr>
+</table>
+<h3 id='layer:newLayer'>layer:newLayer(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Creates a new layer at the given position.  Sets the parent of the new layer to the current node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#layer' class='type'>layer</a></td>
+<td>New layer object</td></tr>
+</table>
+<h3 id='layer:newSprite'>layer:newSprite(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Creates a new sprite at the given position.  Sets the parent of the new sprite to the current node.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#sprite' class='type'>sprite</a></td>
+<td>New sprite object</td></tr>
+</table>
+<h3 id='layer:removeChild'>layer:removeChild(<span class='arg'>child</span>)</h3>
+This is an internal function  Removes an existing child node from the layer.
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>child</b><br>
+Child node</td></tr>
+</table>
+<h3 id='layer:removeChildren'>layer:removeChildren()</h3>
+Removes all child nodes without destroying them.
+<h3 id='layer:reset'>layer:reset(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+</table>
+<h3 id='layer:setChildDepth'>layer:setChildDepth(<span class='arg'>child</span>, <span class='arg'>index</span>)</h3>
+Sets the depth index of a child node.  This depth index may shift as node are added, removed or sorted.
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>child</b><br>
+Child node</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>index</b><br>
+Depth index (could be negative)</td></tr>
+</table>
+<h3 id='layer:sort'>layer:sort(<span class='arg'>func</span>)</h3>
+Sorts the child nodes based on a comparison function.  If no comparison function is specified, nodes are sorted based on their Y-coordinates.  This is useful in isometric or overhead games.
+<table>
+<tr><td><a class='type'>function</a></td><td><b class='arg'>func</b> (optional)<br>
+Comparison function</td></tr>
+</table>
+<br><br><br><h2 id='camera'>camera</h2>
+Cameras can be placed in the scene and transformed like regular nodes.
+ Cameras can also render contents onto the <a href='#view'>view</a> object.<br>
+<table>
+<tr><th colspan=2>node</th></tr>
+<tr><td><a href='#node:compareDepth'>node:compareDepth</a>(<span class='arg'>other</span>)</td><td>This is an internal function.  Compares the depth of two nodes, based on their Y-coordinates.</td></tr>
+<tr><td><a href='#node:deconstruct'>node:deconstruct</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#node:destroy'>node:destroy</a>()</td><td>Destroys the node removing it from its parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getDepth'>node:getDepth</a>()</td><td>Gets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getParent'>node:getParent</a>()</td><td>Gets the current parent <a href='#layer'>layer</a> of the node.</td></tr>
+<tr><td><a href='#node:getPosition'>node:getPosition</a>()</td><td>Gets the position of the node.</td></tr>
+<tr><td><a href='#node:getRoot'>node:getRoot</a>()</td><td>Returns the root <a href='#layer'>layer</a> of the node or nil if the current node does not have a parent.</td></tr>
+<tr><td><a href='#node:getRotation'>node:getRotation</a>()</td><td>Gets the rotation of the node.</td></tr>
+<tr><td><a href='#node:getScale'>node:getScale</a>()</td><td>Gets the scale of the node.</td></tr>
+<tr><td><a href='#node:getTransform'>node:getTransform</a>()</td><td>Gets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:getVisible'>node:getVisible</a>()</td><td>Gets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:localToParent'>node:localToParent</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to parent coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:localToRoot'>node:localToRoot</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:localToWindow'>node:localToWindow</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to window coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><td><a href='#node:parentToLocal'>node:parentToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from parent to local coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:rootToLocal'>node:rootToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:setDepth'>node:setDepth</a>(<span class='arg'>index</span>)</td><td>Sets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.  Setting the depth to 1 will draw the node first, before all others.  Setting the depth to 0 will draw the node last, after all others.  This depth index may shift as nodes are added, removed or sorted.</td></tr>
+<tr><td><a href='#node:setParent'>node:setParent</a>(<span class='arg'>parent</span>)</td><td>Sets the parent <a href='#layer'>layer</a> of the node.  All nodes can have just one parent.</td></tr>
+<tr><td><a href='#node:setPosition'>node:setPosition</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Sets the position of the node.</td></tr>
+<tr><td><a href='#node:setRotation'>node:setRotation</a>(<span class='arg'>angle</span>)</td><td>Sets the rotation of the node.</td></tr>
+<tr><td><a href='#node:setScale'>node:setScale</a>(<span class='arg'>sx</span>, <span class='arg'>sy</span>)</td><td>Sets the scale of the node.</td></tr>
+<tr><td><a href='#node:setTransform'>node:setTransform</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>)</td><td>Sets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:setVisible'>node:setVisible</a>(<span class='arg'>True</span>)</td><td>Sets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:type'>node:type</a>()</td><td>Returns the node type as a string</td></tr>
+<tr><td><a href='#node:windowToLocal'>node:windowToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from window to local coordinates.  This function works only if the root node is a view object or returns nil otherwise.</td></tr>
+<tr><th colspan=2>camera</th></tr>
+<tr><td><a href='#camera.construct'>camera.construct</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function  Please use <a href='#scene.newCamera'>scene.newCamera</a> or <a href='#layer.newCamera'>layer.newCamera</a> instead.</td></tr>
+<tr><td><a href='#camera:draw'>camera:draw</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#camera:getRange'>camera:getRange</a>()</td><td>Gets the viewing range of the camera in scene units.  Returns zero if no range is specified.</td></tr>
+<tr><td><a href='#camera:render'>camera:render</a>(<span class='arg'>view</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#camera:reset'>camera:reset</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#camera:setRange'>camera:setRange</a>(<span class='arg'>width</span>, <span class='arg'>height</span>)</td><td>Sets the viewing range of the camera in scene units.  The camera node's scale is ignored upon setting a non-zero range.  When the viewing range is set to zero,  the rendered area is determined by the  camera's scale and the dimensions of the view object.</td></tr>
+</table>
+<h3 id='camera.construct'>camera.construct(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function  Please use <a href='#scene.newCamera'>scene.newCamera</a> or <a href='#layer.newCamera'>layer.newCamera</a> instead.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#camera' class='type'>camera</a></td>
+<td>New camera</td></tr>
+</table>
+<div class='see'>See: <a href='#layer:newCamera'>layer:newCamera</a>, <a href='#scene.newCamera'>scene.newCamera</a></div>
+<h3 id='camera:draw'>camera:draw()</h3>
+This is an internal function
+<h3 id='camera:getRange'>camera:getRange()</h3>
+Gets the viewing range of the camera in scene units.  Returns zero if no range is specified.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Range width in scene units</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Range height in scene units</td></tr>
+</table>
+<div class='see'>See: <a href='#camera:setRange'>camera:setRange</a></div>
+<h3 id='camera:render'>camera:render(<span class='arg'>view</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a href='#node' class='type'>node</a></td><td><b class='arg'>view</b><br>
+View object</td></tr>
+</table>
+<div class='see'>See: <a href='#view:draw'>view:draw</a></div>
+<h3 id='camera:reset'>camera:reset(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-coordinate</td></tr>
+</table>
+<h3 id='camera:setRange'>camera:setRange(<span class='arg'>width</span>, <span class='arg'>height</span>)</h3>
+Sets the viewing range of the camera in scene units.  The camera node's scale is ignored upon setting a non-zero range.  When the viewing range is set to zero,  the rendered area is determined by the  camera's scale and the dimensions of the view object.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>width</b><br>
+Range width in scene units</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>height</b><br>
+Range height in scene units</td></tr>
+</table>
+<div class='see'>See: <a href='#camera:getRange'>camera:getRange</a></div>
+<br><br><br><h2 id='view'>view</h2>
+View is a clipped rectangular area where the scene is rendered.
+ Views can be transformed, drawn and shaded.<br>
+<table>
+<tr><th colspan=2>node</th></tr>
+<tr><td><a href='#node:compareDepth'>node:compareDepth</a>(<span class='arg'>other</span>)</td><td>This is an internal function.  Compares the depth of two nodes, based on their Y-coordinates.</td></tr>
+<tr><td><a href='#node:destroy'>node:destroy</a>()</td><td>Destroys the node removing it from its parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getDepth'>node:getDepth</a>()</td><td>Gets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#node:getParent'>node:getParent</a>()</td><td>Gets the current parent <a href='#layer'>layer</a> of the node.</td></tr>
+<tr><td><a href='#node:getRoot'>node:getRoot</a>()</td><td>Returns the root <a href='#layer'>layer</a> of the node or nil if the current node does not have a parent.</td></tr>
+<tr><td><a href='#node:getRotation'>node:getRotation</a>()</td><td>Gets the rotation of the node.</td></tr>
+<tr><td><a href='#node:getScale'>node:getScale</a>()</td><td>Gets the scale of the node.</td></tr>
+<tr><td><a href='#node:getTransform'>node:getTransform</a>()</td><td>Gets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:getVisible'>node:getVisible</a>()</td><td>Gets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:localToParent'>node:localToParent</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to parent coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:parentToLocal'>node:parentToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from parent to local coordinates.  The center of the parent <a href='#layer'>layer</a> is its origin.</td></tr>
+<tr><td><a href='#node:setDepth'>node:setDepth</a>(<span class='arg'>index</span>)</td><td>Sets the depth index relative to other nodes in the parent <a href='#layer'>layer</a>.  Setting the depth to 1 will draw the node first, before all others.  Setting the depth to 0 will draw the node last, after all others.  This depth index may shift as nodes are added, removed or sorted.</td></tr>
+<tr><td><a href='#node:setParent'>node:setParent</a>(<span class='arg'>parent</span>)</td><td>Sets the parent <a href='#layer'>layer</a> of the node.  All nodes can have just one parent.</td></tr>
+<tr><td><a href='#node:setRotation'>node:setRotation</a>(<span class='arg'>angle</span>)</td><td>Sets the rotation of the node.</td></tr>
+<tr><td><a href='#node:setScale'>node:setScale</a>(<span class='arg'>sx</span>, <span class='arg'>sy</span>)</td><td>Sets the scale of the node.</td></tr>
+<tr><td><a href='#node:setTransform'>node:setTransform</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>angle</span>)</td><td>Sets the position and rotation of the node.</td></tr>
+<tr><td><a href='#node:setVisible'>node:setVisible</a>(<span class='arg'>True</span>)</td><td>Sets the visibility of the node.  Non-visible nodes are not drawn at all.</td></tr>
+<tr><td><a href='#node:type'>node:type</a>()</td><td>Returns the node type as a string</td></tr>
+<tr><th colspan=2>layer</th></tr>
+<tr><td><a href='#layer:destroyChildren'>layer:destroyChildren</a>()</td><td>Destroys all of the child nodes.</td></tr>
+<tr><td><a href='#layer:getChild'>layer:getChild</a>(<span class='arg'>index</span>)</td><td>Returns a child node based on depth index (could be negative).</td></tr>
+<tr><td><a href='#layer:getChildDepth'>layer:getChildDepth</a>(<span class='arg'>child</span>)</td><td>Gets the depth index of a child node.</td></tr>
+<tr><td><a href='#layer:insertChild'>layer:insertChild</a>(<span class='arg'>child</span>)</td><td>This is an internal function  Adds a new child node to the layer.</td></tr>
+<tr><td><a href='#layer:newCamera'>layer:newCamera</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new camera at the given position.  Sets the parent of the new camera to the current node.</td></tr>
+<tr><td><a href='#layer:newLayer'>layer:newLayer</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new layer at the given position.  Sets the parent of the new layer to the current node.</td></tr>
+<tr><td><a href='#layer:newSprite'>layer:newSprite</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Creates a new sprite at the given position.  Sets the parent of the new sprite to the current node.</td></tr>
+<tr><td><a href='#layer:removeChild'>layer:removeChild</a>(<span class='arg'>child</span>)</td><td>This is an internal function  Removes an existing child node from the layer.</td></tr>
+<tr><td><a href='#layer:removeChildren'>layer:removeChildren</a>()</td><td>Removes all child nodes without destroying them.</td></tr>
+<tr><td><a href='#layer:setChildDepth'>layer:setChildDepth</a>(<span class='arg'>child</span>, <span class='arg'>index</span>)</td><td>Sets the depth index of a child node.  This depth index may shift as node are added, removed or sorted.</td></tr>
+<tr><td><a href='#layer:sort'>layer:sort</a>(<span class='arg'>func</span>)</td><td>Sorts the child nodes based on a comparison function.  If no comparison function is specified, nodes are sorted based on their Y-coordinates.  This is useful in isometric or overhead games.</td></tr>
+<tr><th colspan=2>view</th></tr>
+<tr><td><a href='#view.construct'>view.construct</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>width</span>, <span class='arg'>height</span>)</td><td>This is an internal function  Please use <a href='#scene.newView'>scene.newView</a> instead.</td></tr>
+<tr><td><a href='#view:deconstruct'>view:deconstruct</a>()</td><td>This is an internal function</td></tr>
+<tr><td><a href='#view:draw'>view:draw</a>()</td><td>By default, this function draws the view and all of its visible child nodes.</td></tr>
+<tr><td><a href='#view:getBackground'>view:getBackground</a>()</td><td>Gets the background color.</td></tr>
+<tr><td><a href='#view:getCamera'>view:getCamera</a>()</td><td>Gets the camera associated with the view.</td></tr>
+<tr><td><a href='#view:getDimensions'>view:getDimensions</a>()</td><td>Gets the dimensions of the view inside the game window.</td></tr>
+<tr><td><a href='#view:getOrigin'>view:getOrigin</a>()</td><td>Gets the origin of the view object as ratio values,  where 0, 0 is the top-left corner and 1, 1 is the bottom right.  The origin of the view is the center or 0.5, 0.5.</td></tr>
+<tr><td><a href='#view:getPosition'>view:getPosition</a>()</td><td>Gets the position of the view inside the application window.</td></tr>
+<tr><td><a href='#view:getShader'>view:getShader</a>()</td><td>Gets the pixel shader.</td></tr>
+<tr><td><a href='#view:localToRoot'>view:localToRoot</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#view:localToWindow'>view:localToWindow</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from scene to window coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#view:reset'>view:reset</a>(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>width</span>, <span class='arg'>height</span>)</td><td>This is an internal function</td></tr>
+<tr><td><a href='#view:rootToLocal'>view:rootToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#view:rootToWindow'>view:rootToWindow</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts scene coordinates to window coordinates.  This function works in conjunction with the currently associated camera.</td></tr>
+<tr><td><a href='#view:setBackground'>view:setBackground</a>(<span class='arg'>red</span>, <span class='arg'>green</span>, <span class='arg'>blue</span>, <span class='arg'>alpha</span>)</td><td>Sets the background color.</td></tr>
+<tr><td><a href='#view:setCamera'>view:setCamera</a>(<span class='arg'>camera</span>)</td><td>Sets the camera for the view.</td></tr>
+<tr><td><a href='#view:setDimensions'>view:setDimensions</a>(<span class='arg'>width</span>, <span class='arg'>height</span>)</td><td>Sets the dimensions of the view inside the game window.</td></tr>
+<tr><td><a href='#view:setOrigin'>view:setOrigin</a>(<span class='arg'>ox</span>, <span class='arg'>oy</span>)</td><td>Sets the origin of the view object based ratio values,  where 0, 0 is the top-left corner and 1, 1 is the bottom right.  The default origin of the view is the center or 0.5, 0.5.</td></tr>
+<tr><td><a href='#view:setPosition'>view:setPosition</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Sets the position of the view inside the application window.</td></tr>
+<tr><td><a href='#view:setShader'>view:setShader</a>(<span class='arg'>shader</span>)</td><td>Sets the pixel shader.</td></tr>
+<tr><td><a href='#view:windowToLocal'>view:windowToLocal</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts a position from window to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.</td></tr>
+<tr><td><a href='#view:windowToRoot'>view:windowToRoot</a>(<span class='arg'>x</span>, <span class='arg'>y</span>)</td><td>Converts window coordinates to scene coordinates.  This function works in conjunction with the currently associated camera.</td></tr>
+</table>
+<h3 id='view.construct'>view.construct(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>width</span>, <span class='arg'>height</span>)</h3>
+This is an internal function  Please use <a href='#scene.newView'>scene.newView</a> instead.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b> (optional)<br>
+X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b> (optional)<br>
+Y-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>width</b> (optional)<br>
+Width in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>height</b> (optional)<br>
+Height in pixels</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#view' class='type'>view</a></td>
+<td>New view object</td></tr>
+</table>
+<div class='see'>See: <a href='#scene.newView'>scene.newView</a></div>
+<h3 id='view:deconstruct'>view:deconstruct()</h3>
+This is an internal function
+<div class='see'>See: <a href='#node:destroy'>node:destroy</a></div>
+<h3 id='view:draw'>view:draw()</h3>
+By default, this function draws the view and all of its visible child nodes.
+<h3 id='view:getBackground'>view:getBackground()</h3>
+Gets the background color.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Red value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Green value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Blue value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Alpha value (0-1)</td></tr>
+</table>
+<div class='see'>See: <a href='#view:setBackground'>view:setBackground</a></div>
+<h3 id='view:getCamera'>view:getCamera()</h3>
+Gets the camera associated with the view.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a href='#camera' class='type'>camera</a></td>
+<td>camera Camera object</td></tr>
+</table>
+<div class='see'>See: <a href='#view:setCamera'>view:setCamera</a></div>
+<h3 id='view:getDimensions'>view:getDimensions()</h3>
+Gets the dimensions of the view inside the game window.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Width in pixels</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Height in pixels</td></tr>
+</table>
+<div class='see'>See: <a href='#view:setDimensions'>view:setDimensions</a></div>
+<h3 id='view:getOrigin'>view:getOrigin()</h3>
+Gets the origin of the view object as ratio values,  where 0, 0 is the top-left corner and 1, 1 is the bottom right.  The origin of the view is the center or 0.5, 0.5.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-ratio from 0 to 1</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-ratio from 0 to 1</td></tr>
+</table>
+<div class='see'>See: <a href='#view:setOrigin'>view:setOrigin</a></div>
+<h3 id='view:getPosition'>view:getPosition()</h3>
+Gets the position of the view inside the application window.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-position in pixels</td></tr>
+</table>
+<h3 id='view:getShader'>view:getShader()</h3>
+Gets the pixel shader.
+<table>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>userdata</a></td>
+<td>Pixel shader object</td></tr>
+</table>
+<div class='see'>See: <a href='#view:setShader'>view:setShader</a></div>
+<h3 id='view:localToRoot'>view:localToRoot(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from local to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Local Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Scene X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Scene Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#view:rootToLocal'>view:rootToLocal</a></div>
+<h3 id='view:localToWindow'>view:localToWindow(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from scene to window coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X scene coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y scene coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-position in pixels</td></tr>
+</table>
+<div class='see'>See: <a href='#view:windowToLocal'>view:windowToLocal</a></div>
+<h3 id='view:reset'>view:reset(<span class='arg'>x</span>, <span class='arg'>y</span>, <span class='arg'>width</span>, <span class='arg'>height</span>)</h3>
+This is an internal function
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>width</b><br>
+Width in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>height</b><br>
+Height in pixels</td></tr>
+</table>
+<h3 id='view:rootToLocal'>view:rootToLocal(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from scene to local coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+Scene X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Scene Y-coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local X-coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Local Y-coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#view:localToRoot'>view:localToRoot</a></div>
+<h3 id='view:rootToWindow'>view:rootToWindow(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts scene coordinates to window coordinates.  This function works in conjunction with the currently associated camera.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X scene coordinate</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y scene coordinate</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y-position in pixels</td></tr>
+</table>
+<div class='see'>See: <a href='#view:windowToLocal'>view:windowToLocal</a></div>
+<h3 id='view:setBackground'>view:setBackground(<span class='arg'>red</span>, <span class='arg'>green</span>, <span class='arg'>blue</span>, <span class='arg'>alpha</span>)</h3>
+Sets the background color.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>red</b><br>
+Red value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>green</b><br>
+Green value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>blue</b><br>
+Blue value (0-1)</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>alpha</b> (optional)<br>
+Alpha value (0-1)</td></tr>
+</table>
+<div class='see'>See: <a href='#view:getBackground'>view:getBackground</a></div>
+<h3 id='view:setCamera'>view:setCamera(<span class='arg'>camera</span>)</h3>
+Sets the camera for the view.
+<table>
+<tr><td><a href='#camera' class='type'>camera</a></td><td><b class='arg'>camera</b><br>
+Camera object</td></tr>
+</table>
+<div class='see'>See: <a href='#view:getCamera'>view:getCamera</a></div>
+<h3 id='view:setDimensions'>view:setDimensions(<span class='arg'>width</span>, <span class='arg'>height</span>)</h3>
+Sets the dimensions of the view inside the game window.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>width</b><br>
+Width in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>height</b><br>
+Height in pixels</td></tr>
+</table>
+<div class='see'>See: <a href='#view:getDimensions'>view:getDimensions</a></div>
+<h3 id='view:setOrigin'>view:setOrigin(<span class='arg'>ox</span>, <span class='arg'>oy</span>)</h3>
+Sets the origin of the view object based ratio values,  where 0, 0 is the top-left corner and 1, 1 is the bottom right.  The default origin of the view is the center or 0.5, 0.5.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>ox</b><br>
+X-ratio from 0 to 1</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>oy</b><br>
+Y-ratio from 0 to 1</td></tr>
+</table>
+<div class='see'>See: <a href='#view:getOrigin'>view:getOrigin</a></div>
+<h3 id='view:setPosition'>view:setPosition(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Sets the position of the view inside the application window.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-position in pixels</td></tr>
+</table>
+<h3 id='view:setShader'>view:setShader(<span class='arg'>shader</span>)</h3>
+Sets the pixel shader.
+<table>
+<tr><td><a class='type'>userdata</a></td><td><b class='arg'>shader</b> (optional)<br>
+Pixel shader object</td></tr>
+</table>
+<div class='see'>See: <a href='#view:getShader'>view:getShader</a></div>
+<h3 id='view:windowToLocal'>view:windowToLocal(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts a position from window to scene coordinates.  The origin of the scene is the center of the root <a href='#layer'>layer</a>.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-position in pixels</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X scene coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y scene coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#view:localToWindow'>view:localToWindow</a></div>
+<h3 id='view:windowToRoot'>view:windowToRoot(<span class='arg'>x</span>, <span class='arg'>y</span>)</h3>
+Converts window coordinates to scene coordinates.  This function works in conjunction with the currently associated camera.
+<table>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>x</b><br>
+X-position in pixels</td></tr>
+<tr><td><a class='type'>number</a></td><td><b class='arg'>y</b><br>
+Y-position in pixels</td></tr>
+<tr><th></td><th>Returns</th></tr>
+<tr><td><a class='type'>number</a></td>
+<td>X scene coordinate</td></tr>
+<tr><td><a class='type'>number</a></td>
+<td>Y scene coordinate</td></tr>
+</table>
+<div class='see'>See: <a href='#view:windowToLocal'>view:windowToLocal</a></div>
+<br><br><br></div>
+<div class='menu'>
+<h3><a href='#scene'>scene</a></h3>
+<ul>
+<li><a href='#scene.copy'>copy</a><br>
+<li><a href='#scene.destroy'>destroy</a><br>
+<li><a href='#scene.new'>new</a><br>
+<li><a href='#scene.newCamera'>newCamera</a><br>
+<li><a href='#scene.newLayer'>newLayer</a><br>
+<li><a href='#scene.newSprite'>newSprite</a><br>
+<li><a href='#scene.newView'>newView</a><br>
+</ul>
+<h3><a href='#node'>node</a></h3>
+<ul>
+<li><a href='#node.construct'>construct</a><br>
+<li><a href='#node:compareDepth'>compareDepth</a><br>
+<li><a href='#node:deconstruct'>deconstruct</a><br>
+<li><a href='#node:destroy'>destroy</a><br>
+<li><a href='#node:getDepth'>getDepth</a><br>
+<li><a href='#node:getParent'>getParent</a><br>
+<li><a href='#node:getPosition'>getPosition</a><br>
+<li><a href='#node:getRoot'>getRoot</a><br>
+<li><a href='#node:getRotation'>getRotation</a><br>
+<li><a href='#node:getScale'>getScale</a><br>
+<li><a href='#node:getTransform'>getTransform</a><br>
+<li><a href='#node:getVisible'>getVisible</a><br>
+<li><a href='#node:localToParent'>localToParent</a><br>
+<li><a href='#node:localToRoot'>localToRoot</a><br>
+<li><a href='#node:localToWindow'>localToWindow</a><br>
+<li><a href='#node:parentToLocal'>parentToLocal</a><br>
+<li><a href='#node:reset'>reset</a><br>
+<li><a href='#node:rootToLocal'>rootToLocal</a><br>
+<li><a href='#node:setDepth'>setDepth</a><br>
+<li><a href='#node:setParent'>setParent</a><br>
+<li><a href='#node:setPosition'>setPosition</a><br>
+<li><a href='#node:setRotation'>setRotation</a><br>
+<li><a href='#node:setScale'>setScale</a><br>
+<li><a href='#node:setTransform'>setTransform</a><br>
+<li><a href='#node:setVisible'>setVisible</a><br>
+<li><a href='#node:type'>type</a><br>
+<li><a href='#node:windowToLocal'>windowToLocal</a><br>
+</ul>
+<h3><a href='#sprite'>sprite</a></h3>
+<ul>
+<li><a href='#sprite.construct'>construct</a><br>
+<li><a href='#sprite:deconstruct'>deconstruct</a><br>
+<li><a href='#sprite:draw'>draw</a><br>
+<li><a href='#sprite:getAlpha'>getAlpha</a><br>
+<li><a href='#sprite:getColor'>getColor</a><br>
+<li><a href='#sprite:getGraphic'>getGraphic</a><br>
+<li><a href='#sprite:getMode'>getMode</a><br>
+<li><a href='#sprite:getShader'>getShader</a><br>
+<li><a href='#sprite:reset'>reset</a><br>
+<li><a href='#sprite:setAlpha'>setAlpha</a><br>
+<li><a href='#sprite:setColor'>setColor</a><br>
+<li><a href='#sprite:setGraphic'>setGraphic</a><br>
+<li><a href='#sprite:setMode'>setMode</a><br>
+<li><a href='#sprite:setShader'>setShader</a><br>
+</ul>
+<h3><a href='#layer'>layer</a></h3>
+<ul>
+<li><a href='#layer.construct'>construct</a><br>
+<li><a href='#layer:deconstruct'>deconstruct</a><br>
+<li><a href='#layer:destroyChildren'>destroyChildren</a><br>
+<li><a href='#layer:draw'>draw</a><br>
+<li><a href='#layer:getChild'>getChild</a><br>
+<li><a href='#layer:getChildDepth'>getChildDepth</a><br>
+<li><a href='#layer:insertChild'>insertChild</a><br>
+<li><a href='#layer:newCamera'>newCamera</a><br>
+<li><a href='#layer:newLayer'>newLayer</a><br>
+<li><a href='#layer:newSprite'>newSprite</a><br>
+<li><a href='#layer:removeChild'>removeChild</a><br>
+<li><a href='#layer:removeChildren'>removeChildren</a><br>
+<li><a href='#layer:reset'>reset</a><br>
+<li><a href='#layer:setChildDepth'>setChildDepth</a><br>
+<li><a href='#layer:sort'>sort</a><br>
+</ul>
+<h3><a href='#camera'>camera</a></h3>
+<ul>
+<li><a href='#camera.construct'>construct</a><br>
+<li><a href='#camera:draw'>draw</a><br>
+<li><a href='#camera:getRange'>getRange</a><br>
+<li><a href='#camera:render'>render</a><br>
+<li><a href='#camera:reset'>reset</a><br>
+<li><a href='#camera:setRange'>setRange</a><br>
+</ul>
+<h3><a href='#view'>view</a></h3>
+<ul>
+<li><a href='#view.construct'>construct</a><br>
+<li><a href='#view:deconstruct'>deconstruct</a><br>
+<li><a href='#view:draw'>draw</a><br>
+<li><a href='#view:getBackground'>getBackground</a><br>
+<li><a href='#view:getCamera'>getCamera</a><br>
+<li><a href='#view:getDimensions'>getDimensions</a><br>
+<li><a href='#view:getOrigin'>getOrigin</a><br>
+<li><a href='#view:getPosition'>getPosition</a><br>
+<li><a href='#view:getShader'>getShader</a><br>
+<li><a href='#view:localToRoot'>localToRoot</a><br>
+<li><a href='#view:localToWindow'>localToWindow</a><br>
+<li><a href='#view:reset'>reset</a><br>
+<li><a href='#view:rootToLocal'>rootToLocal</a><br>
+<li><a href='#view:rootToWindow'>rootToWindow</a><br>
+<li><a href='#view:setBackground'>setBackground</a><br>
+<li><a href='#view:setCamera'>setCamera</a><br>
+<li><a href='#view:setDimensions'>setDimensions</a><br>
+<li><a href='#view:setOrigin'>setOrigin</a><br>
+<li><a href='#view:setPosition'>setPosition</a><br>
+<li><a href='#view:setShader'>setShader</a><br>
+<li><a href='#view:windowToLocal'>windowToLocal</a><br>
+<li><a href='#view:windowToRoot'>windowToRoot</a><br>
+</ul>
+</div>
+</div>
+</html>

@@ -15,7 +15,7 @@ local live = {}
 
 --- This is an internal function
 -- @tparam node t Existing node
--- @tparam arg ... Constructor arguments
+-- @tparam arguments ... Constructor arguments
 -- @treturn node New node object
 -- @see scene.newSprite
 -- @see scene.newCamera

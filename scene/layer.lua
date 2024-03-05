@@ -14,9 +14,14 @@ layer.stype = "Layer"
 local _insert = table.insert
 local _remove = table.remove
 local _sort = table.sort
-local _lg_push = love.graphics.push
-local _lg_applyTransform = love.graphics.applyTransform
-local _lg_pop = love.graphics.pop
+
+local _lg_push, _lg_applyTransform, _lg_pop
+local lg = love.graphics
+if lg then
+  _lg_push = lg.push
+  _lg_applyTransform = lg.applyTransform
+  _lg_pop = lg.pop
+end
 local _Transform_setTransformation = reg.Transform.setTransformation
 local _Node_construct = reg.Node.construct
 local _Node_deconstruct = reg.Node.deconstruct

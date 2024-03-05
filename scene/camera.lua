@@ -1,5 +1,5 @@
 --- Cameras can be placed in the scene and transformed like regular nodes.
--- Cameras can also render contents onto a @{view:draw} object.
+-- Cameras can also render contents onto the @{view} object.
 -- @module camera
 -- @alias camera
 -- @inherit node
@@ -9,10 +9,13 @@ local reg = debug.getregistry()
 reg.Camera = camera
 
 local lg = love.graphics
-local _lg_push = lg.push
-local _lg_applyTransform = lg.applyTransform
-local _lg_scale = lg.scale
-local _lg_pop = lg.pop
+local _lg_push, _lg_applyTransform, _lg_scale, _lg_pop
+if lg then
+  _lg_push = lg.push
+  _lg_applyTransform = lg.applyTransform
+  _lg_scale = lg.scale
+  _lg_pop = lg.pop
+end
 local _Node_construct = reg.Node.construct
 local _Node_reset = reg.Node.reset
 local _Layer_draw = reg.Layer.draw
