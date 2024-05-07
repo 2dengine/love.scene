@@ -48,7 +48,10 @@ local _Scene_copy = reg.Scene.copy
 function view.construct(vx, vy, vw, vh)
   if vx == nil then
     vx, vy = 0, 0
-    vw, vh = _lg_getDimensions()
+    vw, vh = 0, 0
+    if _lg_getDimensions then
+      vw, vh = _lg_getDimensions()
+    end
   end
   local t = reg.Layer.construct(0, 0)
   _Scene_copy(view, t)
