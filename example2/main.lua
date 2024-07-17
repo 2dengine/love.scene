@@ -5,16 +5,17 @@ function love.load()
   love.scene = require("scene.init")
   view = love.scene.newView()
   view:setBackground(1, 0, 0)
-  root = view:newLayer(0, 0)
+  root = love.scene.newLayer(0, 0)
   img = love.graphics.newImage("block.png")
   for x = 1, mapw do
     for y = 1, maph do
-      local s = view:newSprite(x*16, y*16)
+      local s = root:newSprite(x*16, y*16)
       s:setGraphic(img)
     end
   end
   local w, h = love.graphics.getDimensions()
   cam = root:newCamera(w/2, h/2)
+  view:setCamera(cam)
 end
 
 function love.update(dt)
@@ -41,7 +42,7 @@ end
 
 function love.draw()
   -- redraw the scene
-  view:draw(cam)
+  view:draw()
   love.graphics.setColor(1, 1, 1)
   love.graphics.print("FPS: "..love.timer.getFPS(), 10, 10)
   love.graphics.print("Sprites: "..mapw*maph, 10, 30)
