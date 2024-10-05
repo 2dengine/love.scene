@@ -7,7 +7,7 @@ The scene graph can be included like so:
 love.scene = require("scene")
 ```
 
-The source code available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is from [2dengine.com](https://2dengine.com/doc/scene.html)
+The source code available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is on [2dengine.com](https://2dengine.com/doc/scene.html)
 
 # Usage
 The scene graph is fairly minimal, relying on just four different objects.
