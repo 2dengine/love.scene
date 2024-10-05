@@ -20,7 +20,7 @@ local s1 = view:newSprite(0, 0)
 local s2 = love.scene.newSprite(0, 0)
 s2:setParent(view)
 ```
-Once the scene is setup, you can draw it like so:
+Once the scene is set up, you can draw it like so:
 ```lua
 function love.draw()
   view:draw()
