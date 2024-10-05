@@ -1,17 +1,13 @@
-# Love2D Scene Graph
-This is a small scene graph library written for the LÖVE framework using pure Lua.
-The scene graph is compatible with LÖVE2D 11.3, 11.4 and 11.5.
-
-# Documentation
-The complete documentation is available at:
-https://2dengine.com/doc/scene.html
-
-# Installation
-Copy the folder called "scene" to your game directory.
+# Introduction
+love.scene is a two-dimensional scene graph library written for the [LÖVE](https://love2d.org) game framework.
+The scene graph is compatible with LÖVE 11.3, 11.4 and 11.5.
+To install the library, copy the "scene" folder to your game directory.
 The scene graph can be included like so:
 ```lua
 love.scene = require("scene")
 ```
+
+The source code available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is from [2dengine.com](https://2dengine.com/doc/scene.html)
 
 # Usage
 The scene graph is fairly minimal, relying on just four different objects.
