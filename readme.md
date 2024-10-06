@@ -1,13 +1,12 @@
 # Introduction
 love.scene is a two-dimensional scene graph library written for the [LÖVE](https://love2d.org) game framework.
 The scene graph is compatible with LÖVE 11.3, 11.4 and 11.5.
-To install the library, copy the "scene" folder to your game directory.
-The scene graph can be included like so:
+To install the library, copy the "scene" folder to your game directory and use require like so:
 ```lua
 love.scene = require("scene")
 ```
 
-The source code available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is on [2dengine.com](https://2dengine.com/doc/scene.html)
+The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is on [2dengine.com](https://2dengine.com/doc/scene.html)
 
 # Usage
 The scene graph is fairly minimal, relying on just four different objects.
@@ -20,8 +19,13 @@ local s1 = view:newSprite(0, 0)
 local s2 = love.scene.newSprite(0, 0)
 s2:setParent(view)
 ```
-Once the scene is set up, you can draw it like so:
+The next step is to add some textures and draw the scene:
 ```lua
+local image1 = love.graphics.newImage("texture1.png")
+s1:setGraphic(image1)
+local image2 = love.graphics.newImage("texture2.png")
+s2:setGraphic(image2)
+
 function love.draw()
   view:draw()
 end
@@ -77,8 +81,8 @@ Layers are used to build things like parallax, huds, minimaps and so on.
 local root = view:newLayer(0, 0)
 local a = root:newSprite(0, 0)
 local b = root:newSprite(0, 0)
-a:setGraphic('under.png')
-b:setGraphic('over.png')
+a:setGraphic(love.graphics.newImage('background.png'))
+b:setGraphic(love.graphics.newImage('foreground.png'))
 -- modify drawing order
 b:setDepth(1)
 ```
