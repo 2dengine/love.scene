@@ -1,4 +1,4 @@
---- Abstract scene graph node.
+--- This is an abstract scene graph node that supports transformations and hierarchy.
 -- @module node
 -- @alias node
 local node = {}

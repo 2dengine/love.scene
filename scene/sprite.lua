@@ -1,6 +1,6 @@
 --- Sprites are nodes in the scene which can be translated, scaled or rotated.
 -- Each sprite is assigned a "drawable" graphic, usually an image, quad or text.
--- Sprites can also be assigned a specific color, alpha value and blending mode.
+-- Sprites can also be modulated by changing their color, alpha value and blending mode.
 -- @module sprite
 -- @alias sprite
 -- @inherit node

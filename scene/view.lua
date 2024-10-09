@@ -1,4 +1,4 @@
---- View is a clipped rectangular area where the scene is rendered.
+--- View is a clipped rectangular area inside the application window where the scene is rendered.
 -- Views can be transformed, drawn and shaded.
 -- @module view
 -- @alias view

@@ -1,7 +1,6 @@
 # Introduction
-love.scene is a two-dimensional scene graph library written for the [LÖVE](https://love2d.org) game framework.
-The scene graph is compatible with LÖVE 11.3, 11.4 and 11.5.
-To install the library, copy the "scene" folder to your game directory and use require like so:
+love.scene is a two-dimensional scene graph library written for the [LÖVE](https://love2d.org) game framework (compatible with LÖVE 11.3, 11.4 and 11.5).
+To install the scene graph, copy the "scene" folder to your game directory and use require:
 ```lua
 love.scene = require("scene")
 ```
@@ -9,8 +8,8 @@ love.scene = require("scene")
 The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is on [2dengine.com](https://2dengine.com/doc/scene.html)
 
 # Usage
-The scene graph is fairly minimal, relying on just four different objects.
-Scene nodes are created using two different shortcuts:
+The scene graph is fairly minimal, relying on just four different types of objects.
+Scene nodes are created using two different methods:
 ```lua
 local view = love.scene.newView()
 -- object-oriented style
@@ -19,12 +18,15 @@ local s1 = view:newSprite(0, 0)
 local s2 = love.scene.newSprite(0, 0)
 s2:setParent(view)
 ```
-The next step is to add some textures and draw the scene:
+Images, text and other types of [drawable](https://www.love2d.org/wiki/Drawable) graphics are rendered as follows:
 ```lua
-local image1 = love.graphics.newImage("texture1.png")
-s1:setGraphic(image1)
-local image2 = love.graphics.newImage("texture2.png")
-s2:setGraphic(image2)
+-- image
+local image = love.graphics.newImage("texture1.png")
+s1:setGraphic(image)
+-- text
+local font = love.graphics.getFont()
+local text = love.graphics.newText(font, "Hello world")
+s2:setGraphic(text)
 
 function love.draw()
   view:draw()
@@ -32,32 +34,10 @@ end
 ```
 
 # Nodes
-## View
-View is a clipped rectangular area where the scene is rendered.
-Views can be transformed, drawn and easily shaded.
-```lua
-local view = love.scene.newView()
--- shading
-local shader = love.graphics.newShader([[ vec4 effect( vec4 c, Image t, vec2 tc, vec2 sc ){
-  vec4 p = Texel(t, tc );
-  number a = (p.r+p.b+p.g)/3.0;
-  number f = tc.x;
-  p.r = p.r + (a - p.r)*f;
-  p.g = p.g + (a - p.g)*f;
-  p.b = p.b + (a - p.b)*f;
-  return p;
-} ]])
-view:setShader(shader)
-
-function love.draw()
-  view:draw()
-end
-```
-
 ## Sprite
 Sprites are nodes in the scene which can be translated, scaled or rotated.
 Each sprite is assigned a "drawable" graphic, usually an image, quad or text.
-Sprites can also be assigned a specific color, alpha value and blending mode.
+Sprites can also be modulated by changing their color, alpha value and blending mode.
 ```lua
 local sprite = view:newSprite(0, 0)
 -- transform
@@ -85,6 +65,28 @@ a:setGraphic(love.graphics.newImage('background.png'))
 b:setGraphic(love.graphics.newImage('foreground.png'))
 -- modify drawing order
 b:setDepth(1)
+```
+
+## View
+View is a clipped rectangular area inside the application window where the scene is rendered.
+Views can be transformed, drawn and easily shaded.
+```lua
+local view = love.scene.newView()
+-- shading
+local shader = love.graphics.newShader([[ vec4 effect( vec4 c, Image t, vec2 tc, vec2 sc ){
+  vec4 p = Texel(t, tc );
+  number a = (p.r+p.b+p.g)/3.0;
+  number f = tc.x;
+  p.r = p.r + (a - p.r)*f;
+  p.g = p.g + (a - p.g)*f;
+  p.b = p.b + (a - p.b)*f;
+  return p;
+} ]])
+view:setShader(shader)
+
+function love.draw()
+  view:draw()
+end
 ```
 
 ## Camera

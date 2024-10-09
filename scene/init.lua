@@ -1,4 +1,5 @@
 --- This is the main module of the scene graph library.
+-- The scene. module is used to create new nodes.
 -- @module scene
 -- @alias scene
 local scene = {}
