@@ -40,13 +40,13 @@ Each sprite is assigned a "drawable" graphic, usually an image, quad or text.
 Sprites can also be modulated by changing their color, alpha value and blending mode.
 ```lua
 local sprite = view:newSprite(0, 0)
+-- draw
+local image = love.graphics.newImage("myimage.png")
+sprite:setGraphic(image)
 -- transform
 sprite:setPosition(100, 0)
 sprite:setRotation(math.pi/2)
 sprite:setScale(1, 2)
--- draw
-local image = love.graphics.newImage("myimage.png")
-sprite:setGraphic(image)
 -- modulate
 sprite:setColor(1, 0, 0)
 sprite:setAlpha(0.5)
