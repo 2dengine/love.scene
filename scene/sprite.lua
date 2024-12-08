@@ -71,8 +71,8 @@ end
 -- @tparam userdata drawable Drawable graphic
 -- @tparam[opt] userdata quad Optional quad
 -- @tparam[opt=0] number x X coordinate
--- @tparam[opt=0] number y y coordinate
--- @tparam[opt=0] number angle Angle
+-- @tparam[opt=0] number y Y coordinate
+-- @tparam[opt=0] number angle Angle in radians
 -- @tparam[opt=1] number sx X axis scale
 -- @tparam[opt=1] number sy Y axis scale
 -- @tparam[opt=0] number ox X axis offset

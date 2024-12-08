@@ -5,7 +5,7 @@ To install the scene graph, copy the "scene" folder to your game directory and u
 love.scene = require("scene")
 ```
 
-The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is on [2dengine.com](https://2dengine.com/doc/scene.html)
+The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is hosted on [2dengine.com](https://2dengine.com/doc/scene.html)
 
 # Usage
 The scene graph is fairly minimal, relying on just four different types of objects.
@@ -21,7 +21,7 @@ s2:setParent(view)
 Images, text and other types of [drawable](https://www.love2d.org/wiki/Drawable) graphics are rendered as follows:
 ```lua
 -- image
-local image = love.graphics.newImage("texture1.png")
+local image = love.graphics.newImage("mytexture.png")
 s1:setGraphic(image)
 -- text
 local font = love.graphics.getFont()
