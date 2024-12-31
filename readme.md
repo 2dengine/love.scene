@@ -1,13 +1,20 @@
-# Introduction
-love.scene is a two-dimensional scene graph library written for the [LÖVE](https://love2d.org) game framework (compatible with LÖVE 11.3, 11.4 and 11.5).
-To install the scene graph, copy the "scene" folder to your game directory and use require:
+# love.scene
+
+## Introduction
+love.scene is a 2D scene graph library for the [LÖVE](https://love2d.org) framework.
+The library is compatible with LÖVE 11.3, 11.4 and 11.5.
+love.scene is optimized through caching, native matrix transformations and avoids the use of metatables.
+
+The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is hosted on [2dengine.com](https://2dengine.com/doc/scene.html)
+
+## Installation
+love.scene does not depend on third party modules or binaries.
+To install love.scene, copy the "scene" folder to your game directory and use require:
 ```lua
 love.scene = require("scene")
 ```
 
-The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the official documentation is hosted on [2dengine.com](https://2dengine.com/doc/scene.html)
-
-# Usage
+## Usage
 The scene graph is fairly minimal, relying on just four different types of objects.
 Scene nodes are created using two different methods:
 ```lua
@@ -33,8 +40,8 @@ function love.draw()
 end
 ```
 
-# Nodes
-## Sprite
+## Nodes
+### Sprite
 Sprites are nodes in the scene which can be translated, scaled or rotated.
 Each sprite is assigned a "drawable" graphic, usually an image, quad or text.
 Sprites can also be modulated by changing their color, alpha value and blending mode.
@@ -53,7 +60,7 @@ sprite:setAlpha(0.5)
 sprite:setMode("add")
 ```
 
-## Layer
+### Layer
 Layers are basically groups of nodes, containing either sprites or other nested layers.
 Layers are helpful in ordering nodes along the Z-axis.
 Layers are used to build things like parallax, huds, minimaps and so on.
@@ -67,7 +74,7 @@ b:setGraphic(love.graphics.newImage('foreground.png'))
 b:setDepth(1)
 ```
 
-## View
+### View
 View is a clipped rectangular area inside the application window where the scene is rendered.
 Views can be transformed, drawn and easily shaded.
 ```lua
@@ -89,7 +96,7 @@ function love.draw()
 end
 ```
 
-## Camera
+### Camera
 Cameras can be transformed just like regular nodes and can also render their surroundings onto a view object.
 ```lua
 local view = love.scene.newView()
