@@ -24,7 +24,7 @@ end
 function love.update(dt)
   -- animate the scene
   local w, h = view:getDimensions()
-  for i, s in ipairs(sprites) do
+  for _, s in ipairs(sprites) do
     local x, y = s:getPosition()
     local dx, dy = s.dx, s.dy
     if (dx < 0 and x < 0) or (dx > 0 and x > w) then
