@@ -38,7 +38,6 @@ end
 function love.resize(w, h)
   -- resize the scene
   cam:setRange(w, h)
-  cam:setPosition(x, y, sw, sh)
 end
 
 function love.draw()
