@@ -1,4 +1,4 @@
-local view, sprites, root
+local view, sprites
 
 function love.load()
   -- setup the scene
