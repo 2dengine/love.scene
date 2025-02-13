@@ -1,4 +1,5 @@
 local mapw, maph = 64, 64
+local view, root, img, cam
 
 function love.load()
   -- setup the scene

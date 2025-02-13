@@ -1,3 +1,5 @@
+local view, sprites, root
+
 function love.load()
   -- setup the scene
   love.scene = require("scene.init")
