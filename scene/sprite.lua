@@ -67,6 +67,7 @@ function sprite.construct(x, y)
   t.graphic = _love_math_newTransform()
   t.color = { 1, 1, 1, 1 }
   t.mode = "alpha"
+  t.bmode = "alphamultiply"
   return t
 end
 
@@ -90,6 +91,7 @@ function sprite:reset(x, y)
   self.quad = nil
   self.shader = nil
   self.mode = "alpha"
+  self.bmode = "alphamultiply"
   _Node_reset(self, x, y)
 end
 
@@ -131,16 +133,19 @@ end
 
 --- Sets the blending mode.
 -- @tparam string mode Blend mode: "alpha", "add", "subtract" or "multiply"
+-- @tparam string alphamode Alpha blend mode: "alphamultiply" or "premultiplied"
 -- @see sprite:getMode
-function sprite:setMode(mode)
+function sprite:setMode(mode, bmode)
   self.mode = mode
+  self.bmode = bmode
 end
 
 --- Gets the blending mode.
 -- @treturn string mode Blend mode
+-- @treturn string alphamode Alpha blend mode
 -- @see sprite:setMode
 function sprite:getMode()
-  return self.mode
+  return self.mode, self.bmode
 end
 
 --- Gets the color.
@@ -211,7 +216,7 @@ function sprite:draw()
     self.changed = nil
   end
   _lg_setColor(self.color)
-  _lg_setBlendMode(self.mode)
+  _lg_setBlendMode(self.mode, self.bmode)
   local quad = self.quad
   local shade = self.shader
   if shade then
