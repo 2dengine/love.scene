@@ -1,9 +1,10 @@
 # love.scene
 
 ## Introduction
-love.scene is a 2D scene graph library for the [LÖVE](https://love2d.org) framework.
-The library is compatible with LÖVE 11.3, 11.4 and 11.5.
-love.scene is optimized through caching, native matrix transformations and avoids the use of metatables.
+love.scene is a 2D scene graph library for the [LÖVE](https://love2d.org) framework (compatible with LÖVE 11.3, 11.4 and 11.5).
+The primary advantage of love.scene is that it allows you to separate the drawing code from the rest of your application logic.
+The scene graph is centered around using pre-rendered [drawable objects](https://www.love2d.org/wiki/Drawable) which can significantly speed up your rendering.
+love.scene is highly optimized through caching, native matrix transformations and avoids the use of metatables.
 
 The source code is available on [GitHub](https://github.com/2dengine/love.scene) and the documentation is hosted on [2dengine.com](https://2dengine.com/doc/scene.html)
 
