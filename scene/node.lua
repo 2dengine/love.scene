@@ -95,7 +95,7 @@ function node:getRoot()
   local p = self.parent
   while p do
     local q = p.parent
-    if not q then
+    if q == nil then
       break
     end
     p = q

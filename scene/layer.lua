@@ -196,7 +196,7 @@ local _Layer_getChildDepth = layer.getChildDepth
 -- @tparam number index Depth index (could be negative)
 function layer:setChildDepth(c, i)
   local j = _Layer_getChildDepth(self, c)
-  if not j then
+  if j == nil then
     return
   end
   local list = self.list
@@ -219,7 +219,7 @@ end
 --- This is an internal function
 -- @see view:draw
 function layer:draw()
-  if not self.visible then
+  if self.visible == false then
     return
   end
   local trans = self.transform

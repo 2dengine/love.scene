@@ -87,15 +87,6 @@ function scene.destroy(n)
   end
 end
 
--- nodes
-local path = (...)
-path = path:gsub('%.init$', '')
-require(path..".node")
-require(path..".sprite")
-require(path..".layer")
-require(path..".camera")
-require(path..".view")
-
 --- Creates a new @{sprite} object.
 -- Alternatively, you can use @{layer:newSprite}.
 -- @function scene.newSprite(x,y)
@@ -128,6 +119,15 @@ end
 function scene.newCamera(x, y)
   return _scene_new("Camera", x, y)
 end
+
+-- nodes
+local path = (...)
+path = path:gsub('%.init$', '')
+require(path..".node")
+require(path..".sprite")
+require(path..".layer")
+require(path..".camera")
+require(path..".view")
 
 --- Creates a new @{view} object.
 -- If no parameters are supplied, the view takes on the dimensions of the window.

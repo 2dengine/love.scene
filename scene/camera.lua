@@ -102,7 +102,7 @@ end
 -- @see view:draw
 function camera:render(view)
   local root = self:getRoot()
-  if not self.visible or not root then
+  if self.visible == false or root == nil then
     return
   end
   local trans = self.transform

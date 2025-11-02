@@ -112,6 +112,9 @@ end
 -- @see sprite:getGraphic 
 function sprite:setGraphic(img, a,b,c,d,e,f,g,h,i,j)
   self.img = img
+  if img == nil then
+    return
+  end
   local graph = self.graphic
   if type(a) == "userdata" then
     self.quad = a
@@ -163,12 +166,15 @@ end
 -- @tparam number green Green value (0-1)
 -- @tparam number blue Blue value (0-1)
 -- @see sprite:getColor
-function sprite:setColor(r, g, b)
+function sprite:setColor(r, g, b, a)
   if type(r) == "table" then
-    r, g, b = r[1], r[2], r[3]
+    r, g, b, a = r[1], r[2], r[3], r[4]
   end
   local c = self.color
   c[1], c[2], c[3] = r, g, b
+  if a then
+    c[4] = a
+  end
 end
 
 --- Gets the alpha value.
@@ -202,11 +208,11 @@ end
 --- This is an internal function
 -- @see view:draw
 function sprite:draw()
-  if not self.visible then
+  if self.visible == false then
     return
   end
   local img = self.img
-  if not img then
+  if img == nil then
     return
   end
   local trans = self.transform

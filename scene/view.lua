@@ -162,9 +162,11 @@ function view:setBackground(r, g, b, a)
   if type(r) == "table" then
     r, g, b, a = unpack(r)
   end
-  a = a or 1
   local bg = self.background
-  bg[1], bg[2], bg[3], bg[4] = r, g, b, a
+  bg[1], bg[2], bg[3] = r, g, b
+  if a then
+    bg[4] = a
+  end
 end
 
 --- Gets the background color.
@@ -186,7 +188,7 @@ function view:setShader(shader)
     return
   end
   self.shader = shader
-  if shader and not self.canvas then
+  if shader and self.canvas == nil then
     local ok, canvas = pcall(_lg_newCanvas, self.vw, self.vh)
     self.canvas = ok and canvas
   end
@@ -201,7 +203,7 @@ end
 
 --- By default, this function draws the view and all of its visible child nodes.
 function view:draw()
-  if not self.visible then
+  if self.visible == false then
     return
   end
 
@@ -222,7 +224,7 @@ function view:draw()
   end
   
   _lg_push("transform")
-  if not canvas then
+  if canvas == nil then
     _lg_translate(vx, vy)
   end
   _lg_translate(self.ox*vw, self.oy*vh)
