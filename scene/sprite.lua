@@ -165,6 +165,7 @@ end
 -- @tparam number red Red value (0-1)
 -- @tparam number green Green value (0-1)
 -- @tparam number blue Blue value (0-1)
+-- @tparam[opt] number alpha Alpha value (0-1)
 -- @see sprite:getColor
 function sprite:setColor(r, g, b, a)
   if type(r) == "table" then
