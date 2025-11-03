@@ -42,7 +42,8 @@ local _love_math_newTransform = love.math.newTransform
 
 node.stype = "Node"
 
---- This is an internal function
+--- Creates the internal objects of the node.
+-- This is an internal function.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 -- @treturn node New node
@@ -57,7 +58,8 @@ function node.construct(x, y)
   return t
 end
 
---- This is an internal function
+--- Removes references to the internal objects of the node to be garbage collected.
+-- This is an internal function.
 -- @see node:destroy
 function node:deconstruct()
   self.transform = nil
@@ -72,7 +74,8 @@ function node:destroy()
   end
 end
 
---- This is an internal function
+--- Resets the transform of the node.
+-- This is an internal function.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 function node:reset(x, y)
@@ -83,8 +86,8 @@ function node:reset(x, y)
   self.changed = true
 end
 
---- Returns the node type as a string
--- @treturn string Node type ("Sprite", "Layer" or "View").
+--- Returns the node type as a string.
+-- @treturn string Node type string ("Sprite", "Layer", "View" or "Camera")
 function node:type()
   return self.stype
 end
@@ -140,7 +143,8 @@ function node:setDepth(i)
   return p and p:setChildDepth(self, i)
 end
 
---- This is an internal function.
+--- Compares the depth between two nodes.
+-- This is an internal function.
 -- Compares the depth of two nodes, based on their Y-coordinates.
 -- @tparam node other Other other
 -- @treturn boolean True if this node is in front of the other
@@ -243,8 +247,8 @@ end
 
 --- Converts a position from window to local coordinates.
 -- This function works only if the root node is a view object or returns nil otherwise.
--- @tparam number x Window X-coordinate
--- @tparam number y Window Y-coordinate
+-- @tparam number x Window X-coordinate in pixels
+-- @tparam number y Window Y-coordinate in pixels
 -- @treturn number Local X-coordinate
 -- @treturn number Local Y-coordinate
 -- @see node:localToWindow
@@ -260,8 +264,8 @@ end
 -- This function works only if the root node is a view object or returns nil otherwise.
 -- @tparam number x Local X-coordinate
 -- @tparam number y Local Y-coordinate
--- @treturn number Window X-coordinate
--- @treturn number Window Y-coordinate
+-- @treturn number Window X-coordinate in pixels
+-- @treturn number Window Y-coordinate in pixels
 -- @see node:windowToLocal
 function node:localToWindow(x, y)
   local r = self:getRoot()

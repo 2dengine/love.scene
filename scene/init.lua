@@ -41,7 +41,8 @@ local _remove = table.remove
 local pool = { Sprite = {}, Layer = {}, Camera = {}, View = {} }
 local live = {}
 
---- This is an internal function
+--- Creates a new node object.
+-- This is an internal function.
 -- @tparam node t Existing node
 -- @tparam arguments ... Constructor arguments
 -- @treturn node New node object
@@ -63,7 +64,8 @@ function scene.new(t, ...)
 end
 local _scene_new = scene.new
 
---- This is an internal function
+--- Makes a shallow copy of the node's properties.
+-- This is an internal function.
 -- @tparam node src Source node
 -- @tparam node dest Destination node
 function scene.copy(src, dest)
@@ -72,7 +74,8 @@ function scene.copy(src, dest)
   end
 end
 
---- This is an internal function
+--- Removes a node from the live pool.
+-- This is an internal function.
 -- @tparam node t Existing node
 -- @see node:destroy
 function scene.destroy(n)

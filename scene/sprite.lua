@@ -26,7 +26,7 @@ SOFTWARE.
 ]]
 
 --- Sprites are nodes in the scene which can be translated, scaled or rotated.
--- Each sprite is assigned a "drawable" graphic, usually an image, quad or text.
+-- Each sprite is assigned a drawable graphic, usually an image, quad or text.
 -- Sprites can also be modulated by changing their color, alpha value and blending mode.
 -- @module sprite
 -- @alias sprite
@@ -54,7 +54,8 @@ local _Scene_copy = reg.Scene.copy
 
 sprite.stype = "Sprite"
 
---- This is an internal function
+--- Creates the internal objects of the node.
+-- This is an internal function.
 -- Please use @{scene.newSprite} or @{layer.newSprite} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
@@ -71,7 +72,8 @@ function sprite.construct(x, y)
   return t
 end
 
---- This is an internal function
+--- Removes references to the internal objects of the node to be garbage collected.
+-- This is an internal function.
 -- @see node:destroy
 function sprite:deconstruct()
   self.graphic = nil
@@ -81,7 +83,8 @@ function sprite:deconstruct()
   _Node_deconstruct(self)
 end
 
---- Resets the node to its initial state.
+--- Resets the transform and color objects of the sprite.
+-- This is an internal function.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 function sprite:reset(x, y)
@@ -95,20 +98,20 @@ function sprite:reset(x, y)
   _Node_reset(self, x, y)
 end
 
---- Sets a "drawable" graphic or a quad for the sprite.
--- This could be an image, text, mesh, canvas, etc.
--- The "drawable" graphic can be transformed relative to the sprite's origin.
--- @tparam userdata drawable Drawable graphic
+--- Sets the drawable graphic and quad of the sprite.
+-- The drawable graphic could be an image, text, mesh, canvas, etc.
+-- The transformation arguments are relative to the sprite's position.
+-- @tparam[opt] userdata drawable Drawable graphic
 -- @tparam[opt] userdata quad Optional quad
--- @tparam[opt=0] number x X coordinate
--- @tparam[opt=0] number y Y coordinate
+-- @tparam[opt=0] number x X-axis coordinate
+-- @tparam[opt=0] number y Y-axis coordinate
 -- @tparam[opt=0] number angle Angle in radians
--- @tparam[opt=1] number sx X axis scale
--- @tparam[opt=1] number sy Y axis scale
--- @tparam[opt=0] number ox X axis offset
--- @tparam[opt=0] number oy Y axis offset
--- @tparam[opt=0] number kx X axis shearing
--- @tparam[opt=0] number ky Y axis shearing 
+-- @tparam[opt=1] number sx X-axis scale
+-- @tparam[opt=1] number sy Y-axis scale
+-- @tparam[opt=0] number ox X-axis offset
+-- @tparam[opt=0] number oy Y-axis offset
+-- @tparam[opt=0] number kx X-axis shearing
+-- @tparam[opt=0] number ky Y-axis shearing 
 -- @see sprite:getGraphic 
 function sprite:setGraphic(img, a,b,c,d,e,f,g,h,i,j)
   self.img = img
@@ -126,7 +129,7 @@ function sprite:setGraphic(img, a,b,c,d,e,f,g,h,i,j)
   self.changed = true
 end
 
---- Gets the "drawable" graphic and quad of the sprite.
+--- Gets the drawable graphic and quad of the sprite.
 -- @treturn userdata Drawable graphic
 -- @treturn userdata Quad or nil
 -- @see sprite:setGraphic
@@ -134,7 +137,7 @@ function sprite:getGraphic()
   return self.img, self.quad
 end
 
---- Sets the blending mode.
+--- Sets the blending mode and alpha blending mode of the sprite.
 -- @tparam string mode Blend mode: "alpha", "add", "subtract" or "multiply"
 -- @tparam string alphamode Alpha blend mode: "alphamultiply" or "premultiplied"
 -- @see sprite:getMode
@@ -143,7 +146,7 @@ function sprite:setMode(mode, bmode)
   self.bmode = bmode
 end
 
---- Gets the blending mode.
+--- Gets the blending mode and alpha blending mode of the sprite.
 -- @treturn string mode Blend mode
 -- @treturn string alphamode Alpha blend mode
 -- @see sprite:setMode
@@ -151,17 +154,18 @@ function sprite:getMode()
   return self.mode, self.bmode
 end
 
---- Gets the color.
+--- Gets the color of the sprite in RGBA format.
 -- @treturn number Red value (0-1)
 -- @treturn number Green value (0-1)
 -- @treturn number Blue value (0-1)
+-- @treturn number Alpha value (0-1)
 -- @see sprite:setColor
 function sprite:getColor()
   local c = self.color
-  return c[1], c[2], c[3]
+  return c[1], c[2], c[3], c[4]
 end
 
---- Sets the color.
+--- Sets the color of the sprite in RGBA format.
 -- @tparam number red Red value (0-1)
 -- @tparam number green Green value (0-1)
 -- @tparam number blue Blue value (0-1)
@@ -178,35 +182,36 @@ function sprite:setColor(r, g, b, a)
   end
 end
 
---- Gets the alpha value.
+--- Gets the alpha value of the sprite.
 -- @treturn number Alpha value (0-1)
 -- @see sprite:setAlpha
 function sprite:getAlpha()
   return self.color[4]
 end
 
---- Sets the alpha value.
+--- Sets the alpha value of the sprite.
 -- @tparam number alpha Alpha value (0-1)
 -- @see sprite:getAlpha
 function sprite:setAlpha(a)
   self.color[4] = a
 end
 
---- Sets the shader used when drawing the sprite.
+--- Sets the shader of the sprite.
 -- @tparam userdata shader Shader object
 -- @see sprite:getShader
 function sprite:setShader(s)
   self.shader = s
 end
 
---- Gets the shader used when drawing the sprite.
+--- Gets the shader of the sprite.
 -- @treturn userdata Shader object
 -- @see sprite:getShader
 function sprite:getShader()
   return self.shader
 end
 
---- This is an internal function
+--- Updates the sprite transforms if necessary and draws the sprite.
+-- This is an internal function
 -- @see view:draw
 function sprite:draw()
   if self.visible == false then

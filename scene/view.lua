@@ -64,7 +64,8 @@ if lg then
 end
 local _Scene_copy = reg.Scene.copy
 
---- This is an internal function
+--- Creates the internal objects of the node.
+-- This is an internal function.
 -- Please use @{scene.newView} instead.
 -- @tparam[opt] number x X-position in pixels
 -- @tparam[opt] number y Y-position in pixels
@@ -90,7 +91,8 @@ function view.construct(vx, vy, vw, vh)
   return t
 end
 
---- This is an internal function
+--- Removes references to the internal objects of the node to be garbage collected.
+-- This is an internal function
 -- @see node:destroy
 function view:deconstruct()
   self.camera = nil

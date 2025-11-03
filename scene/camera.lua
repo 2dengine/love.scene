@@ -51,7 +51,8 @@ local _Scene_copy = reg.Scene.copy
 
 camera.stype = "Camera"
 
---- This is an internal function
+--- Creates the internal objects of the node.
+-- This is an internal function.
 -- Please use @{scene.newCamera} or @{layer.newCamera} instead.
 -- @tparam number x X coordinate
 -- @tparam number y Y coordinate
@@ -66,7 +67,8 @@ function camera.construct(x, y)
   return t
 end
 
---- This is an internal function
+--- Removes references to the internal objects of the node to be garbage collected.
+-- This is an internal function.
 -- @tparam number x X-coordinate
 -- @tparam number y Y-coordinate
 function camera:reset(x, y)
@@ -76,10 +78,8 @@ function camera:reset(x, y)
 end
 
 --- Sets the viewing range of the camera in scene units.
--- The camera node's scale is ignored upon setting a non-zero range.
--- When the viewing range is set to zero,
--- the rendered area is determined by the
--- camera's scale and the dimensions of the view object.
+-- The camera node's scale is ignored when the range is greater than zero.
+-- When the viewing range is set to zero, the rendered area is determined by the camera's scale and the dimensions of the view object.
 -- @tparam number width Range width in scene units
 -- @tparam number height Range height in scene units
 -- @see camera:getRange
@@ -97,7 +97,8 @@ function camera:getRange()
   return self.rw, self.rh
 end
 
---- This is an internal function
+--- Renders the camera's surroundings onto a view object.
+-- This is an internal function
 -- @tparam node view View object
 -- @see view:draw
 function camera:render(view)
